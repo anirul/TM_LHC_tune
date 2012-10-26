@@ -8,21 +8,22 @@ CXX = clang++
 CFLAGS = -g -O0 \
 	-I/opt/local/include \
 	-I/usr/local/include \
-	-I.. 
 LIBS = -L/opt/local/lib/ \
 	-framework GLUT -framework Cocoa -framework OpenGL \
 	-lboost_program_options -lboost_system -lboost_iostreams -lboost_filesystem \
-	-lfftw3 -lfftw3f -lpng
+	-lfftw3 -lfftw3f
 endif
 
 ifeq ($(UNAME), Linux)
 CC = clang
 CXX = clang++
-CFLAGS = -g -O0 -I/usr/local/include -I/usr/include -I..
+CFLAGS = -g -O0 \
+	-I/usr/local/include \
+	-I/usr/include
 LIBS = -L/usr/local/lib -L/usr/local/lib64 -L/usr/lib64 \
 	-lglut -lGL -lGLU \
 	-lboost_program_options -lboost_system -lboost_iostreams -lboost_filesystem \
-	-lfftw3f -lfftw3 -lpng
+	-lfftw3f -lfftw3
 endif
 
 ALL=data_check
@@ -43,11 +44,9 @@ spectrogram.o : spectrogram.cpp spectrogram.h bunch_buffer.h acquisition_buffer.
 	$(CXX) -o spectrogram.o -c spectrogram.cpp $(CFLAGS)
 data_check.o : data_check.cpp fftw_fft.h acquisition_buffer.h bunch_buffer.h glut_win.h win_data_check.h
 	$(CXX) -o data_check.o -c data_check.cpp $(CFLAGS)
-texture_png.o : texture_png.cpp texture_png.h
-	$(CXX) -o texture_png.o -c texture_png.cpp $(CFLAGS)
 
-data_check : data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o texture_png.o
-	$(CXX) -o data_check data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o texture_png.o $(LIBS)	
+data_check : data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o
+	$(CXX) -o data_check data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o $(LIBS)	
 
 clean:
 	rm -f $(ALL) *.o

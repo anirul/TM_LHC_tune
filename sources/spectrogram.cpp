@@ -143,6 +143,7 @@ void spectrogram::load_files(const std::string& path, bool pre_notch) {
 			bb.fft();
 			bb.amplitude();
 			average(bb, temp, bunch_mask_);
+			time_.insert(time_stamp);
 			if (ite == list_file.begin()) 
 				acc_vec.assign(bb.buffer_size(), 0.0f);
 			accumulate(acc_vec, acc_vec, temp);
@@ -165,14 +166,21 @@ void spectrogram::save_dump(const std::string& file) const {
 	fp = fopen(file.c_str(), "wb");
 	if (!fp)
 		throw std::runtime_error("could not write file " + file);
-	uint32_t version = 1;
+	uint32_t version = 2;
 	fwrite(&version, sizeof(uint32_t), 1, fp);
 	fwrite(&pitch_, sizeof(uint32_t), 1, fp);
 	fwrite(&bunch_mask_, sizeof(uint32_t), 1, fp);
 	fwrite(&nb_acc_, sizeof(uint32_t), 1, fp);
-	size_t size = data_.size();
-	fwrite(&size, sizeof(size_t), 1, fp);
-	fwrite(&data_[0], sizeof(float), data_.size(), fp);
+	{ // save time
+		size_t size = time_.size();
+		fwrite(&size, sizeof(size_t), 1, fp);
+		fwrite(&time_[0], sizeof(long long), time_.size(), fp);
+	}
+	{ // save data
+		size_t size = data_.size();
+		fwrite(&size, sizeof(size_t), 1, fp);
+		fwrite(&data_[0], sizeof(float), data_.size(), fp);
+	}
 	fclose(fp);
 }
 
@@ -186,10 +194,18 @@ void spectrogram::load_dump(const std::string& file) {
 	fread(&pitch_, sizeof(uint32_t), 1, fp);
 	fread(&bunch_mask_, sizeof(uint32_t), 1, fp);
 	fread(&nb_acc_, sizeof(uint32_t), 1, fp);
-	size_t size = 0;
-	fread(&size, sizeof(size_t), 1, fp);
-	data_.resize(size);
-	fread(&data_[0], sizeof(float), size, fp);
+	if (version == 2) { // load time (if v2)
+		size_t size = 0;
+		fread(&size, sizeof(size_t), 1, fp);
+		time_.resize(size);
+		fread(&time_[0], sizeof(long long), size, fp);
+	}
+	{ // load data
+		size_t size = 0;
+		fread(&size, sizeof(size_t), 1, fp);
+		data_.resize(size);
+		fread(&data_[0], sizeof(float), size, fp);
+	}
 	fclose(fp);
 }
 
@@ -212,4 +228,11 @@ const float* spectrogram::line(uint32_t index, uint32_t nb_lines) const {
 	if (index + nb_lines > total_lines) 
 		index = total_lines - nb_lines;
 	return &data_[index * pitch_];
+}
+
+long long spectrogram::time(uint32_t index) const {
+	if ((index * nb_acc_) < time_.size()) {
+		return time_[index * nb_acc_];
+	}
+	return 0;
 }

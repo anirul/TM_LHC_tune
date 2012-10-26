@@ -34,6 +34,7 @@ class spectrogram {
 		uint32_t bunch_mask_;
 		uint32_t nb_acc_;
 		std::vector<float> data_;
+		std::vector<long long> time_;
 	protected :
 		void accumulate(
 			std::vector<float>& out,
@@ -60,6 +61,7 @@ class spectrogram {
 		uint32_t line_count() const;
 		const std::vector<float>& data() const;
 		const float* line(uint32_t index, uint32_t nb_lines) const;
+		long long time(uint32_t index) const;
 };
 
 #endif // spectrogram_HEADER_DEFINED
