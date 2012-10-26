@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="33cm" height="19cm" viewBox="39 8 642 376" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="120" y="60" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="120" y="60" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="200" y="83.9">
+      <tspan x="200" y="83.9">ADT Pickups</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="120" y="200" width="157.55" height="38"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="120" y="200" width="157.55" height="38"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="198.775" y="222.9">
+      <tspan x="198.775" y="222.9">ADTDSPU (VME card)</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 20; stroke: #000000" x1="51" y1="140" x2="669" y2="140"/>
+    <path style="fill: #ffffff" d="M 41 140 C 41,137.5 43.5,135 46,135 C 48.5,135 51,137.5 51,140 C 51,142.5 48.5,145 46,145 C 43.5,145 41,142.5 41,140z"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 41 140 C 41,137.5 43.5,135 46,135 C 48.5,135 51,137.5 51,140 C 51,142.5 48.5,145 46,145 C 43.5,145 41,142.5 41,140"/>
+    <path style="fill: #ffffff" d="M 679 140 C 679,142.5 676.5,145 674,145 C 671.5,145 669,142.5 669,140 C 669,137.5 671.5,135 674,135 C 676.5,135 679,137.5 679,140z"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 679 140 C 679,142.5 676.5,145 674,145 C 671.5,145 669,142.5 669,140 C 669,137.5 671.5,135 674,135 C 676.5,135 679,137.5 679,140"/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="199.815" y1="100.989" x2="199.037" y2="189.268"/>
+    <polygon style="fill: #000000" points="198.971,196.767 194.059,186.724 199.037,189.268 204.059,186.812 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="198.971,196.767 194.059,186.724 199.037,189.268 204.059,186.812 "/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="40" y="120">
+    <tspan x="40" y="120">UX45 (LHC cavern)</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="40" y="180">
+    <tspan x="40" y="180">SR4 (surface building)</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="120" y="300" width="160" height="38"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="120" y="300" width="160" height="38"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="200" y="322.9">
+      <tspan x="200" y="322.9">MEN-A20 (Intel CPU)</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="199.02" y1="238.971" x2="199.636" y2="289.294"/>
+    <polygon style="fill: #000000" points="199.728,296.793 194.606,286.855 199.636,289.294 204.605,286.733 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="199.728,296.793 194.606,286.855 199.636,289.294 204.605,286.733 "/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="220" y="120">
+    <tspan x="220" y="120">Coax line analog</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="220" y="280">
+    <tspan x="220" y="280">VME 40Mbits/second</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="440" y="200" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="440" y="200" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="520" y="223.9">
+      <tspan x="520" y="223.9">PCI Express Serial RX</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="440" y="300" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="440" y="300" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="520" y="323.9">
+      <tspan x="520" y="323.9">GPU computing unit</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="278.542" y1="219.248" x2="429.291" y2="219.718"/>
+    <polygon style="fill: #000000" points="436.791,219.741 426.776,224.71 429.291,219.718 426.807,214.71 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="436.791,219.741 426.776,224.71 429.291,219.718 426.807,214.71 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="520" y1="241.002" x2="520" y2="289.262"/>
+    <polygon style="fill: #000000" points="520,296.762 515,286.762 520,289.262 525,286.762 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="520,296.762 515,286.762 520,289.262 525,286.762 "/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="300" y="200">
+    <tspan x="300" y="200">Gigabit serial link</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="540" y="280">
+    <tspan x="540" y="280">PCI Express bus</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="59.7403" y="380.992">
+    <tspan x="59.7403" y="380.992">Existing system (VME)</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="399.74" y="380.992">
+    <tspan x="399.74" y="380.992">Future System (PCI-Express)</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="40" y="20">
+    <tspan x="40" y="20">ADT acquisition system</tspan>
+  </text>
+</svg>
