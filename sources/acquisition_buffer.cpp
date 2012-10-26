@@ -352,3 +352,17 @@ void acquisition_buffer_f::load_bin(FILE* file) {
 void acquisition_buffer_d::load_bin(FILE* file) {
    throw std::runtime_error("Not implemented!");
 }
+
+bool acquisition_buffer_f::empty() const {
+   for (size_t i = 0; i < complex_buffer_.size(); ++i) 
+      if (complex_buffer_[i].real() != 0.0f)
+         return false;
+   return true;
+}
+
+bool acquisition_buffer_d::empty() const {
+   for (size_t i = 0; i < complex_buffer_.size(); ++i) 
+      if (complex_buffer_[i].real() != 0.0)
+         return false;
+   return true;
+}

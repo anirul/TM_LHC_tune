@@ -447,3 +447,17 @@ bool bunch_buffer_f::load_bin(const std::string& file_name) {
 bool bunch_buffer_d::load_bin(const std::string& file_name) {
    throw std::runtime_error("Not implemented!");
 }
+
+bool bunch_buffer_f::empty() const {
+   for (int i = 0; i < buffers_.size(); ++i)
+      if (!buffers_[i].empty())
+         return false;
+   return true;
+}
+
+bool bunch_buffer_d::empty() const {
+   for (int i = 0; i < buffers_.size(); ++i)
+      if (!buffers_[i].empty())
+         return false;
+   return true;
+}

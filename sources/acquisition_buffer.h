@@ -69,6 +69,7 @@ class acquisition_buffer_f : public fftwf_fft {
       unsigned long peak_detect(
             unsigned long min, 
             unsigned long max);
+      bool empty() const;
 };
 
 class acquisition_buffer_d : public fftwd_fft {
@@ -97,6 +98,7 @@ class acquisition_buffer_d : public fftwd_fft {
       unsigned long peak_detect(
             unsigned long min, 
             unsigned long max);
+      bool empty() const;
 };
 
 #endif // acquisition_buffer_HEADER_DEFINED

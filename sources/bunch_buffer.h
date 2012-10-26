@@ -82,6 +82,7 @@ class bunch_buffer_f {
       bool load_txt(const std::string& file_name);
       bool load_gzip(const std::string& file_name);
       bool load_bin(const std::string& file_name);
+      bool empty() const;
 };
 
 class bunch_buffer_d {
@@ -132,6 +133,7 @@ class bunch_buffer_d {
       bool load_txt(const std::string& file_name);
       bool load_gzip(const std::string& file_name);
       bool load_bin(const std::string& file_name);
+      bool empty() const;
 };
 
 #endif // bunch_buffer_HEADER_DEFINED

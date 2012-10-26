@@ -92,6 +92,7 @@ spectrogram::~spectrogram() {}
 
 void spectrogram::load_files(const std::string& path, bool pre_notch) {
 	data_.clear();
+	time_.clear();
 	try {
 		fs::path open_path(path.c_str());
 		std::vector<fs::path> list_file;
@@ -128,12 +129,20 @@ void spectrogram::load_files(const std::string& path, bool pre_notch) {
 				file_time += boost::posix_time::microseconds(
 					(time_stamp % 1000000000L) / 1000);
 			}
-			std::cout << "\rloading (data)  : " 
+			std::cout 
+				<< "\rloading (data)  : " 
 				<< ++file_count << "/" << list_file.size() << " "
 				<< file_time << " "
 				<< full_path;
 			std::cout.flush();
 			bunch_buffer_f bb(full_path);
+			if (bb.empty()) {
+				std::cout 
+					<< std::endl
+					<< "empty (data)    : " << full_path << " Not saved!" 
+					<< std::endl;
+				continue;
+			}
 			if (!pitch_) {
 				pitch_ = bb.buffer_size() / 2;
 			} 
@@ -143,7 +152,7 @@ void spectrogram::load_files(const std::string& path, bool pre_notch) {
 			bb.fft();
 			bb.amplitude();
 			average(bb, temp, bunch_mask_);
-			time_.insert(time_stamp);
+			time_.push_back(time_stamp);
 			if (ite == list_file.begin()) 
 				acc_vec.assign(bb.buffer_size(), 0.0f);
 			accumulate(acc_vec, acc_vec, temp);
