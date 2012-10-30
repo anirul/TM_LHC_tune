@@ -223,6 +223,8 @@ uint32_t spectrogram::pitch() const {
 }
 
 uint32_t spectrogram::line_count() const {
+	if (!pitch_)
+		throw std::runtime_error("invalid pitch");
 	return data_.size() / pitch_;
 }
 

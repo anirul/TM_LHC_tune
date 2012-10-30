@@ -36,7 +36,7 @@
 #include "bunch_buffer.h"
 #include "spectrogram.h"
 #include "win_data_check.h"
-#include "texture_png.h"
+#include "cv_image.h"
 
 using namespace boost::program_options;
 using namespace boost::posix_time;
@@ -51,6 +51,7 @@ int main(int ac, char** av) {
    std::string path = "";
    std::string output_file = "";
    std::string input_file = "";
+   std::string output_image = "";
    try {
       // parse command line
       options_description desc("Allowed options");
@@ -60,6 +61,7 @@ int main(int ac, char** av) {
          ("nb-acc,n", value<unsigned int>(), "averaging in turn (default : 10)")
          ("fullscreen,f", "fullscreen")
          ("output-file,o", value<std::string>(), "output file (dump the values)")
+         ("output-image,b", value<std::string>(), "output an image")
          ("input-file,i", value<std::string>(), "input file (read from dump)")
          ("pre-notch", "in case data was already notched")
          ;
@@ -90,6 +92,10 @@ int main(int ac, char** av) {
          input_file = vm["input-file"].as<std::string>();
          std::cout << "input file      : " << input_file << std::endl;
       }
+      if (vm.count("output-image")) {
+         output_image = vm["output-image"].as<std::string>();
+         std::cout << "output image    : " << output_image << std::endl;
+      }
       if (vm.count("pre-notch")) {
          pre_notch = true;
       }
@@ -99,9 +105,18 @@ int main(int ac, char** av) {
             spect.load_files(path, pre_notch);
          } else if (input_file.size()) { 
             spect.load_dump(input_file);
+         } else {
+            std::cout << desc << std::endl;
+            return 1;
          }
          if (output_file.size()) {
             spect.save_dump(output_file);
+            return 0;
+         }
+         if (output_image.size()) {
+            save_to_file(
+               spect,
+               output_image);
             return 0;
          }
          win_data_check wdc(std::make_pair(dx, dy), spect);

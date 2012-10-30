@@ -25,21 +25,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef texture_png_HEADER_DEFINED
-#define texture_png_HEADER_DEFINED
+#ifndef cv_image_HEADER_DEFINED
+#define cv_image_HEADER_DEFINED
 
-class texture_png {
-	protected :
-		std::pair<size_t, size_t> size_;
-		size_t byte_width_;
-		uint8_t bytes_per_pixel_;
-		std::string file_name_;
-	public :
-		texture_png(const std::string& file_name);
-		virtual ~texture_png();
-	public :
-		void set_size(const std::pair<size_t, size_t>& size);
-		void save(const std::vector<float>& ptr);
-};
+void save_to_file(
+	const spectrogram& spect,
+	const std::string& file_name,
+	bool with_scale = true);
 
-#endif // texture_png_HEADER_DEFINED
+#endif // cv_image_HEADER_DEFINED

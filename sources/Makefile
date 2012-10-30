@@ -8,10 +8,12 @@ CXX = clang++
 CFLAGS = -g -O0 \
 	-I/opt/local/include \
 	-I/usr/local/include \
+	-I/opt/local/include/opencv2
 LIBS = -L/opt/local/lib/ \
-	-framework GLUT -framework Cocoa -framework OpenGL \
+	-framework GLUT -framework Cocoa -framework OpenGL -framework SFML \
 	-lboost_program_options -lboost_system -lboost_iostreams -lboost_filesystem \
-	-lfftw3 -lfftw3f
+	-lfftw3 -lfftw3f \
+	-lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_video -lopencv_objdetect
 endif
 
 ifeq ($(UNAME), Linux)
@@ -44,9 +46,11 @@ spectrogram.o : spectrogram.cpp spectrogram.h bunch_buffer.h acquisition_buffer.
 	$(CXX) -o spectrogram.o -c spectrogram.cpp $(CFLAGS)
 data_check.o : data_check.cpp fftw_fft.h acquisition_buffer.h bunch_buffer.h glut_win.h win_data_check.h
 	$(CXX) -o data_check.o -c data_check.cpp $(CFLAGS)
+cv_image.o : cv_image.cpp cv_image.h spectrogram.h acquisition_buffer.h bunch_buffer.h
+	$(CXX) -o cv_image.o -c cv_image.cpp $(CFLAGS)
 
-data_check : data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o
-	$(CXX) -o data_check data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o $(LIBS)	
+data_check : data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o cv_image.o
+	$(CXX) -o data_check data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o cv_image.o $(LIBS)	
 
 clean:
 	rm -f $(ALL) *.o
