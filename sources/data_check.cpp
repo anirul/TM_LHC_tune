@@ -48,6 +48,7 @@ int main(int ac, char** av) {
    uint32_t bunch_mask = 0x7f;
    bool enable_fullscreen;
    bool pre_notch = false;
+   bool no_label = false;
    std::string path = "";
    std::string output_file = "";
    std::string input_file = "";
@@ -62,6 +63,7 @@ int main(int ac, char** av) {
          ("fullscreen,f", "fullscreen")
          ("output-file,o", value<std::string>(), "output file (dump the values)")
          ("output-image,b", value<std::string>(), "output an image")
+         ("no-label,n", "disable label in images")
          ("input-file,i", value<std::string>(), "input file (read from dump)")
          ("pre-notch", "in case data was already notched")
          ;
@@ -98,6 +100,11 @@ int main(int ac, char** av) {
       }
       if (vm.count("pre-notch")) {
          pre_notch = true;
+         std::cout << "pre notch       : true" << std::endl;
+      }
+      if (vm.count("no-label")) {
+         no_label = true;
+         std::cout << "no label        : true" << std::endl;
       }
       {
          spectrogram spect(nb_acc, bunch_mask);
@@ -116,7 +123,8 @@ int main(int ac, char** av) {
          if (output_image.size()) {
             save_to_file(
                spect,
-               output_image);
+               output_image,
+               no_label);
             return 0;
          }
          win_data_check wdc(std::make_pair(dx, dy), spect);
