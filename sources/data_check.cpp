@@ -124,7 +124,7 @@ int main(int ac, char** av) {
             save_to_file(
                spect,
                output_image,
-               no_label);
+               !no_label);
             return 0;
          }
          win_data_check wdc(std::make_pair(dx, dy), spect);
