@@ -28,11 +28,14 @@
 #ifndef spectrogram_HEADER_DEFINED
 #define spectrogram_HEADER_DEFINED
 
+#include <bitset>
+
 class spectrogram {
 	protected :
 		uint32_t pitch_;
-		uint32_t bunch_mask_;
 		uint32_t nb_acc_;
+		std::bitset<16> bunch_mask_;
+		std::vector<short> bunch_pattern_;
 		std::vector<float> data_;
 		std::vector<long long> time_;
 	protected :
@@ -46,12 +49,11 @@ class spectrogram {
 		void normalize(std::vector<float>& inout);
 		void average(
 			const bunch_buffer_f& buffers,
-			std::vector<float>& out,
-			uint32_t bunch_mask);
+			std::vector<float>& out);
 	public :
 		spectrogram(
 			uint32_t nb_acc,
-			uint32_t bunch_mask);
+			const std::bitset<16>& bunch_mask);
 		virtual ~spectrogram();
 	public :
 		void load_files(const std::string& path, bool pre_notch = false);
@@ -60,6 +62,8 @@ class spectrogram {
 		uint32_t pitch() const;
 		uint32_t line_count() const;
 		const std::vector<float>& data() const;
+		const std::vector<short>& bunch_pattern() const;
+		const std::bitset<16>& bunch_mask() const;
 		const float* line(uint32_t index, uint32_t nb_lines) const;
 		long long time(uint32_t index) const;
 };

@@ -317,42 +317,6 @@ void acquisition_buffer_d::load_txt(std::istream& is) {
    }
 }
 
-void acquisition_buffer_f::save_bin(FILE* file) {
-   if (file == NULL)
-      throw std::runtime_error("invalid file pointer");
-   std::vector<short> temp;
-   temp.resize(complex_buffer_.size());
-   for (unsigned long i = 0; i < complex_buffer_.size(); ++i)
-      temp[i] = (short)(complex_buffer_[i].real());
-   unsigned long buffer_size = temp.size();
-   fwrite(&buffer_size, sizeof(unsigned long), 1, file);
-   size_t write_len = fwrite(&temp[0], sizeof(short), temp.size(), file);
-   if (write_len != buffer_size)
-      throw std::runtime_error("could not write buffer");
-}
-
-void acquisition_buffer_d::save_bin(FILE* file) {
-   if (file == NULL)
-      throw std::runtime_error("invalid file pointer");
-   std::vector<short> temp;
-   temp.resize(complex_buffer_.size());
-   for (unsigned long i = 0; i < complex_buffer_.size(); ++i)
-      temp[i] = (short)(complex_buffer_[i].real());
-   unsigned long buffer_size = temp.size();
-   fwrite(&buffer_size, sizeof(unsigned long), 1, file);
-   size_t write_len = fwrite(&temp[0], sizeof(short), temp.size(), file);
-   if (write_len != buffer_size)
-      throw std::runtime_error("could not write buffer");
-}
-
-void acquisition_buffer_f::load_bin(FILE* file) {
-   throw std::runtime_error("Not implemented!");
-}
-
-void acquisition_buffer_d::load_bin(FILE* file) {
-   throw std::runtime_error("Not implemented!");
-}
-
 bool acquisition_buffer_f::empty() const {
    for (size_t i = 0; i < complex_buffer_.size(); ++i) 
       if (complex_buffer_[i].real() != 0.0f)

@@ -74,6 +74,23 @@ void save_to_file(
 		}
 	}
 	if (with_scale) {
+		{ // bunch pattern
+			std::stringstream ss("");
+			if (spect.bunch_mask().count() > 1)
+				ss << "bunches : ";
+			else
+				ss << "bunch : ";
+			std::vector<short> bunch_pattern = spect.bunch_pattern();
+			for (size_t i = 0; i < bunch_pattern.size(); ++i)
+				if (spect.bunch_mask()[i])
+					ss << bunch_pattern[i] << " ";
+			cv::putText(
+				img,
+				ss.str(),
+				cv::Point(30, 50),
+				cv::FONT_HERSHEY_COMPLEX_SMALL, 1.25,
+				cv::Scalar(255, 255, 255));
+		}
 		for (int y = 0; y < (size.second - 20); y += 100) {
 			std::string time_string = "";
 			long long time_stamp = spect.time(y);
@@ -82,8 +99,8 @@ void save_to_file(
 				boost::posix_time::ptime line_time;
 				line_time = boost::posix_time::from_time_t(
 					time_stamp / 1000000000L);
-				line_time += boost::posix_time::microseconds(
-					(time_stamp % 1000000000L) / 1000);
+//				line_time += boost::posix_time::microseconds(
+//					(time_stamp % 1000000000L) / 1000);
 				ss << line_time;
 				time_string = ss.str();
 			}

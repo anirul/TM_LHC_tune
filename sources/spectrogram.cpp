@@ -66,26 +66,26 @@ void spectrogram::normalize(std::vector<float>& inout) {
 
 void spectrogram::average(
 	const bunch_buffer_f& buffers,
-	std::vector<float>& out,
-	uint32_t bunch_mask)
+	std::vector<float>& out)
 {
 	std::vector<float> temp;
 	out.assign(buffers.buffer_size(), 0.0f);
 	for (unsigned int i = 0; i < buffers.bunch_count(); ++i) {
-		if ((0x1 << i) & (unsigned int)bunch_mask) {
+		if (bunch_mask_[i]) {
 			buffers.buffer(i, temp);
 			accumulate(out, out, temp);
 		}
 	}
-	normalize(out);
 }
 
-spectrogram::spectrogram(uint32_t nb_acc, uint32_t bunch_mask) 
+spectrogram::spectrogram(uint32_t nb_acc, const std::bitset<16>& bunch_mask) 
 	:	pitch_(0),
 		nb_acc_(nb_acc),
 		bunch_mask_(bunch_mask)
 {
+	bunch_pattern_.clear();
 	data_.clear();
+	time_.clear();
 }
 
 spectrogram::~spectrogram() {}
@@ -93,6 +93,7 @@ spectrogram::~spectrogram() {}
 void spectrogram::load_files(const std::string& path, bool pre_notch) {
 	data_.clear();
 	time_.clear();
+	bunch_pattern_.clear();
 	try {
 		fs::path open_path(path.c_str());
 		std::vector<fs::path> list_file;
@@ -146,12 +147,28 @@ void spectrogram::load_files(const std::string& path, bool pre_notch) {
 			if (!pitch_) {
 				pitch_ = bb.buffer_size() / 2;
 			} 
-			if (!bb.buffer_size())
+			if (!bb.buffer_size()) {
+				std::cout << std::endl;
 				throw std::runtime_error("Error invalid file : " + full_path);
+			}
+			if (!bb.get_bunch_pattern().size()) {
+				std::cout << std::endl;
+				throw std::runtime_error("Invalid bunch pattern (empty)");
+			}
+			// save the bunch pattern
+			if (bb.get_bunch_pattern() != bunch_pattern_) { 
+				bunch_pattern_ = bb.get_bunch_pattern();
+				std::cout << std::endl;
+				std::cout << "bunch pattern   : ";
+				for (size_t i = 0; i < bunch_pattern_.size(); ++i)
+					std::cout << bunch_pattern_[i] << " ";
+				std::cout << std::endl;
+			}
 			if (!pre_notch) bb.notch();
 			bb.fft();
 			bb.amplitude();
-			average(bb, temp, bunch_mask_);
+			// apply bunch mask!
+			average(bb, temp);
 			time_.push_back(time_stamp);
 			if (ite == list_file.begin()) 
 				acc_vec.assign(bb.buffer_size(), 0.0f);
@@ -163,7 +180,8 @@ void spectrogram::load_files(const std::string& path, bool pre_notch) {
 			}
 			acc_count++;
 		}
-		normalize(data_);
+		if (!data_.empty())
+			normalize(data_);
 		std::cout << std::endl;
 	} catch (const fs::filesystem_error& er) {
 		std::cerr << "exception (fs)  : " << er.what() << std::endl;
@@ -175,11 +193,17 @@ void spectrogram::save_dump(const std::string& file) const {
 	fp = fopen(file.c_str(), "wb");
 	if (!fp)
 		throw std::runtime_error("could not write file " + file);
-	uint32_t version = 2;
+	uint32_t version = 3;
 	fwrite(&version, sizeof(uint32_t), 1, fp);
 	fwrite(&pitch_, sizeof(uint32_t), 1, fp);
-	fwrite(&bunch_mask_, sizeof(uint32_t), 1, fp);
+	uint32_t ulong = bunch_mask_.to_ulong();
+	fwrite(&ulong, sizeof(uint32_t), 1, fp);
 	fwrite(&nb_acc_, sizeof(uint32_t), 1, fp);
+	{ // save bunch pattern
+		size_t size = bunch_pattern_.size();
+		fwrite(&size, sizeof(size_t), 1, fp);
+		fwrite(&bunch_pattern_[0], sizeof(short), bunch_pattern_.size(), fp);
+	}
 	{ // save time
 		size_t size = time_.size();
 		fwrite(&size, sizeof(size_t), 1, fp);
@@ -201,9 +225,22 @@ void spectrogram::load_dump(const std::string& file) {
 	uint32_t version = 1;
 	fread(&version, sizeof(uint32_t), 1, fp);
 	fread(&pitch_, sizeof(uint32_t), 1, fp);
-	fread(&bunch_mask_, sizeof(uint32_t), 1, fp);
+	{ // get the bunch mask
+		uint32_t ulong = 0;
+		fread(&ulong, sizeof(uint32_t), 1, fp);
+		bunch_mask_ = std::bitset<16>(ulong);
+	}
 	fread(&nb_acc_, sizeof(uint32_t), 1, fp);
-	if (version == 2) { // load time (if v2)
+	if (version >= 3) { // load bunch pattern (if v3)
+		size_t size = 0;
+		fread(&size, sizeof(size_t), 1, fp);
+		bunch_pattern_.resize(size);
+		fread(&bunch_pattern_[0], sizeof(short), size, fp);
+	} else {
+		for (int i = 0; i < bunch_mask_.count(); ++i)
+			bunch_pattern_.push_back(0);
+	}
+	if (version >= 2) { // load time (if v2)
 		size_t size = 0;
 		fread(&size, sizeof(size_t), 1, fp);
 		time_.resize(size);
@@ -230,6 +267,14 @@ uint32_t spectrogram::line_count() const {
 
 const std::vector<float>& spectrogram::data() const {
 	return data_;
+}
+
+const std::vector<short>& spectrogram::bunch_pattern() const {
+	return bunch_pattern_;
+}
+
+const std::bitset<16>& spectrogram::bunch_mask() const {
+	return bunch_mask_;
 }
 
 const float* spectrogram::line(uint32_t index, uint32_t nb_lines) const {

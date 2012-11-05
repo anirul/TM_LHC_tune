@@ -37,18 +37,17 @@
 class bunch_buffer_f {
    protected :
       std::vector<acquisition_buffer_f> buffers_;
-      unsigned long bunch_count_;
+      std::vector<short> bunch_pattern_;
    protected :
       void save_txt(
             std::ostream& os,
-            const std::string& time_stamp,
-            const std::string& bunch_pattern);
+            const std::string& time_stamp);
       void load_txt(std::istream& is);
    public :
       // ctor data and the number of bunches
       bunch_buffer_f(
             const std::vector<short>& data, 
-            const unsigned long bunch_count);
+            const std::vector<short>& bunch_pattern);
       bunch_buffer_f(const std::string& file_name);
       virtual ~bunch_buffer_f();
    public :
@@ -56,6 +55,7 @@ class bunch_buffer_f {
       std::vector<unsigned long> peak_detect(
             const unsigned long min,
             const unsigned long max);
+      std::vector<short> get_bunch_pattern() const;
       void buffer(
             const unsigned long index, 
             std::vector<float>& out) const;
@@ -69,37 +69,29 @@ class bunch_buffer_f {
       void log10();
       bool save_txt(
             const std::string& file_name,
-            const std::string& time_stamp,
-            const std::string& bunch_pattern);
+            const std::string& time_stamp);
       bool save_gzip(
             const std::string& file_name,
-            const std::string& time_stamp,
-            const std::string& bunch_pattern);
-      bool save_bin(
-            const std::string& file_name,
-            long long time_stamp,
-            const std::vector<short>& bunch_pattern);
+            const std::string& time_stamp);
       bool load_txt(const std::string& file_name);
       bool load_gzip(const std::string& file_name);
-      bool load_bin(const std::string& file_name);
       bool empty() const;
 };
 
 class bunch_buffer_d {
    protected :
       std::vector<acquisition_buffer_d> buffers_;
-      unsigned long bunch_count_;
+      std::vector<short> bunch_pattern_;
    protected :
       void save_txt(
             std::ostream& os,
-            const std::string& time_stamp,
-            const std::string& bunch_pattern);
+            const std::string& time_stamp);
       void load_txt(std::istream& is);
    public :
       // ctor data and the number of bunches
       bunch_buffer_d(
             const std::vector<short>& data, 
-            const unsigned long bunch_count);
+            const std::vector<short>& bunch_pattern);
       bunch_buffer_d(const std::string& file_name);
       virtual ~bunch_buffer_d();
    public :
@@ -107,6 +99,7 @@ class bunch_buffer_d {
       std::vector<unsigned long> peak_detect(
             const unsigned long min,
             const unsigned long max);
+      std::vector<short> get_bunch_pattern() const;
       void buffer(
             const unsigned long index, 
             std::vector<double>& out) const;
@@ -120,19 +113,12 @@ class bunch_buffer_d {
       void log10();
       bool save_txt(
             const std::string& file_name,
-            const std::string& time_stamp,
-            const std::string& bunch_pattern);
+            const std::string& time_stamp);
       bool save_gzip(
             const std::string& file_name,
-            const std::string& time_stamp,
-            const std::string& bunch_pattern);
-      bool save_bin(
-            const std::string& file_name,
-            long long time_stamp,
-            const std::vector<short>& bunch_pattern);
+            const std::string& time_stamp);
       bool load_txt(const std::string& file_name);
       bool load_gzip(const std::string& file_name);
-      bool load_bin(const std::string& file_name);
       bool empty() const;
 };
 

@@ -21,11 +21,13 @@ CC = clang
 CXX = clang++
 CFLAGS = -g -O0 \
 	-I/usr/local/include \
-	-I/usr/include
+	-I/usr/include \
+	-I/usr/include/opencv2
 LIBS = -L/usr/local/lib -L/usr/local/lib64 -L/usr/lib64 \
 	-lglut -lGL -lGLU \
 	-lboost_program_options -lboost_system -lboost_iostreams -lboost_filesystem \
-	-lfftw3f -lfftw3
+	-lfftw3f -lfftw3 \
+	-lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_video -lopencv_objdetect
 endif
 
 ALL=data_check

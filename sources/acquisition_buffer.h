@@ -46,7 +46,6 @@ double average_d(const std::vector<unsigned long>& vec);
 class acquisition_buffer_f : public fftwf_fft {
    protected :
       std::vector<std::complex<float> > complex_buffer_;
-      friend std::ostream& operator<<(std::ostream& os, const acquisition_buffer_f& buf);
    public :
       acquisition_buffer_f(
             const std::vector<short>& in, 
@@ -57,8 +56,6 @@ class acquisition_buffer_f : public fftwf_fft {
       void buffer_real(std::vector<float>& out) const;
       void save_txt(std::ostream& os);
       void load_txt(std::istream& is);
-      void save_bin(FILE* file);
-      void load_bin(FILE* file);
       size_t size() const;
       void notch();
       float check_rms();
@@ -75,7 +72,6 @@ class acquisition_buffer_f : public fftwf_fft {
 class acquisition_buffer_d : public fftwd_fft {
    protected :
       std::vector<std::complex<double> > complex_buffer_;
-      friend std::ostream& operator<<(std::ostream& os, const acquisition_buffer_d& buf);
    public :
       acquisition_buffer_d(
             const std::vector<short>& in, 
@@ -86,8 +82,6 @@ class acquisition_buffer_d : public fftwd_fft {
       void buffer_real(std::vector<double>& out) const;
       void save_txt(std::ostream& os);
       void load_txt(std::istream& is);
-      void save_bin(FILE* file);
-      void load_bin(FILE* file);
       size_t size() const;
       void notch();
       double check_rms();

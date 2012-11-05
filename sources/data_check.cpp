@@ -45,7 +45,6 @@ int main(int ac, char** av) {
    unsigned int dx = 1280;
    unsigned int dy = 768;
    unsigned int nb_acc = 10;
-   uint32_t bunch_mask = 0x7f;
    bool enable_fullscreen;
    bool pre_notch = false;
    bool no_label = false;
@@ -53,6 +52,7 @@ int main(int ac, char** av) {
    std::string output_file = "";
    std::string input_file = "";
    std::string output_image = "";
+   std::bitset<16> bunch_mask(std::string("111111"));
    try {
       // parse command line
       options_description desc("Allowed options");
@@ -65,6 +65,7 @@ int main(int ac, char** av) {
          ("output-image,b", value<std::string>(), "output an image")
          ("no-label,n", "disable label in images")
          ("input-file,i", value<std::string>(), "input file (read from dump)")
+         ("bunch-mask,m", value<std::string>(), "bunch mask (default : 111111)")
          ("pre-notch", "in case data was already notched")
          ;
       variables_map vm;
@@ -106,6 +107,10 @@ int main(int ac, char** av) {
          no_label = true;
          std::cout << "no label        : true" << std::endl;
       }
+      if (vm.count("bunch-mask")) {
+         bunch_mask = std::bitset<16>(vm["bunch-mask"].as<std::string>());
+      }
+      std::cout << "bunch mask      : " << bunch_mask << std::endl;
       {
          spectrogram spect(nb_acc, bunch_mask);
          if (path.size()) {
