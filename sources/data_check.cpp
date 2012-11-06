@@ -63,7 +63,7 @@ int main(int ac, char** av) {
          ("fullscreen,f", "fullscreen")
          ("output-file,o", value<std::string>(), "output file (dump the values)")
          ("output-image,b", value<std::string>(), "output an image")
-         ("no-label,n", "disable label in images")
+         ("no-label", "disable label in images")
          ("input-file,i", value<std::string>(), "input file (read from dump)")
          ("bunch-mask,m", value<std::string>(), "bunch mask (default : 111111)")
          ("pre-notch", "in case data was already notched")
