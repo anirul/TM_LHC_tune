@@ -1,4 +1,4 @@
-# a simple makefile for data check
+# a simple makefile for data check generate the executable
 
 UNAME := $(shell uname)
 
@@ -17,9 +17,9 @@ LIBS = -L/opt/local/lib/ \
 endif
 
 ifeq ($(UNAME), Linux)
-CC = clang
-CXX = clang++
-CFLAGS = -g -O0 \
+CC = gcc
+CXX = g++
+CFLAGS = -O3 \
 	-I/usr/local/include \
 	-I/usr/include \
 	-I/usr/include/opencv2

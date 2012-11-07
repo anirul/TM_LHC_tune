@@ -167,6 +167,7 @@ void spectrogram::load_files(const std::string& path, bool pre_notch) {
 			if (!pre_notch) bb.notch();
 			bb.fft();
 			bb.amplitude();
+			bb.log10();
 			// apply bunch mask!
 			average(bb, temp);
 			time_.push_back(time_stamp);
@@ -279,8 +280,11 @@ const std::bitset<16>& spectrogram::bunch_mask() const {
 
 const float* spectrogram::line(uint32_t index, uint32_t nb_lines) const {
 	uint32_t total_lines = data_.size() / pitch_;
-	if (nb_lines > total_lines)
-		throw std::runtime_error("too many lines asked not that many available!");
+	if (nb_lines > total_lines) {
+      std::stringstream ss("");
+      ss << "too many lines asked not that many available " << nb_lines << " > " << total_lines;
+		throw std::runtime_error(ss.str());
+   }
 	if (index + nb_lines > total_lines) 
 		index = total_lines - nb_lines;
 	return &data_[index * pitch_];

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="37cm" height="28cm" viewBox="60 19 729 543" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="100" y="60" width="140" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="100" y="60" width="140" height="40"/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="120" y="80">
+    <tspan x="120" y="80">ADTDSPU</tspan>
+  </text>
+  <g>
+    <polygon style="fill: #ffffff" points="155,100 155,130 140,130 170,160 200,130 185,130 185,100 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="155,100 155,130 140,130 170,160 200,130 185,130 185,100 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="155,100 155,130 140,130 170,160 200,130 185,130 185,100 "/>
+  </g>
+  <g>
+    <polygon style="fill: #ffffff" points="130,20 130,40 120,40 140,60 160,40 150,40 150,20 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="130,20 130,40 120,40 140,60 160,40 150,40 150,20 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="130,20 130,40 120,40 140,60 160,40 150,40 150,20 "/>
+  </g>
+  <g>
+    <polygon style="fill: #ffffff" points="190,20 190,40 180,40 200,60 220,40 210,40 210,20 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="190,20 190,40 180,40 200,60 220,40 210,40 210,20 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="190,20 190,40 180,40 200,60 220,40 210,40 210,20 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="100" y="160" width="140" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="100" y="160" width="140" height="40"/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="120" y="180">
+    <tspan x="120" y="180">Acquisition PCI-e</tspan>
+  </text>
+  <g>
+    <polygon style="fill: #ffffff" points="155,200 155,230 140,230 170,260 200,230 185,230 185,200 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="155,200 155,230 140,230 170,260 200,230 185,230 185,200 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="155,200 155,230 140,230 170,260 200,230 185,230 185,200 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="100" y="360" width="140" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="100" y="360" width="140" height="40"/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="120" y="380">
+    <tspan x="120" y="380">GPU (computing)</tspan>
+  </text>
+  <g>
+    <polygon style="fill: #ffffff" points="155,400 155,430 140,430 170,460 200,430 185,430 185,400 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="155,400 155,430 140,430 170,460 200,430 185,430 185,400 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="155,400 155,430 140,430 170,460 200,430 185,430 185,400 "/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="40">
+    <tspan x="260" y="40">Preprocessed </tspan>
+    <tspan x="260" y="56">beam position information</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="80">
+    <tspan x="260" y="80">VME card inside the Front-end computer</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="120">
+    <tspan x="260" y="120">Proprietary Serial link 1[Gb/s]</tspan>
+    <tspan x="260" y="136">(max 3564 x 11Khz short) </tspan>
+    <tspan x="260" y="152">~80[MB/s] (* 2)</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="180">
+    <tspan x="260" y="180">PCI express card with FPGAs</tspan>
+    <tspan x="260" y="196">in the front-end or in the GPU computer</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="220">
+    <tspan x="260" y="220">PCI express bus (1x 250[MB/s])</tspan>
+    <tspan x="260" y="236">~80[MB/s] (* 2)</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="380">
+    <tspan x="260" y="380">FFT computing averaging</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="420">
+    <tspan x="260" y="420">PCI express bus (4x 1[GB/s])</tspan>
+    <tspan x="260" y="436">~1[MB/s] (* 2)</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="100" y="460" width="140" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="100" y="460" width="140" height="40"/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="120" y="480">
+    <tspan x="120" y="480">CPU</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="480">
+    <tspan x="260" y="480">External world </tspan>
+    <tspan x="260" y="496">FESA middleware</tspan>
+  </text>
+  <g>
+    <polygon style="fill: #ffffff" points="155,500 155,530 140,530 170,560 200,530 185,530 185,500 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="155,500 155,530 140,530 170,560 200,530 185,530 185,500 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="155,500 155,530 140,530 170,560 200,530 185,530 185,500 "/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="520">
+    <tspan x="260" y="520"></tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="520">
+    <tspan x="260" y="520">To Logging database and Operation</tspan>
+    <tspan x="260" y="536">Ethernet (max 100[Mb/s]</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="100" y="260" width="140" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="100" y="260" width="140" height="40"/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="120" y="280">
+    <tspan x="120" y="280">CPU</tspan>
+  </text>
+  <g>
+    <polygon style="fill: #ffffff" points="155,300 155,330 140,330 170,360 200,330 185,330 185,300 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="155,300 155,330 140,330 170,360 200,330 185,330 185,300 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="155,300 155,330 140,330 170,360 200,330 185,330 185,300 "/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="320">
+    <tspan x="260" y="320">PCI express bus (4x 1[GB/s])</tspan>
+    <tspan x="260" y="336">~80[MB/s] (* 2)</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="280">
+    <tspan x="260" y="280">Intermediary passage </tspan>
+    <tspan x="260" y="296">(avoidable)</tspan>
+  </text>
+  <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke-linecap: round; stroke: #000000" d="M 86.875 200 C 81.6406,208.984 77.8125,217.812 75.3125,226.562 C 72.8125,235.312 71.5625,244.219 71.5625,253.125 C 71.5625,262.344 72.8125,271.406 75.3125,280.312 C 77.8125,289.062 81.6406,297.891 86.875,306.875 L 77.5,306.875 C 71.6406,297.656 67.2656,288.672 64.375,279.688 C 61.4062,270.781 60,261.875 60,253.125 C 60,244.609 61.4062,235.938 64.375,227.188 C 67.2656,218.281 71.6406,209.219 77.5,200 L 86.875,200"/>
+  <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke-linecap: round; stroke: #000000" d="M 500 200 L 509.375,200 C 515.156,209.219 519.531,218.281 522.5,227.188 C 525.391,235.938 526.875,244.609 526.875,253.125 C 526.875,261.875 525.391,270.781 522.5,279.688 C 519.531,288.672 515.156,297.656 509.375,306.875 L 500,306.875 C 505.156,297.891 509.062,289.062 511.562,280.312 C 514.062,271.406 515.312,262.344 515.312,253.125 C 515.312,244.219 514.062,235.312 511.562,226.562 C 509.062,217.812 505.156,208.984 500,200 L 500,200"/>
+  <path style="fill: none; fill-opacity:0; stroke-width: 0.02; stroke-linecap: round; stroke: #000000" d="M 520 497.5 L 539.062,497.5 C 564.688,497.5 581.328,493.516 589.062,485.625 C 596.719,477.891 600.625,461.016 600.625,435 L 600.625,367.188 C 600.625,338.672 604.688,317.969 612.812,305 C 621.094,292.109 635.391,283.125 655.625,278.125 C 635.391,273.75 621.094,265.156 612.812,252.188 C 604.688,239.062 600.625,218.281 600.625,189.688 L 600.625,121.875 C 600.625,96.0938 596.719,79.2188 589.062,71.25 C 581.328,63.3594 564.688,59.375 539.062,59.375 L 520,59.375 L 520,20 L 537.188,20 C 582.578,20 612.891,26.7969 628.125,40.3125 C 643.281,53.6719 650.938,80.4688 650.938,120.625 L 650.938,186.25 C 650.938,213.594 655.781,232.422 665.625,242.812 C 675.625,253.281 693.516,258.438 719.375,258.438 L 736.25,258.438 L 736.25,297.812 L 719.375,297.812 C 693.516,297.812 675.625,303.125 665.625,313.75 C 655.781,324.219 650.938,343.125 650.938,370.625 L 650.938,435.938 C 650.938,476.328 643.281,503.203 628.125,516.562 C 612.891,530.078 582.578,536.875 537.188,536.875 L 520,536.875 L 520,497.5"/>
+  <text style="fill: #000000;text-anchor:start;font-size:18.0619;font-family:sanserif;font-style:normal;font-weight:normal" x="740" y="240">
+    <tspan x="740" y="240">  VB1</tspan>
+    <tspan x="740" y="262.578">  VB2</tspan>
+    <tspan x="740" y="285.156">*4</tspan>
+    <tspan x="740" y="307.733">  HB1</tspan>
+    <tspan x="740" y="330.311">  HB2</tspan>
+  </text>
+</svg>
