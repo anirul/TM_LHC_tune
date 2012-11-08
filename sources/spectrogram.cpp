@@ -166,7 +166,7 @@ void spectrogram::load_files(const std::string& path, bool pre_notch) {
 			}
 			if (!pre_notch) bb.notch();
 			bb.fft();
-//			bb.amplitude();
+			bb.amplitude();
 			// apply bunch mask!
 			average(bb, temp);
 			time_.push_back(time_stamp);

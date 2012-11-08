@@ -39,38 +39,48 @@
 void save_to_file(
 	const spectrogram& spect,
 	const std::string& file_name,
-	bool with_scale) 
+	bool with_scale,
+	bool black_white) 
 {
 	std::pair<uint32_t, uint32_t> size(spect.pitch(), spect.line_count());
 	cv::Mat img(size.second, size.first, CV_8UC(3));
 	for (uint32_t y = 0; y < size.second; ++y) {
 		for (uint32_t x = 0; x < size.first; ++x) {
-			uint8_t red = 0x0;
-			uint8_t green = 0x0;
-			uint8_t blue = 0x0;
-			float val = spect.data()[(y * size.first) + x];
-			if (val < 0.25f) { // black to blue
-				val *= 4.0f;
-				blue = (uint32_t)(255.0f * val);
-			} else if (val < 0.5f) { // blue to green
-				val -= 0.25f;
-				val *= 4.0f;
-				blue = (uint8_t)(255.0f * (1.0f / val));
-				green = (uint8_t)(255.0f * val);
-			} else if (val < 0.75f) { // green to red
-				val -= 0.5f;
-				val *= 4.0f;
-				green = (uint8_t)(255.0f * (1.0f / val));
-				red = (uint8_t)(255.0f * val);
-			} else { // red to white
-				val -= 0.75f;
-				val *= 4.0f;
-				blue = (uint8_t)(255.0f * val);
-				green = (uint8_t)(255.0f * val);
-				red = 0xff;
+			if (!black_white) { // color
+				uint8_t red = 0x0;
+				uint8_t green = 0x0;
+				uint8_t blue = 0x0;
+				float val = spect.data()[(y * size.first) + x];
+				if (val < 0.25f) { // black to blue
+					val *= 4.0f;
+					blue = (uint32_t)(255.0f * val);
+				} else if (val < 0.5f) { // blue to green
+					val -= 0.25f;
+					val *= 4.0f;
+					blue = (uint8_t)(255.0f * (1.0f / val));
+					green = (uint8_t)(255.0f * val);
+				} else if (val < 0.75f) { // green to red
+					val -= 0.5f;
+					val *= 4.0f;
+					green = (uint8_t)(255.0f * (1.0f / val));
+					red = (uint8_t)(255.0f * val);
+				} else { // red to white
+					val -= 0.75f;
+					val *= 4.0f;
+					blue = (uint8_t)(255.0f * val);
+					green = (uint8_t)(255.0f * val);
+					red = 0xff;
+				}
+				cv::Vec3b pixel(blue, green, red);
+				img.at<cv::Vec3b>(y, x) = pixel;
+			} else { // black & white
+				float val = spect.data()[(y * size.first) + x];
+				cv::Vec3b pixel(
+					(uint8_t)(val * 255.0f),
+					(uint8_t)(val * 255.0f),
+					(uint8_t)(val * 255.0f));
+				img.at<cv::Vec3b>(y, x) = pixel;
 			}
-			cv::Vec3b pixel(blue, green, red);
-			img.at<cv::Vec3b>(y, x) = pixel;
 		}
 	}
 	if (with_scale) {

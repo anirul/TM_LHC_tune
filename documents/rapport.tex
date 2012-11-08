@@ -1,6 +1,7 @@
 \documentclass[a4paper]{article}
 \usepackage[acronym,toc]{glossaries}
 \usepackage{url}
+\usepackage{graphicx}
 
 \newglossaryentry{bunch}{
    name=bunch,
@@ -224,7 +225,7 @@ As \glspl{FFT} on \glspl{GPU} start to be be faster than \glspl{CPU} around
 $2^{15}$ acquisitions it seems interesting to study this kind of system to 
 compute the \gls{tune}.
 
-\section{First tests}
+\section{Measurement with the ADT}
 
 In order to check the feasibility of the system and to have a good prototype
 the first test will be to excite some of the \glspl{bunch} and acquire the
@@ -235,14 +236,16 @@ acquisition and compute various algorithm on the data using the \gls{CPU}
 and the \gls{FFTW} library in the \gls{CERN} infrastructure using \gls{CO} 
 group control system and the \gls{OP} group infrastructure.
 
+\section{Proposed implementation}
+
+\includegraphics[scale=0.3]{dataflow.pdf}
+
 \section{Conclusion}
 
 This project looks like a nice place to try using \glspl{GPU} in accelerators.
 The possibilities are promising and the gain for the stability of the 
 \gls{LHC} could allow more physic time. \Glspl{GPU} could prove to be useful
 and be used in other places in accelerators where computing power is needed.
-
-\clearpage
 
 \printglossaries
 

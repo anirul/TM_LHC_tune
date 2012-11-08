@@ -48,6 +48,7 @@ int main(int ac, char** av) {
    bool enable_fullscreen;
    bool pre_notch = false;
    bool no_label = false;
+   bool black_white = false;
    std::string path = "";
    std::string output_file = "";
    std::string input_file = "";
@@ -67,6 +68,7 @@ int main(int ac, char** av) {
          ("input-file,i", value<std::string>(), "input file (read from dump)")
          ("bunch-mask,m", value<std::string>(), "bunch mask (default : 111111)")
          ("pre-notch", "in case data was already notched")
+         ("black-white", "output picture in monochrome")
          ;
       variables_map vm;
       store(command_line_parser(ac, av).options(desc).run(), vm);
@@ -111,6 +113,10 @@ int main(int ac, char** av) {
          bunch_mask = std::bitset<16>(vm["bunch-mask"].as<std::string>());
       }
       std::cout << "bunch mask      : " << bunch_mask << std::endl;
+      if (vm.count("black-white")) {
+         black_white = true;
+         std::cout << "black & white   : true" << std::endl;
+      }
       {
          spectrogram spect(nb_acc, bunch_mask);
          if (path.size()) {
@@ -129,7 +135,8 @@ int main(int ac, char** av) {
             save_to_file(
                spect,
                output_image,
-               !no_label);
+               !no_label,
+               black_white);
             return 0;
          }
          win_data_check wdc(std::make_pair(dx, dy), spect);
