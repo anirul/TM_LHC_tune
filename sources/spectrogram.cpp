@@ -175,13 +175,14 @@ void spectrogram::load_files(const std::string& path, bool pre_notch) {
 			accumulate(acc_vec, acc_vec, temp);
 			if (!(acc_count % nb_acc_)) {
 				acc_vec.resize(pitch_);
+				normalize(acc_vec);
 				data_.insert(data_.end(), acc_vec.begin(), acc_vec.end());
 				acc_vec.assign(bb.buffer_size(), 0.0f);
 			}
 			acc_count++;
 		}
-		if (!data_.empty())
-			normalize(data_);
+//		if (!data_.empty())
+//			normalize(data_);
 		std::cout << std::endl;
 	} catch (const fs::filesystem_error& er) {
 		std::cerr << "exception (fs)  : " << er.what() << std::endl;

@@ -4,9 +4,14 @@ UNAME := $(shell uname)
 
 BINARY_DIR := ../binary/
 PICTURES_DIR := ../pictures/
+FLAGS := 
 
-ACC := 32
+ACC := 16
 MD_DATE := 121011
+
+ifeq ($(MD_DATE), 121011)
+	FLAGS += --pre-notch
+endif
 
 ifeq ($(UNAME), Darwin)
 	DATA_CHECK = ../sources/data_check
@@ -52,62 +57,62 @@ $(DATA_CHECK):
 # binary VB1
 
 $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch000001-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/VB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch000001-$(ACC)acc.bin -n $(ACC) -m 000001 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/VB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch000001-$(ACC)acc.bin -n $(ACC) -m 000001 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch000010-$(ACC)acc.bin: $(DATA_CHECK) 
-	$(DATA_CHECK) -p MD-$(MD_DATE)/VB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch000010-$(ACC)acc.bin -n $(ACC) -m 000010 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/VB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch000010-$(ACC)acc.bin -n $(ACC) -m 000010 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch000100-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/VB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch000100-$(ACC)acc.bin -n $(ACC) -m 000100 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/VB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch000100-$(ACC)acc.bin -n $(ACC) -m 000100 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch001000-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/VB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch001000-$(ACC)acc.bin -n $(ACC) -m 001000 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/VB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch001000-$(ACC)acc.bin -n $(ACC) -m 001000 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch010000-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/VB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch010000-$(ACC)acc.bin -n $(ACC) -m 010000 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/VB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch010000-$(ACC)acc.bin -n $(ACC) -m 010000 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch100000-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/VB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch100000-$(ACC)acc.bin -n $(ACC) -m 100000 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/VB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb1-m1-bunch100000-$(ACC)acc.bin -n $(ACC) -m 100000 $(FLAGS)
 
 # binary VB2
 
 $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch000001-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/VB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch000001-$(ACC)acc.bin -n $(ACC) -m 000001 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/VB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch000001-$(ACC)acc.bin -n $(ACC) -m 000001 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch000010-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/VB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch000010-$(ACC)acc.bin -n $(ACC) -m 000010 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/VB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch000010-$(ACC)acc.bin -n $(ACC) -m 000010 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch000100-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/VB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch000100-$(ACC)acc.bin -n $(ACC) -m 000100 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/VB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch000100-$(ACC)acc.bin -n $(ACC) -m 000100 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch001000-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/VB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch001000-$(ACC)acc.bin -n $(ACC) -m 001000 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/VB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch001000-$(ACC)acc.bin -n $(ACC) -m 001000 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch010000-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/VB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch010000-$(ACC)acc.bin -n $(ACC) -m 010000 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/VB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch010000-$(ACC)acc.bin -n $(ACC) -m 010000 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch100000-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/VB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch100000-$(ACC)acc.bin -n $(ACC) -m 100000 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/VB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-vb2-m1-bunch100000-$(ACC)acc.bin -n $(ACC) -m 100000 $(FLAGS)
 
 # binary HB1
 
 $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch000001-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/HB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch000001-$(ACC)acc.bin -n $(ACC) -m 000001 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/HB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch000001-$(ACC)acc.bin -n $(ACC) -m 000001 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch000010-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/HB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch000010-$(ACC)acc.bin -n $(ACC) -m 000010 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/HB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch000010-$(ACC)acc.bin -n $(ACC) -m 000010 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch000100-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/HB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch000100-$(ACC)acc.bin -n $(ACC) -m 000100 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/HB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch000100-$(ACC)acc.bin -n $(ACC) -m 000100 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch001000-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/HB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch001000-$(ACC)acc.bin -n $(ACC) -m 001000 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/HB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch001000-$(ACC)acc.bin -n $(ACC) -m 001000 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch010000-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/HB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch010000-$(ACC)acc.bin -n $(ACC) -m 010000 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/HB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch010000-$(ACC)acc.bin -n $(ACC) -m 010000 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch100000-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/HB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch100000-$(ACC)acc.bin -n $(ACC) -m 100000 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/HB1/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb1-m1-bunch100000-$(ACC)acc.bin -n $(ACC) -m 100000 $(FLAGS)
 
 # binary HB2
 
 $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch000001-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/HB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch000001-$(ACC)acc.bin -n $(ACC) -m 000001 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/HB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch000001-$(ACC)acc.bin -n $(ACC) -m 000001 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch000010-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/HB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch000010-$(ACC)acc.bin -n $(ACC) -m 000010 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/HB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch000010-$(ACC)acc.bin -n $(ACC) -m 000010 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch000100-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/HB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch000100-$(ACC)acc.bin -n $(ACC) -m 000100 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/HB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch000100-$(ACC)acc.bin -n $(ACC) -m 000100 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch001000-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/HB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch001000-$(ACC)acc.bin -n $(ACC) -m 001000 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/HB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch001000-$(ACC)acc.bin -n $(ACC) -m 001000 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch010000-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/HB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch010000-$(ACC)acc.bin -n $(ACC) -m 010000 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/HB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch010000-$(ACC)acc.bin -n $(ACC) -m 010000 $(FLAGS)
 $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch100000-$(ACC)acc.bin: $(DATA_CHECK)
-	$(DATA_CHECK) -p MD-$(MD_DATE)/HB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch100000-$(ACC)acc.bin -n $(ACC) -m 100000 --pre-notch
+	$(DATA_CHECK) -p MD-$(MD_DATE)/HB2/M1/ -o $(BINARY_DIR)md-$(MD_DATE)-hb2-m1-bunch100000-$(ACC)acc.bin -n $(ACC) -m 100000 $(FLAGS)
 
 # pictures VB1
 
