@@ -2,6 +2,7 @@
 \usepackage[acronym,toc]{glossaries}
 \usepackage{url}
 \usepackage{graphicx}
+\usepackage{float}
 
 \newglossaryentry{bunch}{
    name=bunch,
@@ -227,6 +228,12 @@ compute the \gls{tune}.
 
 \section{Measurement with the ADT}
 
+\begin{figure}[H]
+\caption{Spectrogram of the beam position taken on the 16 October 2012}
+\centering
+\includegraphics[scale=0.2]{spectrogram.pdf}
+\end{figure}
+
 In order to check the feasibility of the system and to have a good prototype
 the first test will be to excite some of the \glspl{bunch} and acquire the
 \gls{tune} using the \gls{ADT} during the end of 2012 run.
@@ -238,7 +245,15 @@ group control system and the \gls{OP} group infrastructure.
 
 \section{Proposed implementation}
 
+\begin{figure}[H]
+\caption{ADT acquisition hardware}
+\includegraphics[scale=0.3]{acquisition.pdf}
+\end{figure}
+
+\begin{figure}[H]
+\caption{Acquisition data flow}
 \includegraphics[scale=0.3]{dataflow.pdf}
+\end{figure}
 
 \section{Conclusion}
 
