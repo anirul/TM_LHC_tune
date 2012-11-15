@@ -40,5 +40,58 @@ using namespace boost::program_options;
 using namespace boost::posix_time;
 
 int main(int ac, char** av) {
+	unsigned int nb_acc = 10;
+	bool pre_notch = false;
+	std::string path = "";
+	std::string output_file = "";
+	std::bitset<16> bunch_mask(std::string("111111"));
+	try {
+		// parse command line
+		options_description desc("Allowed options");
+		desc.add_options()
+		("help,h", "produce help message")
+		("path,p", value<std::string>(), "path to the datas (default : \".\")")
+		("nb-acc,n", value<unsigned int>(), "averaging in turn (default : 10)")
+		("output-file,o", value<std::string>(), "output file (dump the values)")
+		("bunch-mask,m", value<std::string>(), "bunch mask (default : 111111)")
+		("pre-notch", "in case data was already notched")
+		;
+		variables_map vm;
+		store(command_line_parser(ac, av).options(desc).run(), vm);
+		if (vm.count("help")) {
+			std::cout << desc << std::endl;
+			return 1;
+		}
+		if (vm.count("path")) {
+			path = vm["path"].as<std::string>();
+			std::cout << "path            : " << path << std::endl;
+		} else {
+			throw std::runtime_error("path needed (see --help)");
+		}
+		if (vm.count("nb-acc")) {
+			nb_acc = vm["nb-acc"].as<unsigned int>();
+		}
+		std::cout << "nb acc          : " << nb_acc << std::endl;
+		if (vm.count("output-file")) {
+			output_file = vm["output-file"].as<std::string>();
+			std::cout << "output file     : " << output_file << std::endl;
+		} else {
+			throw std::runtime_error("output file needed (see --help)");
+		}
+		if (vm.count("pre-notch")) {
+			pre_notch = true;
+			std::cout << "pre notch       : true" << std::endl;
+		}
+		if (vm.count("bunch-mask")) {
+			bunch_mask = std::bitset<16>(vm["bunch-mask"].as<std::string>());
+		}
+		std::cout << "bunch mask      : " << bunch_mask << std::endl;
+		{ // do stuff
+
+		}
+	} catch (std::exception& ex) {
+		std::cerr << "exception (std) : " << ex.what() << std::endl;
+		return -1;
+	}
 	return 0;
 }

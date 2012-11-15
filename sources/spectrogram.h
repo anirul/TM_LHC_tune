@@ -29,6 +29,7 @@
 #define spectrogram_HEADER_DEFINED
 
 #include <bitset>
+#include <limits>
 
 class spectrogram {
 	protected :
@@ -56,7 +57,11 @@ class spectrogram {
 			const std::bitset<16>& bunch_mask);
 		virtual ~spectrogram();
 	public :
-		void load_files(const std::string& path, bool pre_notch = false);
+		void load_files(
+			const std::string& path, 
+			int64_t start_time = 0, 
+			int64_t end_time = std::numeric_limits<int64_t>::max(), 
+			bool pre_notch = false);
 		void save_dump(const std::string& file) const;
 		void load_dump(const std::string& file);
 		uint32_t pitch() const;

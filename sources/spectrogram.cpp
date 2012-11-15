@@ -90,7 +90,12 @@ spectrogram::spectrogram(uint32_t nb_acc, const std::bitset<16>& bunch_mask)
 
 spectrogram::~spectrogram() {}
 
-void spectrogram::load_files(const std::string& path, bool pre_notch) {
+void spectrogram::load_files(
+	const std::string& path, 
+	int64_t start_time,
+	int64_t end_time,
+	bool pre_notch) 
+{
 	data_.clear();
 	time_.clear();
 	bunch_pattern_.clear();
@@ -123,6 +128,9 @@ void spectrogram::load_files(const std::string& path, bool pre_notch) {
 				std::stringstream ss(str_time_stamp);
 				ss >> time_stamp;
 			}
+			// check boundaries
+			if (time_stamp < start_time || time_stamp > end_time)
+				continue;
 			boost::posix_time::ptime file_time;
 			{ // convert to time
 				file_time = boost::posix_time::from_time_t(

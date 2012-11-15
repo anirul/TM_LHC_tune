@@ -30,6 +30,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
+#include <limits>
 
 #include "glut_win.h"
 #include "acquisition_buffer.h"
@@ -38,13 +39,15 @@
 #include "win_data_check.h"
 #include "cv_image.h"
 
-using namespace boost::program_options;
-using namespace boost::posix_time;
+ using namespace boost::program_options;
+ using namespace boost::posix_time;
 
-int main(int ac, char** av) {
+ int main(int ac, char** av) {
    unsigned int dx = 1280;
    unsigned int dy = 768;
    unsigned int nb_acc = 10;
+   int64_t start_time = 0; // 1st Janury 1970
+   int64_t end_time = std::numeric_limits<int64_t>::max();
    bool enable_fullscreen;
    bool pre_notch = false;
    bool no_label = false;
@@ -58,18 +61,20 @@ int main(int ac, char** av) {
       // parse command line
       options_description desc("Allowed options");
       desc.add_options()
-         ("help,h", "produce help message")
-         ("path,p", value<std::string>(), "path to the datas (default : \".\")")
-         ("nb-acc,n", value<unsigned int>(), "averaging in turn (default : 10)")
-         ("fullscreen,f", "fullscreen")
-         ("output-file,o", value<std::string>(), "output file (dump the values)")
-         ("output-image,b", value<std::string>(), "output an image")
-         ("no-label", "disable label in images")
-         ("input-file,i", value<std::string>(), "input file (read from dump)")
-         ("bunch-mask,m", value<std::string>(), "bunch mask (default : 111111)")
-         ("pre-notch", "in case data was already notched")
-         ("black-white", "output picture in monochrome")
-         ;
+      ("help,h", "produce help message")
+      ("path,p", value<std::string>(), "path to the datas (default : \".\")")
+      ("nb-acc,n", value<unsigned int>(), "averaging in turn (default : 10)")
+      ("fullscreen,f", "fullscreen")
+      ("output-file,o", value<std::string>(), "output file (dump the values)")
+      ("output-image,b", value<std::string>(), "output an image")
+      ("no-label", "disable label in images")
+      ("input-file,i", value<std::string>(), "input file (read from dump)")
+      ("bunch-mask,m", value<std::string>(), "bunch mask (default : 111111)")
+      ("pre-notch", "in case data was already notched")
+      ("black-white", "output picture in monochrome")
+      ("start-time", value<long long>(), "start time in ns from epoch")
+      ("end-time", value<long long>(), "end time in ns from epoch")
+      ;
       variables_map vm;
       store(command_line_parser(ac, av).options(desc).run(), vm);
       if (vm.count("help")) {
@@ -117,10 +122,36 @@ int main(int ac, char** av) {
          black_white = true;
          std::cout << "black & white   : true" << std::endl;
       }
+      if (vm.count("start-time")) {
+         start_time = vm["start-time"].as<int64_t>();
+         boost::posix_time::ptime ptime_time;
+         { // convert to time
+            ptime_time = boost::posix_time::from_time_t(
+               start_time / 1000000000L);
+            ptime_time += boost::posix_time::microseconds(
+               (start_time % 1000000000L) / 1000);
+         }
+         std::cout 
+            << "start time      : " << start_time 
+            << " [" << ptime_time << "]" << std::endl;
+      }
+      if (vm.count("end-time")) {
+         end_time = vm["end-time"].as<int64_t>();
+         boost::posix_time::ptime ptime_time;
+         { // convert to time
+            ptime_time = boost::posix_time::from_time_t(
+               end_time / 1000000000L);
+            ptime_time += boost::posix_time::microseconds(
+               (end_time % 1000000000L) / 1000);
+         }
+         std::cout 
+            << "end time        : " << end_time 
+            << " [" << ptime_time << "]" << std::endl;
+      }
       {
          spectrogram spect(nb_acc, bunch_mask);
          if (path.size()) {
-            spect.load_files(path, pre_notch);
+            spect.load_files(path, start_time, end_time, pre_notch);
          } else if (input_file.size()) { 
             spect.load_dump(input_file);
          } else {
