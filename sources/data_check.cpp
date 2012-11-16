@@ -30,6 +30,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/lexical_cast.hpp>
 #include <limits>
 
 #include "glut_win.h"
@@ -72,8 +73,8 @@ int main(int ac, char** av) {
 				value<std::string>(), "bunch mask (default : 111111)")(
 				"pre-notch", "in case data was already notched")("black-white",
 				"output picture in monochrome")("start-time",
-				value<long long>(), "start time in ns from epoch")("end-time",
-				value<long long>(), "end time in ns from epoch");
+				value<std::string>(), "start time in ns from epoch")("end-time",
+				value<std::string>(), "end time in ns from epoch");
 		variables_map vm;
 		store(command_line_parser(ac, av).options(desc).run(), vm);
 		if (vm.count("help")) {
@@ -122,7 +123,10 @@ int main(int ac, char** av) {
 			std::cout << "black & white   : true" << std::endl;
 		}
 		if (vm.count("start-time")) {
-			start_time = vm["start-time"].as<int64_t>();
+         {
+            std::string start_time_str = vm["start-time"].as<std::string>();
+            start_time = boost::lexical_cast<long long>(start_time_str);
+         }
 			boost::posix_time::ptime ptime_time;
 			{ // convert to time
 				ptime_time = boost::posix_time::from_time_t(
@@ -134,7 +138,10 @@ int main(int ac, char** av) {
 					<< ptime_time << "]" << std::endl;
 		}
 		if (vm.count("end-time")) {
-			end_time = vm["end-time"].as<int64_t>();
+         {
+   			std::string end_time_str = vm["end-time"].as<std::string>();
+            end_time = boost::lexical_cast<long long>(end_time_str);
+         }
 			boost::posix_time::ptime ptime_time;
 			{ // convert to time
 				ptime_time = boost::posix_time::from_time_t(
