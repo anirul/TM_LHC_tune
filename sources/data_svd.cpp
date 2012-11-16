@@ -42,20 +42,24 @@ using namespace boost::posix_time;
 int main(int ac, char** av) {
 	unsigned int nb_acc = 10;
 	bool pre_notch = false;
+	int64_t start_time = 0; // 1st January 1970
+	int64_t end_time = std::numeric_limits<int64_t>::max();
 	std::string path = "";
 	std::string output_file = "";
 	std::bitset<16> bunch_mask(std::string("111111"));
 	try {
 		// parse command line
 		options_description desc("Allowed options");
-		desc.add_options()
-		("help,h", "produce help message")
-		("path,p", value<std::string>(), "path to the datas (default : \".\")")
-		("nb-acc,n", value<unsigned int>(), "averaging in turn (default : 10)")
-		("output-file,o", value<std::string>(), "output file (dump the values)")
-		("bunch-mask,m", value<std::string>(), "bunch mask (default : 111111)")
-		("pre-notch", "in case data was already notched")
-		;
+		desc.add_options()("help,h", "produce help message")("path,p",
+				value<std::string>(), "path to the datas (default : \".\")")(
+				"nb-acc,n", value<unsigned int>(),
+				"averaging in turn (default : 10)")("output-file,o",
+				value<std::string>(), "output file (dump the values)")(
+				"bunch-mask,m", value<std::string>(),
+				"bunch mask (default : 111111)")("pre-notch",
+				"in case data was already notched")("start-time",
+				value<long long>(), "start time in ns from epoch")("end-time",
+				value<long long>(), "end time in ns from epoch");
 		variables_map vm;
 		store(command_line_parser(ac, av).options(desc).run(), vm);
 		if (vm.count("help")) {
@@ -86,8 +90,43 @@ int main(int ac, char** av) {
 			bunch_mask = std::bitset<16>(vm["bunch-mask"].as<std::string>());
 		}
 		std::cout << "bunch mask      : " << bunch_mask << std::endl;
+		if (vm.count("start-time")) {
+			start_time = vm["start-time"].as<int64_t>();
+			boost::posix_time::ptime ptime_time;
+			{ // convert to time
+				ptime_time = boost::posix_time::from_time_t(
+						start_time / 1000000000L);
+				ptime_time += boost::posix_time::microseconds(
+						(start_time % 1000000000L) / 1000);
+			}
+			std::cout << "start time      : " << start_time << " ["
+					<< ptime_time << "]" << std::endl;
+		}
+		if (vm.count("end-time")) {
+			end_time = vm["end-time"].as<int64_t>();
+			boost::posix_time::ptime ptime_time;
+			{ // convert to time
+				ptime_time = boost::posix_time::from_time_t(
+						end_time / 1000000000L);
+				ptime_time += boost::posix_time::microseconds(
+						(end_time % 1000000000L) / 1000);
+			}
+			std::cout << "end time        : " << end_time << " [" << ptime_time
+					<< "]" << std::endl;
+		}
 		{ // do stuff
+			spectrogram spect(nb_acc, bunch_mask);
+			if (!path.size() || !output_file.size()) {
+				throw std::runtime_error("invalid parameter list (see --help)");
+			}
+			if (path.size()) {
+				spect.load_files(path, start_time, end_time, pre_notch);
+			}
 
+			if (output_file.size()) {
+				spect.save_dump(output_file);
+				return 0;
+			}
 		}
 	} catch (std::exception& ex) {
 		std::cerr << "exception (std) : " << ex.what() << std::endl;

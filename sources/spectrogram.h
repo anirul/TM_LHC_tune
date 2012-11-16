@@ -31,6 +31,15 @@
 #include <bitset>
 #include <limits>
 
+#include "bunch_buffer.h"
+
+// functor to pass to load_file
+struct commands {
+	commands() {}
+	virtual ~commands() {}
+	virtual void operator()(bunch_buffer_f& bb) = 0;
+};
+
 class spectrogram {
 	protected :
 		uint32_t pitch_;

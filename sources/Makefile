@@ -32,7 +32,7 @@ LIBS = -L/usr/local/lib -L/usr/local/lib64 -L/usr/lib64 \
 	-lgsl -lgslcblas -lm
 endif
 
-ALL=data_check data_svd
+ALL=data_check data_svd data_clean
 
 all: $(ALL)
 
@@ -57,11 +57,15 @@ data_check.o : data_check.cpp fftw_fft.h acquisition_buffer.h bunch_buffer.h glu
 	$(CXX) -o data_check.o -c data_check.cpp $(CFLAGS)
 data_svd.o : data_svd.cpp spectrogram.h bunch_buffer.h acquisition_buffer.h fftw_fft.h
 	$(CXX) -o data_svd.o -c data_svd.cpp $(CFLAGS)
+data_clean.o : data_clean.cpp fftw_fft.h acquisition_buffer.h bunch_buffer.h
+	$(CXX) -o data_clean.o -c data_clean.cpp $(CFLAGS)
 
 data_check : data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o cv_image.o
 	$(CXX) -o data_check data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o cv_image.o $(LIBS)	
 data_svd : data_svd.o acquisition_buffer.o bunch_buffer.o spectrogram.o gsl_svd.o fftw_fft.o
 	$(CXX) -o data_svd data_svd.o acquisition_buffer.o bunch_buffer.o spectrogram.o gsl_svd.o fftw_fft.o $(LIBS)
+data_clean : data_clean.o acquisition_buffer.o bunch_buffer.o fftw_fft.o
+	$(CXX) -o data_clean data_clean.o acquisition_buffer.o bunch_buffer.o fftw_fft.o $(LIBS)
 
 clean:
 	rm -f $(ALL) *.o
