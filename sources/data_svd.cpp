@@ -39,6 +39,19 @@
 using namespace boost::program_options;
 using namespace boost::posix_time;
 
+class svd_cmd : public commands {
+	protected :
+		bool pre_notch_;
+	public :
+		svd_cmd(bool pre_notch = false) : pre_notch_(pre_notch) {}
+		virtual void operator()(bunch_buffer_f& bb) const {
+			if (!pre_notch_) bb.notch();
+			bb.svd();
+			bb.fft();
+			bb.amplitude();
+		}
+};
+
 int main(int ac, char** av) {
 	unsigned int nb_acc = 10;
 	bool pre_notch = false;
@@ -58,8 +71,8 @@ int main(int ac, char** av) {
 				"bunch-mask,m", value<std::string>(),
 				"bunch mask (default : 111111)")("pre-notch",
 				"in case data was already notched")("start-time",
-				value<long long>(), "start time in ns from epoch")("end-time",
-				value<long long>(), "end time in ns from epoch");
+				value<std::string>(), "start time in ns from epoch")("end-time",
+				value<std::string>(), "end time in ns from epoch");
 		variables_map vm;
 		store(command_line_parser(ac, av).options(desc).run(), vm);
 		if (vm.count("help")) {
@@ -91,7 +104,10 @@ int main(int ac, char** av) {
 		}
 		std::cout << "bunch mask      : " << bunch_mask << std::endl;
 		if (vm.count("start-time")) {
-			start_time = vm["start-time"].as<int64_t>();
+        	{
+            	std::string start_time_str = vm["start-time"].as<std::string>();
+            	start_time = boost::lexical_cast<long long>(start_time_str);
+         	}
 			boost::posix_time::ptime ptime_time;
 			{ // convert to time
 				ptime_time = boost::posix_time::from_time_t(
@@ -103,7 +119,10 @@ int main(int ac, char** av) {
 					<< ptime_time << "]" << std::endl;
 		}
 		if (vm.count("end-time")) {
-			end_time = vm["end-time"].as<int64_t>();
+         	{
+   				std::string end_time_str = vm["end-time"].as<std::string>();
+            	end_time = boost::lexical_cast<long long>(end_time_str);
+         	}
 			boost::posix_time::ptime ptime_time;
 			{ // convert to time
 				ptime_time = boost::posix_time::from_time_t(
@@ -120,9 +139,9 @@ int main(int ac, char** av) {
 				throw std::runtime_error("invalid parameter list (see --help)");
 			}
 			if (path.size()) {
-				spect.load_files(path, start_time, end_time, pre_notch);
+				svd_cmd cmd(pre_notch);
+				spect.load_files(path, cmd, start_time, end_time);
 			}
-
 			if (output_file.size()) {
 				spect.save_dump(output_file);
 				return 0;

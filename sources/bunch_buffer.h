@@ -63,6 +63,7 @@ class bunch_buffer_f {
       size_t buffer_size() const;
       void notch();
       float check_rms();
+      void svd();
       void fft();
       void amplitude();
       void phase_deg();
@@ -107,6 +108,7 @@ class bunch_buffer_d {
       size_t buffer_size() const;
       void notch();
       double check_rms();
+      void svd();
       void fft();
       void amplitude();
       void phase_deg();

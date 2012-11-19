@@ -60,14 +60,14 @@ namespace gsl {
 		public:
 			matrix();
 			matrix(const matrix& m);
-			matrix(size_t dy, size_t dx);
+			matrix(size_t dx, size_t dy);
 			matrix(const std::pair<size_t, size_t>& size);
 			matrix(const std::vector<float>& vec, size_t pitch);
 			virtual ~matrix();
 		public:
 			matrix& operator=(const matrix& m);
-			double& operator()(size_t y, size_t x);
-			const double& operator()(size_t y, size_t x) const;
+			double& operator()(size_t x, size_t y);
+			const double& operator()(size_t x, size_t y) const;
 			std::pair<size_t, size_t> size() const;
 	};
 

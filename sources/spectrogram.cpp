@@ -92,9 +92,9 @@ spectrogram::~spectrogram() {}
 
 void spectrogram::load_files(
 	const std::string& path, 
+	const commands& cmd,
 	int64_t start_time,
-	int64_t end_time,
-	bool pre_notch) 
+	int64_t end_time) 
 {
 	data_.clear();
 	time_.clear();
@@ -172,9 +172,8 @@ void spectrogram::load_files(
 					std::cout << bunch_pattern_[i] << " ";
 				std::cout << std::endl;
 			}
-			if (!pre_notch) bb.notch();
-			bb.fft();
-			bb.amplitude();
+			// here come the computing
+			cmd(bb);
 			// apply bunch mask!
 			average(bb, temp);
 			time_.push_back(time_stamp);
@@ -292,7 +291,7 @@ const float* spectrogram::line(uint32_t index, uint32_t nb_lines) const {
       std::stringstream ss("");
       ss << "too many lines asked not that many available " << nb_lines << " > " << total_lines;
 		throw std::runtime_error(ss.str());
-   }
+   	}
 	if (index + nb_lines > total_lines) 
 		index = total_lines - nb_lines;
 	return &data_[index * pitch_];

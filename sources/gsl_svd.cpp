@@ -93,8 +93,8 @@ namespace gsl {
  		}
  	}
 
- 	matrix::matrix(size_t dy, size_t dx) {
- 		ptr_ = gsl_matrix_calloc(dy, dx);
+ 	matrix::matrix(size_t dx, size_t dy) {
+ 		ptr_ = gsl_matrix_calloc(dx, dy);
  	}
 
  	matrix::matrix(const std::pair<size_t, size_t>& size) {
@@ -105,7 +105,7 @@ namespace gsl {
  		ptr_ = gsl_matrix_alloc(vec.size() / pitch, pitch);
  		for (size_t y = 0; y < vec.size() / pitch; ++y) {
  			for (size_t x = 0; x < pitch; ++x) {
- 				this->operator()(y, x) = vec[x + (y * pitch)];
+ 				this->operator()(x, y) = vec[x + (y * pitch)];
  			}
  		}
  	}
@@ -121,14 +121,14 @@ namespace gsl {
 		return *this;
 	}
 
-	double& matrix::operator()(size_t y, size_t x) {
+	double& matrix::operator()(size_t x, size_t y) {
 		if (!ptr_) throw std::runtime_error("empty gsl::matrix");
-		return *gsl_matrix_ptr(ptr_, y, x);
+		return *gsl_matrix_ptr(ptr_, x, y);
 	}
 
-	const double& matrix::operator()(size_t y, size_t x) const {
+	const double& matrix::operator()(size_t x, size_t y) const {
 		if (!ptr_) throw std::runtime_error("empty gsl::matrix");
-		return *gsl_matrix_const_ptr(ptr_, y, x);
+		return *gsl_matrix_const_ptr(ptr_, x, y);
 	}
 
 	std::pair<size_t, size_t> matrix::size() const {

@@ -37,7 +37,7 @@
 struct commands {
 	commands() {}
 	virtual ~commands() {}
-	virtual void operator()(bunch_buffer_f& bb) = 0;
+	virtual void operator()(bunch_buffer_f& bb) const = 0;
 };
 
 class spectrogram {
@@ -68,9 +68,9 @@ class spectrogram {
 	public :
 		void load_files(
 			const std::string& path, 
+			const commands& cmd,
 			int64_t start_time = 0, 
-			int64_t end_time = std::numeric_limits<int64_t>::max(), 
-			bool pre_notch = false);
+			int64_t end_time = std::numeric_limits<int64_t>::max());
 		void save_dump(const std::string& file) const;
 		void load_dump(const std::string& file);
 		uint32_t pitch() const;

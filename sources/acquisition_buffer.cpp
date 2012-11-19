@@ -330,3 +330,19 @@ bool acquisition_buffer_d::empty() const {
          return false;
    return true;
 }
+
+float& acquisition_buffer_f::operator[](size_t index) {
+   return complex_buffer_[index].real();
+}
+
+const float& acquisition_buffer_f::operator[](size_t index) const {
+   return complex_buffer_[index].real();
+}
+
+double& acquisition_buffer_d::operator[](size_t index ) {
+   return complex_buffer_[index].real();
+}
+
+const double& acquisition_buffer_d::operator[](size_t index) const {
+   return complex_buffer_[index].real();
+}

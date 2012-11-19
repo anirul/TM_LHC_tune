@@ -40,7 +40,7 @@ glut_win.o : glut_win.cpp glut_win.h
 	$(CXX) -o glut_win.o -c glut_win.cpp $(CFLAGS)
 acquisition_buffer.o : acquisition_buffer.cpp acquisition_buffer.h
 	$(CXX) -o acquisition_buffer.o -c acquisition_buffer.cpp $(CFLAGS)
-bunch_buffer.o : bunch_buffer.cpp bunch_buffer.h acquisition_buffer.h
+bunch_buffer.o : bunch_buffer.cpp bunch_buffer.h acquisition_buffer.h gsl_svd.h
 	$(CXX) -o bunch_buffer.o -c bunch_buffer.cpp $(CFLAGS)
 fftw_fft.o : fftw_fft.cpp fftw_fft.h
 	$(CXX) -o fftw_fft.o -c fftw_fft.cpp $(CFLAGS)
@@ -60,12 +60,12 @@ data_svd.o : data_svd.cpp spectrogram.h bunch_buffer.h acquisition_buffer.h fftw
 data_clean.o : data_clean.cpp fftw_fft.h acquisition_buffer.h bunch_buffer.h
 	$(CXX) -o data_clean.o -c data_clean.cpp $(CFLAGS)
 
-data_check : data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o cv_image.o
-	$(CXX) -o data_check data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o cv_image.o $(LIBS)	
+data_check : data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o cv_image.o gsl_svd.o
+	$(CXX) -o data_check data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o cv_image.o gsl_svd.o $(LIBS)
 data_svd : data_svd.o acquisition_buffer.o bunch_buffer.o spectrogram.o gsl_svd.o fftw_fft.o
 	$(CXX) -o data_svd data_svd.o acquisition_buffer.o bunch_buffer.o spectrogram.o gsl_svd.o fftw_fft.o $(LIBS)
-data_clean : data_clean.o acquisition_buffer.o bunch_buffer.o fftw_fft.o
-	$(CXX) -o data_clean data_clean.o acquisition_buffer.o bunch_buffer.o fftw_fft.o $(LIBS)
+data_clean : data_clean.o acquisition_buffer.o bunch_buffer.o fftw_fft.o gsl_svd.o
+	$(CXX) -o data_clean data_clean.o acquisition_buffer.o bunch_buffer.o fftw_fft.o gsl_svd.o $(LIBS)
 
 clean:
 	rm -f $(ALL) *.o

@@ -31,6 +31,7 @@
 #include <boost/iostreams/stream.hpp>
 
 #include "bunch_buffer.h"
+#include "gsl_svd.h"
 
 bunch_buffer_f::bunch_buffer_f(
       const std::vector<short>& data,
@@ -166,6 +167,44 @@ double bunch_buffer_d::check_rms() {
    for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
       acc += buffers_[i].check_rms();
    return acc / (double)bunch_pattern_.size();
+}
+
+void bunch_buffer_f::svd() {
+   // M x N
+   gsl::matrix A(buffer_size(), bunch_count());
+   for (int y = 0; y < bunch_count(); ++y) {
+      for (int x = 0; x < buffer_size(); ++x) {
+         A(x, y) = buffers_[y][x];
+      }
+   }
+   // N x N
+   gsl::matrix X(bunch_count(), bunch_count());
+   gsl::vector work(bunch_count());
+   gsl::vector S(bunch_count());
+   gsl::matrix V(bunch_count(), bunch_count());
+   gsl::matrix U = A;
+   SVD_mod(U, X, V, S, work);
+   // S -> s
+   gsl::matrix s(bunch_count(), bunch_count());
+   for (size_t i = 0; i < bunch_count(); ++i) {
+      s(i, i) = S[i];
+   }
+   // vt = V^T
+   gsl::matrix vt = transpose(V);
+   // out = U s vt (out ~ A)
+   gsl::matrix out = U * s * vt;
+   std::vector<double> deviation;
+   for (int y = 0; y < bunch_count(); ++y) {
+      for (int x = 0; x < bunch_count(); ++x) {
+         buffers_[y][x] = out(y, x);
+         deviation.push_back(fabs(A(y, x) - out(y, x)));
+      }
+   }
+   std::cout << "svd deviation : " << average_d(deviation) << std::endl;
+}
+
+void bunch_buffer_d::svd() {
+   throw std::runtime_error("not implemented");
 }
 
 void bunch_buffer_f::fft() {

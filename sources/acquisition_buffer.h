@@ -67,6 +67,8 @@ class acquisition_buffer_f : public fftwf_fft {
             unsigned long min, 
             unsigned long max);
       bool empty() const;
+      float& operator[](size_t index);
+      const float& operator[](size_t index) const;
 };
 
 class acquisition_buffer_d : public fftwd_fft {
@@ -93,6 +95,8 @@ class acquisition_buffer_d : public fftwd_fft {
             unsigned long min, 
             unsigned long max);
       bool empty() const;
+      double& operator[](size_t index);
+      const double& operator[](size_t index) const;
 };
 
 #endif // acquisition_buffer_HEADER_DEFINED

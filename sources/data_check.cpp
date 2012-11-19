@@ -43,6 +43,17 @@
 using namespace boost::program_options;
 using namespace boost::posix_time;
 
+class chk_cmd : public commands {
+		bool pre_notch_;
+	public :
+		chk_cmd(bool pre_notch = false) : pre_notch_(pre_notch) {}
+		virtual void operator()(bunch_buffer_f& bb) const {
+			if (!pre_notch_) bb.notch();
+			bb.fft();
+			bb.amplitude();
+		}
+};
+
 int main(int ac, char** av) {
 	unsigned int dx = 1280;
 	unsigned int dy = 768;
@@ -123,10 +134,10 @@ int main(int ac, char** av) {
 			std::cout << "black & white   : true" << std::endl;
 		}
 		if (vm.count("start-time")) {
-         {
-            std::string start_time_str = vm["start-time"].as<std::string>();
-            start_time = boost::lexical_cast<long long>(start_time_str);
-         }
+        	{
+            	std::string start_time_str = vm["start-time"].as<std::string>();
+            	start_time = boost::lexical_cast<long long>(start_time_str);
+         	}
 			boost::posix_time::ptime ptime_time;
 			{ // convert to time
 				ptime_time = boost::posix_time::from_time_t(
@@ -138,10 +149,10 @@ int main(int ac, char** av) {
 					<< ptime_time << "]" << std::endl;
 		}
 		if (vm.count("end-time")) {
-         {
-   			std::string end_time_str = vm["end-time"].as<std::string>();
-            end_time = boost::lexical_cast<long long>(end_time_str);
-         }
+         	{
+   				std::string end_time_str = vm["end-time"].as<std::string>();
+            	end_time = boost::lexical_cast<long long>(end_time_str);
+         	}
 			boost::posix_time::ptime ptime_time;
 			{ // convert to time
 				ptime_time = boost::posix_time::from_time_t(
@@ -155,7 +166,8 @@ int main(int ac, char** av) {
 		{
 			spectrogram spect(nb_acc, bunch_mask);
 			if (path.size()) {
-				spect.load_files(path, start_time, end_time, pre_notch);
+				chk_cmd cmd(pre_notch);
+				spect.load_files(path, cmd, start_time, end_time);
 			} else if (input_file.size()) {
 				spect.load_dump(input_file);
 			} else {
