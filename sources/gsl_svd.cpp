@@ -27,6 +27,7 @@
 
 #include <stdexcept>
 #include <sstream>
+#include <map>
 
 #include "gsl_svd.h"
 

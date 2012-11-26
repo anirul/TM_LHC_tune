@@ -187,7 +187,12 @@ void bunch_buffer_f::svd() {
    // S -> s
    gsl::matrix s(bunch_count(), bunch_count());
    for (size_t i = 0; i < bunch_count(); ++i) {
-      s(i, i) = S[i];
+	   if (i < (bunch_count() * 0.20))
+		   s(i, i) = 0.0f;
+	   else if (i > (bunch_count() * 0.80))
+		   s(i, i) = 0.0f;
+	   else
+		   s(i, i) = S[i];
    }
    // vt = V^T
    gsl::matrix vt = transpose(V);
