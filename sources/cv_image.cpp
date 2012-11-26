@@ -28,6 +28,8 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <algorithm>
+
 #include <opencv.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -35,6 +37,20 @@
 #include "bunch_buffer.h"
 #include "spectrogram.h"
 #include "cv_image.h"
+
+std::vector<short> remove_multiple_occurence(const std::vector<short>& vec) {
+	std::vector<short> already_in;
+	for (int i = 0; i < vec.size(); ++i) {
+		if (std::find(
+			already_in.begin(), 
+			already_in.end(), 
+			vec[i]) == already_in.end())
+		{
+			already_in.push_back(vec[i]);
+		}
+	}
+	return already_in;
+}
 
 void save_to_file(
 	const spectrogram& spect,
@@ -90,7 +106,8 @@ void save_to_file(
 				ss << "bunches : ";
 			else
 				ss << "bunch : ";
-			std::vector<short> bunch_pattern = spect.bunch_pattern();
+			std::vector<short> bunch_pattern = 
+				remove_multiple_occurence(spect.bunch_pattern());
 			for (size_t i = 0; i < bunch_pattern.size(); ++i)
 				if (spect.bunch_mask()[i])
 					ss << bunch_pattern[i] << " ";

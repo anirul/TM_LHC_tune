@@ -33,9 +33,88 @@
 #include "bunch_buffer.h"
 #include "gsl_svd.h"
 
+
+bunch_buffer_f::bunch_buffer_f() {}
+
+bunch_buffer_d::bunch_buffer_d() {}
+
+bunch_buffer_f::bunch_buffer_f(const bunch_buffer_f& bb) {
+   buffers_.insert(
+      buffers_.end(),
+      bb.buffers_.begin(), 
+      bb.buffers_.end());
+   bunch_pattern_.insert(
+      bunch_pattern_.end(),
+      bb.bunch_pattern_.begin(), 
+      bb.bunch_pattern_.end());
+}
+
+bunch_buffer_d::bunch_buffer_d(const bunch_buffer_d& bb) {
+   buffers_.insert(
+      buffers_.end(),
+      bb.buffers_.begin(), 
+      bb.buffers_.end());
+   bunch_pattern_.insert(
+      bunch_pattern_.end(),
+      bb.bunch_pattern_.begin(), 
+      bb.bunch_pattern_.end());
+}
+
+bunch_buffer_f& bunch_buffer_f::operator=(const bunch_buffer_f& bb) {
+   buffers_.clear();
+   bunch_pattern_.clear();
+   buffers_.insert(
+      buffers_.end(),
+      bb.buffers_.begin(), 
+      bb.buffers_.end());
+   bunch_pattern_.insert(
+      bunch_pattern_.end(),
+      bb.bunch_pattern_.begin(), 
+      bb.bunch_pattern_.end());
+   return *this;
+}
+
+bunch_buffer_d& bunch_buffer_d::operator=(const bunch_buffer_d& bb) {
+   buffers_.clear();
+   bunch_pattern_.clear();
+   buffers_.insert(
+      buffers_.end(),
+      bb.buffers_.begin(), 
+      bb.buffers_.end());
+   bunch_pattern_.insert(
+      bunch_pattern_.end(),
+      bb.bunch_pattern_.begin(), 
+      bb.bunch_pattern_.end());
+   return *this;  
+}
+
+bunch_buffer_f& bunch_buffer_f::operator+=(const bunch_buffer_f& bb) {
+   buffers_.insert(
+      buffers_.end(),
+      bb.buffers_.begin(), 
+      bb.buffers_.end());
+   bunch_pattern_.insert(
+      bunch_pattern_.end(),
+      bb.bunch_pattern_.begin(), 
+      bb.bunch_pattern_.end());
+   return *this;
+}
+
+bunch_buffer_d& bunch_buffer_d::operator+=(const bunch_buffer_d& bb) {
+   buffers_.insert(
+      buffers_.end(),
+      bb.buffers_.begin(), 
+      bb.buffers_.end());
+   bunch_pattern_.insert(
+      bunch_pattern_.end(),
+      bb.bunch_pattern_.begin(), 
+      bb.bunch_pattern_.end());
+   return *this;
+}
+
 bunch_buffer_f::bunch_buffer_f(
-      const std::vector<short>& data,
-      const std::vector<short>& bunch_pattern)
+   const std::vector<short>& data,
+   const std::vector<short>& bunch_pattern)
 {
    bunch_pattern_ = bunch_pattern;
    for (unsigned long i = 0; i < bunch_pattern_.size(); ++i) {
@@ -44,8 +123,8 @@ bunch_buffer_f::bunch_buffer_f(
 }
 
 bunch_buffer_d::bunch_buffer_d(
-      const std::vector<short>& data,
-      const std::vector<short>& bunch_pattern)
+   const std::vector<short>& data,
+   const std::vector<short>& bunch_pattern)
 {
    bunch_pattern_ = bunch_pattern;
    for (unsigned long i = 0; i < bunch_pattern.size(); ++i) {
@@ -80,8 +159,8 @@ bunch_buffer_d::bunch_buffer_d(const std::string& file_name) {
 }
 
 std::vector<unsigned long> bunch_buffer_f::peak_detect(
-      const unsigned long min,
-      const unsigned long max) 
+   const unsigned long min,
+   const unsigned long max) 
 {
    std::vector<unsigned long> ret;
    for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
@@ -90,8 +169,8 @@ std::vector<unsigned long> bunch_buffer_f::peak_detect(
 }
 
 std::vector<unsigned long> bunch_buffer_d::peak_detect(
-      const unsigned long min,
-      const unsigned long max)
+   const unsigned long min,
+   const unsigned long max)
 {
    std::vector<unsigned long> ret;
    for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
@@ -108,8 +187,8 @@ std::vector<short> bunch_buffer_d::get_bunch_pattern() const {
 }
 
 void bunch_buffer_f::buffer(
-      const unsigned long index,
-      std::vector<float>& out) const
+   const unsigned long index,
+   std::vector<float>& out) const
 {
    if (index >= bunch_pattern_.size())
       throw std::runtime_error("bunch_buffer_f::buffer := index out of band");
@@ -117,8 +196,8 @@ void bunch_buffer_f::buffer(
 }
 
 void bunch_buffer_d::buffer(
-      const unsigned long index,
-      std::vector<double>& out) const
+   const unsigned long index,
+   std::vector<double>& out) const
 {
    if (index >= bunch_pattern_.size())
       throw std::runtime_error("bunch_buffer_d::buffer := index out of band");
@@ -187,7 +266,8 @@ void bunch_buffer_f::svd() {
    // S -> s
    gsl::matrix s(bunch_count(), bunch_count());
    for (size_t i = 0; i < bunch_count(); ++i) {
-      s(i, i) = S[i];
+//      s(i, i) = S[i];
+      s(i, i) = 1.0f;
    }
    // vt = V^T
    gsl::matrix vt = transpose(V);
@@ -200,7 +280,7 @@ void bunch_buffer_f::svd() {
          deviation.push_back(fabs(A(y, x) - out(y, x)));
       }
    }
-   std::cout << "svd deviation : " << average_d(deviation) << std::endl;
+   std::cout << " svd deviation : " << average_d(deviation);
 }
 
 void bunch_buffer_d::svd() {
@@ -252,12 +332,12 @@ void bunch_buffer_f::save_txt(
    const std::string& time_stamp)
 {
    os 
-      << "<bunch_buffer_f time-stamp=\"" << time_stamp 
-      << "\" bunch-pattern=\"";
+   << "<bunch_buffer_f time-stamp=\"" << time_stamp 
+   << "\" bunch-pattern=\"";
    for (size_t i = 0; i < bunch_pattern_.size(); ++i)
       os << bunch_pattern_[i] << " ";
    os
-      << "\">" << std::endl;
+   << "\">" << std::endl;
    for (unsigned long i = 0; i < bunch_pattern_.size(); ++i) {
       os << "\t<buffer" << i << ">" << std::endl;
       os << "\t\t"; 
@@ -266,7 +346,7 @@ void bunch_buffer_f::save_txt(
       os << "\t</buffer" << i << ">" << std::endl;
    }
    os
-      << "</bunch_buffer_f>" << std::endl;
+   << "</bunch_buffer_f>" << std::endl;
 }
 
 void bunch_buffer_d::save_txt(
@@ -274,12 +354,12 @@ void bunch_buffer_d::save_txt(
    const std::string& time_stamp)
 {
    os 
-      << "<bunch_buffer_d time-stamp=\"" << time_stamp 
-      << "\" bunch-pattern=\"";
+   << "<bunch_buffer_d time-stamp=\"" << time_stamp 
+   << "\" bunch-pattern=\"";
    for (size_t i = 0; i < bunch_pattern_.size(); ++i)
       os << bunch_pattern_[i] << " ";
    os
-      << "\">" << std::endl;
+   << "\">" << std::endl;
    for (unsigned long i = 0; i < bunch_pattern_.size(); ++i) {
       os << "\t<buffer" << i << ">" << std::endl;
       os << "\t\t"; 
@@ -288,12 +368,12 @@ void bunch_buffer_d::save_txt(
       os << "\t</buffer" << i << ">" << std::endl;
    }
    os
-      << "</bunch_buffer_d>" << std::endl;
+   << "</bunch_buffer_d>" << std::endl;
 }
 
 bool bunch_buffer_f::save_txt(
-      const std::string& file_name,
-      const std::string& time_stamp) 
+   const std::string& file_name,
+   const std::string& time_stamp) 
 {
    std::ofstream ofs(file_name.c_str());
    if (!ofs.is_open()) return false;
@@ -303,8 +383,8 @@ bool bunch_buffer_f::save_txt(
 }
 
 bool bunch_buffer_d::save_txt(
-      const std::string& file_name, 
-      const std::string& time_stamp) 
+   const std::string& file_name, 
+   const std::string& time_stamp) 
 {
    std::ofstream ofs(file_name.c_str());
    if (!ofs.is_open()) return false;
@@ -380,8 +460,8 @@ void bunch_buffer_d::load_txt(std::istream& is) {
 }
 
 bool bunch_buffer_f::save_gzip(
-      const std::string& file_name,
-      const std::string& time_stamp) 
+   const std::string& file_name,
+   const std::string& time_stamp) 
 {
    std::ofstream ofs(file_name.c_str(), std::ofstream::binary);
    if (!ofs.is_open()) return false;
@@ -396,8 +476,8 @@ bool bunch_buffer_f::save_gzip(
 }
 
 bool bunch_buffer_d::save_gzip(
-      const std::string& file_name,
-      const std::string& time_stamp) 
+   const std::string& file_name,
+   const std::string& time_stamp) 
 {
    std::ofstream ofs(file_name.c_str(), std::ofstream::binary);
    if (!ofs.is_open()) return false;
@@ -444,15 +524,29 @@ bool bunch_buffer_d::load_gzip(const std::string& file_name) {
 }
 
 bool bunch_buffer_f::empty() const {
-   for (int i = 0; i < buffers_.size(); ++i)
-      if (!buffers_[i].empty())
+   for (int i = 0; i < buffers_.size(); ++i) {
+      if (!buffers_[i].empty()) {
          return false;
+      }
+   }
    return true;
 }
 
 bool bunch_buffer_d::empty() const {
-   for (int i = 0; i < buffers_.size(); ++i)
-      if (!buffers_[i].empty())
+   for (int i = 0; i < buffers_.size(); ++i) {
+      if (!buffers_[i].empty()) {
          return false;
+      }
+   }
    return true;
+}
+
+void bunch_buffer_f::clear() {
+   buffers_.clear();
+   bunch_pattern_.clear();
+}
+
+void bunch_buffer_d::clear() {
+   buffers_.clear();
+   bunch_pattern_.clear();
 }

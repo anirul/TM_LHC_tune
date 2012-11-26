@@ -35,22 +35,26 @@
 #include "acquisition_buffer.h" 
 
 class bunch_buffer_f {
-   protected :
+   protected:
       std::vector<acquisition_buffer_f> buffers_;
       std::vector<short> bunch_pattern_;
-   protected :
+   protected:
       void save_txt(
             std::ostream& os,
             const std::string& time_stamp);
       void load_txt(std::istream& is);
-   public :
+   public:
       // ctor data and the number of bunches
       bunch_buffer_f(
             const std::vector<short>& data, 
             const std::vector<short>& bunch_pattern);
       bunch_buffer_f(const std::string& file_name);
+      bunch_buffer_f();
+      bunch_buffer_f(const bunch_buffer_f& bb);
       virtual ~bunch_buffer_f();
-   public :
+   public:
+      bunch_buffer_f& operator=(const bunch_buffer_f& bb);
+      bunch_buffer_f& operator+=(const bunch_buffer_f& bb);
       // peak detection of the buffers
       std::vector<unsigned long> peak_detect(
             const unsigned long min,
@@ -77,25 +81,30 @@ class bunch_buffer_f {
       bool load_txt(const std::string& file_name);
       bool load_gzip(const std::string& file_name);
       bool empty() const;
+      void clear();
 };
 
 class bunch_buffer_d {
-   protected :
+   protected:
       std::vector<acquisition_buffer_d> buffers_;
       std::vector<short> bunch_pattern_;
-   protected :
+   protected:
       void save_txt(
             std::ostream& os,
             const std::string& time_stamp);
       void load_txt(std::istream& is);
-   public :
+   public:
       // ctor data and the number of bunches
       bunch_buffer_d(
             const std::vector<short>& data, 
             const std::vector<short>& bunch_pattern);
       bunch_buffer_d(const std::string& file_name);
+      bunch_buffer_d();
+      bunch_buffer_d(const bunch_buffer_d& bb);
       virtual ~bunch_buffer_d();
-   public :
+   public:
+      bunch_buffer_d& operator=(const bunch_buffer_d& bb);
+      bunch_buffer_d& operator+=(const bunch_buffer_d& bb);
       // peak detection of the buffers
       std::vector<unsigned long> peak_detect(
             const unsigned long min,
@@ -122,6 +131,7 @@ class bunch_buffer_d {
       bool load_txt(const std::string& file_name);
       bool load_gzip(const std::string& file_name);
       bool empty() const;
+      void clear();
 };
 
 #endif // bunch_buffer_HEADER_DEFINED

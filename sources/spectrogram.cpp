@@ -27,6 +27,7 @@
 
 #include <stdexcept>
 #include <iostream>
+
 #include <boost/filesystem.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -40,7 +41,7 @@ namespace bt = boost::posix_time;
 void spectrogram::accumulate(
 	std::vector<float>& out,
 	const std::vector<float>& in1,
-	const std::vector<float>& in2)
+	const std::vector<float>& in2) const
 {
 	unsigned int min = (in1.size() < in2.size()) ? in1.size() : in2.size();
 	out.resize(min);
@@ -50,13 +51,13 @@ void spectrogram::accumulate(
 
 void spectrogram::divide(
 	std::vector<float>& inout,
-	float divider)
+	float divider) const
 {
 	for (unsigned int i = 0; i < inout.size(); ++i)
 		inout[i] = inout[i] / divider;
 }
 
-void spectrogram::normalize(std::vector<float>& inout) {
+void spectrogram::normalize(std::vector<float>& inout) const {
 	float max = inout[0];
 	for (unsigned int i = 0; i < inout.size(); ++i)
 		if (inout[i] > max) max = inout[i];
@@ -66,7 +67,7 @@ void spectrogram::normalize(std::vector<float>& inout) {
 
 void spectrogram::average(
 	const bunch_buffer_f& buffers,
-	std::vector<float>& out)
+	std::vector<float>& out) const 
 {
 	std::vector<float> temp;
 	out.assign(buffers.buffer_size(), 0.0f);
@@ -76,6 +77,54 @@ void spectrogram::average(
 			accumulate(out, out, temp);
 		}
 	}
+}
+
+bunch_buffer_f spectrogram::buffer_from_file(
+	const boost::filesystem::path& path) const 
+{
+	std::string full_path = fs::canonical(path).string();
+	bunch_buffer_f bb(full_path);
+	if (!bb.buffer_size()) {
+		std::cout << std::endl;
+		throw std::runtime_error("Error invalid file : " + full_path);
+	}
+	if (!bb.get_bunch_pattern().size()) {
+		std::cout << std::endl;
+		throw std::runtime_error("Invalid bunch pattern (empty)");
+	}
+	return bb;
+}
+
+long long spectrogram::time_stamp_from_file(
+	const boost::filesystem::path& path) const 
+{
+	std::string full_path = fs::canonical(path).string();
+	long long time_stamp = 0;
+	std::string str_time_stamp = "";
+	{ // get the time from file name
+		str_time_stamp = full_path.substr(
+			full_path.find_last_of("-") + 1,
+			full_path.find_first_of(".") - 
+			full_path.find_last_of("-") - 1);
+		std::stringstream ss(str_time_stamp);
+		ss >> time_stamp;
+	}
+	return time_stamp;
+}
+
+boost::posix_time::ptime spectrogram::ptime_from_file(
+	const boost::filesystem::path& path) const
+{
+	std::string full_path = fs::canonical(path).string();
+	long long time_stamp = time_stamp_from_file(path);
+	boost::posix_time::ptime file_time;
+	{ // convert to time
+		file_time = boost::posix_time::from_time_t(
+			time_stamp / 1000000000L);
+		file_time += boost::posix_time::microseconds(
+			(time_stamp % 1000000000L) / 1000);
+	}
+	return file_time;
 }
 
 spectrogram::spectrogram(uint32_t nb_acc, const std::bitset<16>& bunch_mask) 
@@ -112,39 +161,24 @@ void spectrogram::load_files(
 			throw std::runtime_error(path + " is not a directory!");
 		}
 		std::vector<fs::path>::iterator ite;
-		std::vector<float> acc_vec;
+		bunch_buffer_f acc_bb;
 		std::vector<float> temp;
 		unsigned int acc_count = 0;
 		unsigned int file_count = 0;
 		for (ite = list_file.begin(); ite != list_file.end(); ++ite) {
 			std::string full_path = fs::canonical(*ite).string();
-			long long time_stamp = 0;
-			std::string str_time_stamp = "";
-			{ // get the time from file name
-				str_time_stamp = full_path.substr(
-					full_path.find_last_of("-") + 1,
-					full_path.find_first_of(".") - 
-					full_path.find_last_of("-") - 1);
-				std::stringstream ss(str_time_stamp);
-				ss >> time_stamp;
-			}
+			long long time_stamp = time_stamp_from_file(*ite);
 			// check boundaries
 			if (time_stamp < start_time || time_stamp > end_time)
 				continue;
-			boost::posix_time::ptime file_time;
-			{ // convert to time
-				file_time = boost::posix_time::from_time_t(
-					time_stamp / 1000000000L);
-				file_time += boost::posix_time::microseconds(
-					(time_stamp % 1000000000L) / 1000);
-			}
+			boost::posix_time::ptime file_time = ptime_from_file(*ite);
 			std::cout 
 				<< "\rloading (data)  : " 
 				<< ++file_count << "/" << list_file.size() << " "
 				<< file_time << " "
 				<< full_path;
 			std::cout.flush();
-			bunch_buffer_f bb(full_path);
+			bunch_buffer_f bb = buffer_from_file(*ite);
 			if (bb.empty()) {
 				std::cout 
 					<< std::endl
@@ -155,14 +189,6 @@ void spectrogram::load_files(
 			if (!pitch_) {
 				pitch_ = bb.buffer_size() / 2;
 			} 
-			if (!bb.buffer_size()) {
-				std::cout << std::endl;
-				throw std::runtime_error("Error invalid file : " + full_path);
-			}
-			if (!bb.get_bunch_pattern().size()) {
-				std::cout << std::endl;
-				throw std::runtime_error("Invalid bunch pattern (empty)");
-			}
 			// save the bunch pattern
 			if (bb.get_bunch_pattern() != bunch_pattern_) { 
 				bunch_pattern_ = bb.get_bunch_pattern();
@@ -172,19 +198,17 @@ void spectrogram::load_files(
 					std::cout << bunch_pattern_[i] << " ";
 				std::cout << std::endl;
 			}
-			// here come the computing
-			cmd(bb);
-			// apply bunch mask!
-			average(bb, temp);
 			time_.push_back(time_stamp);
-			if (ite == list_file.begin()) 
-				acc_vec.assign(bb.buffer_size(), 0.0f);
-			accumulate(acc_vec, acc_vec, temp);
+			acc_bb += bb;
 			if (!(acc_count % nb_acc_)) {
-				acc_vec.resize(pitch_);
-				normalize(acc_vec);
-				data_.insert(data_.end(), acc_vec.begin(), acc_vec.end());
-				acc_vec.assign(bb.buffer_size(), 0.0f);
+				// here come the computing
+				cmd(acc_bb);
+				// apply bunch mask!
+				average(acc_bb, temp);
+				temp.resize(pitch_);
+				normalize(temp);
+				data_.insert(data_.end(), temp.begin(), temp.end());
+				acc_bb.clear();
 			}
 			acc_count++;
 		}

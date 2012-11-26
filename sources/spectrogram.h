@@ -31,6 +31,9 @@
 #include <bitset>
 #include <limits>
 
+#include <boost/filesystem.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+
 #include "bunch_buffer.h"
 
 // functor to pass to load_file
@@ -52,14 +55,20 @@ class spectrogram {
 		void accumulate(
 			std::vector<float>& out,
 			const std::vector<float>& in1,
-			const std::vector<float>& in2);
+			const std::vector<float>& in2) const;
 		void divide(
 			std::vector<float>& inout,
-			float divider);
-		void normalize(std::vector<float>& inout);
+			float divider) const;
+		void normalize(std::vector<float>& inout) const;
 		void average(
 			const bunch_buffer_f& buffers,
-			std::vector<float>& out);
+			std::vector<float>& out) const;
+		bunch_buffer_f buffer_from_file(
+			const boost::filesystem::path& path) const;
+		boost::posix_time::ptime ptime_from_file(
+			const boost::filesystem::path& path) const;
+		long long time_stamp_from_file(
+			const boost::filesystem::path& path) const;
 	public :
 		spectrogram(
 			uint32_t nb_acc,
