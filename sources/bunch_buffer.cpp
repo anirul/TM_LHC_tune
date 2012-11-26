@@ -25,6 +25,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include <algorithm>
+
 #include <boost/iostreams/filtering_streambuf.hpp>
 #include <boost/iostreams/copy.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
@@ -263,28 +265,38 @@ void bunch_buffer_f::svd() {
    gsl::matrix V(bunch_count(), bunch_count());
    gsl::matrix U = A;
    SVD_mod(U, X, V, S, work);
+
+   // sort S (by value)
+   std::vector<double> s_sorted(bunch_count());
+   for (size_t i = 0; i < bunch_count(); ++i)
+      s_sorted[i] = S[i];
+   std::sort(s_sorted.begin(), s_sorted.end());
+
    // S -> s
    gsl::matrix s(bunch_count(), bunch_count());
    for (size_t i = 0; i < bunch_count(); ++i) {
-	   if (i < (bunch_count() * 0.20))
+	   if (S[i] < (s_sorted[(size_t)((double)bunch_count() * 0.20)])) {
 		   s(i, i) = 0.0f;
-	   else if (i > (bunch_count() * 0.80))
+         continue;
+      }
+	   if (S[i] > (s_sorted[(size_t)((double)bunch_count() * 0.80)])) {
 		   s(i, i) = 0.0f;
-	   else
-		   s(i, i) = S[i];
+         continue;
+      }
+	   s(i, i) = S[i];
    }
    // vt = V^T
    gsl::matrix vt = transpose(V);
    // out = U s vt (out ~ A)
    gsl::matrix out = U * s * vt;
-   std::vector<double> deviation;
+//   std::vector<double> deviation;
    for (int y = 0; y < bunch_count(); ++y) {
       for (int x = 0; x < bunch_count(); ++x) {
          buffers_[y][x] = out(y, x);
-         deviation.push_back(fabs(A(y, x) - out(y, x)));
+//         deviation.push_back(fabs(A(y, x) - out(y, x)));
       }
    }
-   std::cout << " svd deviation : " << average_d(deviation);
+//   std::cout << " svd deviation : " << average_d(deviation);
 }
 
 void bunch_buffer_d::svd() {
@@ -498,7 +510,9 @@ bool bunch_buffer_d::save_gzip(
 bool bunch_buffer_f::load_gzip(const std::string& file_name) {
    std::stringstream ss("");
    {
-      std::ifstream ifs(file_name.c_str(), std::ios_base::in | std::ios_base::binary);
+      std::ifstream ifs(
+         file_name.c_str(), 
+         std::ios_base::in | std::ios_base::binary);
       if (!ifs.is_open()) return false;
       boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
       in.push(boost::iostreams::gzip_decompressor());
@@ -514,7 +528,9 @@ bool bunch_buffer_f::load_gzip(const std::string& file_name) {
 bool bunch_buffer_d::load_gzip(const std::string& file_name) {
    std::stringstream ss("");
    {
-      std::ifstream ifs(file_name.c_str(), std::ios_base::in | std::ios_base::binary);
+      std::ifstream ifs(
+         file_name.c_str(), 
+         std::ios_base::in | std::ios_base::binary);
       if (!ifs.is_open()) return false;
       boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
       in.push(boost::iostreams::gzip_decompressor());
