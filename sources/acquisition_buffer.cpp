@@ -26,6 +26,7 @@
  */
 
 #include "acquisition_buffer.h"
+#include <vector>
 #include <iostream>
 #include <limits>
 
@@ -34,7 +35,7 @@ float rms_f(const std::vector<float>& vec) {
    for (unsigned long i = 0; i < vec.size(); ++i)
       acc += (vec[i] * vec[i]);
    acc /= (float)vec.size();
-   // avoid sqrt(0)
+   // avoid start(0)
    if (acc == 0.0f) 
       acc = std::numeric_limits<float>::epsilon();
    return sqrtf(acc);
@@ -186,7 +187,7 @@ void acquisition_buffer_f::fft() {
       throw std::runtime_error("empty complex buffer!");
    prepare(complex_buffer_);
    run(complex_buffer_);
-   // only the buttom half is interresting
+   // only the bottom half is interesting
    complex_buffer_.resize(complex_buffer_.size() / 2);
 }
 
@@ -195,7 +196,7 @@ void acquisition_buffer_d::fft() {
       throw std::runtime_error("empty complex buffer!");
    prepare(complex_buffer_);
    run(complex_buffer_);
-   // only the buttom half is interresting
+   // only the bottom half is interesting
    complex_buffer_.resize(complex_buffer_.size() / 2);
 }
 
