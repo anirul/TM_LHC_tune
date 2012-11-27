@@ -281,12 +281,14 @@ void bunch_buffer_f::svd(float threshold) {
 	// S -> s
 	gsl::matrix s(bunch_count(), bunch_count());
 	for (size_t i = 0; i < bunch_count(); ++i) {
+      std::cout << ((i) ? " " : "\nS[") << S[i];
 		if (S[i] < threshold) {
 			s(i, i) = 0.0f;
 		} else {
 			s(i, i) = S[i];
 		}
 	}
+   std::cout << "]\n";
 
 	// vt = V^T
 	gsl::matrix vt = transpose(V);
@@ -301,7 +303,55 @@ void bunch_buffer_f::svd(float threshold) {
 }
 
 void bunch_buffer_d::svd(double threshold) {
-	throw std::runtime_error("not implemented");
+	// M x N
+   gsl::matrix A(buffer_size(), bunch_count());
+   for (int y = 0; y < bunch_count(); ++y) {
+      for (int x = 0; x < buffer_size(); ++x) {
+         A(x, y) = buffers_[y][x];
+      }
+   }
+   // N x N
+   gsl::matrix X(bunch_count(), bunch_count());
+   gsl::vector work(bunch_count());
+   gsl::vector S(bunch_count());
+   gsl::matrix V(bunch_count(), bunch_count());
+   gsl::matrix U = A;
+
+   // compute SVD
+   SVD_mod(U, X, V, S, work);
+
+   // S -> s
+   gsl::matrix s(bunch_count(), bunch_count());
+   for (size_t i = 0; i < bunch_count(); ++i) {
+      std::cout << ((i) ? " " : "\nS[") << S[i];
+      if (S[i] < threshold) {
+         s(i, i) = 0.0f;
+      } else {
+         s(i, i) = S[i];
+      }
+   }
+   std::cout << "]\n";
+
+   // vt = V^T
+   gsl::matrix vt = transpose(V);
+
+   // out = U s vt (out ~ A)
+   gsl::matrix out = U * s * vt;
+   for (int y = 0; y < bunch_count(); ++y) {
+      for (int x = 0; x < bunch_count(); ++x) {
+         buffers_[y][x] = out(y, x);
+      }
+   }
+}
+
+void bunch_buffer_f::clean(size_t begin, size_t end) {
+   for (size_t i = 0; i < bunch_pattern_.size(); ++i)
+      buffers_[i].clean(begin, end);
+}
+
+void bunch_buffer_d::clean(size_t begin, size_t end) {
+   for (size_t i = 0; i < bunch_pattern_.size(); ++i)
+      buffers_[i].clean(begin, end);  
 }
 
 void bunch_buffer_f::fft() {

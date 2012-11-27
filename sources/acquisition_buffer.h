@@ -57,6 +57,7 @@ public :
 	void save_txt(std::ostream& os);
 	void load_txt(std::istream& is);
 	size_t size() const;
+      void clean(size_t begin, size_t end);
 	void notch();
 	void average();
 	float check_rms();
@@ -86,6 +87,7 @@ public :
 	void save_txt(std::ostream& os);
 	void load_txt(std::istream& is);
 	size_t size() const;
+      void clean(size_t begin, size_t end);
 	void notch();
 	void average();
 	double check_rms();

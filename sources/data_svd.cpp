@@ -51,6 +51,7 @@ public :
 		bb.svd(threshold_svd_);
 		bb.fft();
 		bb.amplitude();
+		bb.clean(0, bb.buffer_size() / 10);
 	}
 };
 

@@ -127,6 +127,16 @@ size_t acquisition_buffer_d::size() const {
 	return complex_buffer_.size();
 }
 
+void acquisition_buffer_f::clean(size_t begin, size_t end) {
+   for (size_t i = begin; i < end; ++i)
+      complex_buffer_[i] = std::complex<float>(0.0f, 0.0f);
+}
+
+void acquisition_buffer_d::clean(size_t begin, size_t end) {
+   for (size_t i = begin; i < end; ++i)
+      complex_buffer_[i] = std::complex<double>(0.0, 0.0);  
+}
+
 void acquisition_buffer_f::buffer_real(std::vector<float>& out) const {
 	out.resize(complex_buffer_.size());
 	for (unsigned i = 0; i < complex_buffer_.size(); ++i)

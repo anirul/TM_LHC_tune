@@ -69,6 +69,7 @@ public:
 	void average();
 	float check_rms();
 	void svd(float threshold = 0.0f);
+      void clean(size_t begin, size_t end);
 	void fft();
 	void amplitude();
 	void phase_deg();
@@ -120,6 +121,7 @@ public:
 	void average();
 	double check_rms();
 	void svd(double threshold = 0.0);
+      void clean(size_t begin, size_t end);
 	void fft();
 	void amplitude();
 	void phase_deg();
