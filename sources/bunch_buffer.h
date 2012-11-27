@@ -35,103 +35,105 @@
 #include "acquisition_buffer.h" 
 
 class bunch_buffer_f {
-   protected:
-      std::vector<acquisition_buffer_f> buffers_;
-      std::vector<short> bunch_pattern_;
-   protected:
-      void save_txt(
-            std::ostream& os,
-            const std::string& time_stamp);
-      void load_txt(std::istream& is);
-   public:
-      // ctor data and the number of bunches
-      bunch_buffer_f(
-            const std::vector<short>& data, 
-            const std::vector<short>& bunch_pattern);
-      bunch_buffer_f(const std::string& file_name);
-      bunch_buffer_f();
-      bunch_buffer_f(const bunch_buffer_f& bb);
-      virtual ~bunch_buffer_f();
-   public:
-      bunch_buffer_f& operator=(const bunch_buffer_f& bb);
-      bunch_buffer_f& operator+=(const bunch_buffer_f& bb);
-      // peak detection of the buffers
-      std::vector<unsigned long> peak_detect(
-            const unsigned long min,
-            const unsigned long max);
-      std::vector<short> get_bunch_pattern() const;
-      void buffer(
-            const unsigned long index, 
-            std::vector<float>& out) const;
-      size_t bunch_count() const;
-      size_t buffer_size() const;
-      void notch();
-      float check_rms();
-      void svd();
-      void fft();
-      void amplitude();
-      void phase_deg();
-      void log10();
-      bool save_txt(
-            const std::string& file_name,
-            const std::string& time_stamp);
-      bool save_gzip(
-            const std::string& file_name,
-            const std::string& time_stamp);
-      bool load_txt(const std::string& file_name);
-      bool load_gzip(const std::string& file_name);
-      bool empty() const;
-      void clear();
+protected:
+	std::vector<acquisition_buffer_f> buffers_;
+	std::vector<short> bunch_pattern_;
+protected:
+	void save_txt(
+			std::ostream& os,
+			const std::string& time_stamp);
+	void load_txt(std::istream& is);
+public:
+	// constructor data and the number of bunches
+	bunch_buffer_f(
+			const std::vector<short>& data,
+			const std::vector<short>& bunch_pattern);
+	bunch_buffer_f(const std::string& file_name);
+	bunch_buffer_f();
+	bunch_buffer_f(const bunch_buffer_f& bb);
+	virtual ~bunch_buffer_f();
+public:
+	bunch_buffer_f& operator=(const bunch_buffer_f& bb);
+	bunch_buffer_f& operator+=(const bunch_buffer_f& bb);
+	// peak detection of the buffers
+	std::vector<unsigned long> peak_detect(
+			const unsigned long min,
+			const unsigned long max);
+	std::vector<short> get_bunch_pattern() const;
+	void buffer(
+			const unsigned long index,
+			std::vector<float>& out) const;
+	size_t bunch_count() const;
+	size_t buffer_size() const;
+	void notch();
+	void average();
+	float check_rms();
+	void svd(float threshold = 0.0f);
+	void fft();
+	void amplitude();
+	void phase_deg();
+	void log10();
+	bool save_txt(
+			const std::string& file_name,
+			const std::string& time_stamp);
+	bool save_gzip(
+			const std::string& file_name,
+			const std::string& time_stamp);
+	bool load_txt(const std::string& file_name);
+	bool load_gzip(const std::string& file_name);
+	bool empty() const;
+	void clear();
 };
 
 class bunch_buffer_d {
-   protected:
-      std::vector<acquisition_buffer_d> buffers_;
-      std::vector<short> bunch_pattern_;
-   protected:
-      void save_txt(
-            std::ostream& os,
-            const std::string& time_stamp);
-      void load_txt(std::istream& is);
-   public:
-      // ctor data and the number of bunches
-      bunch_buffer_d(
-            const std::vector<short>& data, 
-            const std::vector<short>& bunch_pattern);
-      bunch_buffer_d(const std::string& file_name);
-      bunch_buffer_d();
-      bunch_buffer_d(const bunch_buffer_d& bb);
-      virtual ~bunch_buffer_d();
-   public:
-      bunch_buffer_d& operator=(const bunch_buffer_d& bb);
-      bunch_buffer_d& operator+=(const bunch_buffer_d& bb);
-      // peak detection of the buffers
-      std::vector<unsigned long> peak_detect(
-            const unsigned long min,
-            const unsigned long max);
-      std::vector<short> get_bunch_pattern() const;
-      void buffer(
-            const unsigned long index, 
-            std::vector<double>& out) const;
-      size_t bunch_count() const;
-      size_t buffer_size() const;
-      void notch();
-      double check_rms();
-      void svd();
-      void fft();
-      void amplitude();
-      void phase_deg();
-      void log10();
-      bool save_txt(
-            const std::string& file_name,
-            const std::string& time_stamp);
-      bool save_gzip(
-            const std::string& file_name,
-            const std::string& time_stamp);
-      bool load_txt(const std::string& file_name);
-      bool load_gzip(const std::string& file_name);
-      bool empty() const;
-      void clear();
+protected:
+	std::vector<acquisition_buffer_d> buffers_;
+	std::vector<short> bunch_pattern_;
+protected:
+	void save_txt(
+			std::ostream& os,
+			const std::string& time_stamp);
+	void load_txt(std::istream& is);
+public:
+	// constructor data and the number of bunches
+	bunch_buffer_d(
+			const std::vector<short>& data,
+			const std::vector<short>& bunch_pattern);
+	bunch_buffer_d(const std::string& file_name);
+	bunch_buffer_d();
+	bunch_buffer_d(const bunch_buffer_d& bb);
+	virtual ~bunch_buffer_d();
+public:
+	bunch_buffer_d& operator=(const bunch_buffer_d& bb);
+	bunch_buffer_d& operator+=(const bunch_buffer_d& bb);
+	// peak detection of the buffers
+	std::vector<unsigned long> peak_detect(
+			const unsigned long min,
+			const unsigned long max);
+	std::vector<short> get_bunch_pattern() const;
+	void buffer(
+			const unsigned long index,
+			std::vector<double>& out) const;
+	size_t bunch_count() const;
+	size_t buffer_size() const;
+	void notch();
+	void average();
+	double check_rms();
+	void svd(double threshold = 0.0);
+	void fft();
+	void amplitude();
+	void phase_deg();
+	void log10();
+	bool save_txt(
+			const std::string& file_name,
+			const std::string& time_stamp);
+	bool save_gzip(
+			const std::string& file_name,
+			const std::string& time_stamp);
+	bool load_txt(const std::string& file_name);
+	bool load_gzip(const std::string& file_name);
+	bool empty() const;
+	void clear();
 };
 
 #endif // bunch_buffer_HEADER_DEFINED
