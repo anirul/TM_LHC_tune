@@ -275,11 +275,11 @@ void bunch_buffer_f::svd() {
    // S -> s
    gsl::matrix s(bunch_count(), bunch_count());
    for (size_t i = 0; i < bunch_count(); ++i) {
-	   if (S[i] < (s_sorted[(size_t)((double)bunch_count() * 0.20)])) {
-		   s(i, i) = 0.0f;
-         continue;
-      }
-	   if (S[i] > (s_sorted[(size_t)((double)bunch_count() * 0.80)])) {
+//	   if (S[i] < (s_sorted[(size_t)((double)bunch_count() * 0.33)])) {
+//		   s(i, i) = 0.0f;
+//       continue;
+//    }
+	   if (S[i] > (s_sorted[(size_t)((double)bunch_count() * 0.66)])) {
 		   s(i, i) = 0.0f;
          continue;
       }
