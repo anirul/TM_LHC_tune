@@ -44,59 +44,61 @@ double average_d(const std::vector<double>& vec);
 double average_d(const std::vector<unsigned long>& vec);
 
 class acquisition_buffer_f : public fftwf_fft {
-   protected :
-      std::vector<std::complex<float> > complex_buffer_;
-   public :
-      acquisition_buffer_f(
-            const std::vector<short>& in, 
-            unsigned long pitch, 
-            unsigned long offset);
-      acquisition_buffer_f(const std::string& values);
-      void buffer_complex(std::vector<std::complex<float> >& out) const;
-      void buffer_real(std::vector<float>& out) const;
-      void save_txt(std::ostream& os);
-      void load_txt(std::istream& is);
-      size_t size() const;
-      void notch();
-      float check_rms();
-      void fft();
-      void amplitude();
-      void phase_deg();
-      void log10();
-      unsigned long peak_detect(
-            unsigned long min, 
-            unsigned long max);
-      bool empty() const;
-      float& operator[](size_t index);
-      const float& operator[](size_t index) const;
+protected :
+	std::vector<std::complex<float> > complex_buffer_;
+public :
+	acquisition_buffer_f(
+			const std::vector<short>& in,
+			unsigned long pitch,
+			unsigned long offset);
+	acquisition_buffer_f(const std::string& values);
+	void buffer_complex(std::vector<std::complex<float> >& out) const;
+	void buffer_real(std::vector<float>& out) const;
+	void save_txt(std::ostream& os);
+	void load_txt(std::istream& is);
+	size_t size() const;
+	void notch();
+	void average();
+	float check_rms();
+	void fft();
+	void amplitude();
+	void phase_deg();
+	void log10();
+	unsigned long peak_detect(
+			unsigned long min,
+			unsigned long max);
+	bool empty() const;
+	float& operator[](size_t index);
+	const float& operator[](size_t index) const;
 };
 
 class acquisition_buffer_d : public fftwd_fft {
-   protected :
-      std::vector<std::complex<double> > complex_buffer_;
-   public :
-      acquisition_buffer_d(
-            const std::vector<short>& in, 
-            unsigned long pitch, 
-            unsigned long offset);
-      acquisition_buffer_d(const std::string& values);
-      void buffer_complex(std::vector<std::complex<double> >& out) const;
-      void buffer_real(std::vector<double>& out) const;
-      void save_txt(std::ostream& os);
-      void load_txt(std::istream& is);
-      size_t size() const;
-      void notch();
-      double check_rms();
-      void fft();
-      void amplitude();
-      void phase_deg();
-      void log10();
-      unsigned long peak_detect(
-            unsigned long min, 
-            unsigned long max);
-      bool empty() const;
-      double& operator[](size_t index);
-      const double& operator[](size_t index) const;
+protected :
+	std::vector<std::complex<double> > complex_buffer_;
+public :
+	acquisition_buffer_d(
+			const std::vector<short>& in,
+			unsigned long pitch,
+			unsigned long offset);
+	acquisition_buffer_d(const std::string& values);
+	void buffer_complex(std::vector<std::complex<double> >& out) const;
+	void buffer_real(std::vector<double>& out) const;
+	void save_txt(std::ostream& os);
+	void load_txt(std::istream& is);
+	size_t size() const;
+	void notch();
+	void average();
+	double check_rms();
+	void fft();
+	void amplitude();
+	void phase_deg();
+	void log10();
+	unsigned long peak_detect(
+			unsigned long min,
+			unsigned long max);
+	bool empty() const;
+	double& operator[](size_t index);
+	const double& operator[](size_t index) const;
 };
 
 #endif // acquisition_buffer_HEADER_DEFINED

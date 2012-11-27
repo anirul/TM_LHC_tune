@@ -41,39 +41,40 @@ using namespace boost::program_options;
 using namespace boost::posix_time;
 
 class svd_cmd : public commands {
-	protected :
-		bool pre_notch_;
-	public :
-		svd_cmd(bool pre_notch = false) : pre_notch_(pre_notch) {}
-		virtual void operator()(bunch_buffer_f& bb) const {
-			if (!pre_notch_) bb.notch();
-			bb.svd();
-			bb.fft();
-			bb.amplitude();
-		}
+protected :
+	float threshold_svd_;
+public :
+	svd_cmd(float threshold_svd = 0.0f) :
+		threshold_svd_(threshold_svd) {}
+	virtual void operator()(bunch_buffer_f& bb) const {
+		bb.average();
+		bb.svd(threshold_svd_);
+		bb.fft();
+		bb.amplitude();
+	}
 };
 
 int main(int ac, char** av) {
 	unsigned int nb_acc = 10;
-	bool pre_notch = false;
 	int64_t start_time = 0; // 1st January 1970
 	int64_t end_time = std::numeric_limits<int64_t>::max();
+	float threshold_svd = 0.0f;
 	std::string path = "";
 	std::string output_file = "";
 	std::bitset<16> bunch_mask(std::string("111111"));
 	try {
 		// parse command line
 		options_description desc("Allowed options");
-		desc.add_options()("help,h", "produce help message")("path,p",
-				value<std::string>(), "path to the datas (default : \".\")")(
-				"nb-acc,n", value<unsigned int>(),
-				"averaging in turn (default : 10)")("output-file,o",
-				value<std::string>(), "output file (dump the values)")(
-				"bunch-mask,m", value<std::string>(),
-				"bunch mask (default : 111111)")("pre-notch",
-				"in case data was already notched")("start-time",
-				value<std::string>(), "start time in ns from epoch")("end-time",
-				value<std::string>(), "end time in ns from epoch");
+		desc.add_options
+		()
+		("help,h", "produce help message")
+		("path,p", value<std::string>(), "path to the datas (default : \".\")")
+		("nb-acc,n", value<unsigned int>(),	"averaging in turn (default : 10)")
+		("output-file,o", value<std::string>(), "output file (dump the values)")
+		("bunch-mask,m", value<std::string>(), "bunch mask (default : 111111)")
+		("start-time", value<std::string>(), "start time in ns from epoch")
+		("end-time", value<std::string>(), "end time in ns from epoch")
+		("threshold-svd", value<float>(), "minimum of the SVD S values");
 		variables_map vm;
 		store(command_line_parser(ac, av).options(desc).run(), vm);
 		if (vm.count("help")) {
@@ -96,19 +97,19 @@ int main(int ac, char** av) {
 		} else {
 			throw std::runtime_error("output file needed (see --help)");
 		}
-		if (vm.count("pre-notch")) {
-			pre_notch = true;
-			std::cout << "pre notch       : true" << std::endl;
-		}
 		if (vm.count("bunch-mask")) {
 			bunch_mask = std::bitset<16>(vm["bunch-mask"].as<std::string>());
 		}
 		std::cout << "bunch mask      : " << bunch_mask << std::endl;
+		if (vm.count("threshold-svd")) {
+			threshold_svd = vm["threshold-svd"].as<float>();
+		}
+		std::cout << "threshold SVD   : " << threshold_svd << std::endl;
 		if (vm.count("start-time")) {
-        	{
-            	std::string start_time_str = vm["start-time"].as<std::string>();
-            	start_time = boost::lexical_cast<long long>(start_time_str);
-         	}
+			{
+				std::string start_time_str = vm["start-time"].as<std::string>();
+				start_time = boost::lexical_cast<long long>(start_time_str);
+			}
 			boost::posix_time::ptime ptime_time;
 			{ // convert to time
 				ptime_time = boost::posix_time::from_time_t(
@@ -120,10 +121,10 @@ int main(int ac, char** av) {
 					<< ptime_time << "]" << std::endl;
 		}
 		if (vm.count("end-time")) {
-         	{
-   				std::string end_time_str = vm["end-time"].as<std::string>();
-            	end_time = boost::lexical_cast<long long>(end_time_str);
-         	}
+			{
+				std::string end_time_str = vm["end-time"].as<std::string>();
+				end_time = boost::lexical_cast<long long>(end_time_str);
+			}
 			boost::posix_time::ptime ptime_time;
 			{ // convert to time
 				ptime_time = boost::posix_time::from_time_t(
@@ -140,7 +141,7 @@ int main(int ac, char** av) {
 				throw std::runtime_error("invalid parameter list (see --help)");
 			}
 			if (path.size()) {
-				svd_cmd cmd(pre_notch);
+				svd_cmd cmd(threshold_svd);
 				spect.load_files(path, cmd, start_time, end_time);
 			}
 			if (output_file.size()) {
