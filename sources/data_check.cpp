@@ -44,13 +44,14 @@ using namespace boost::program_options;
 using namespace boost::posix_time;
 
 class chk_cmd : public commands {
-		bool pre_notch_;
 	public :
-		chk_cmd(bool pre_notch = false) : pre_notch_(pre_notch) {}
+		chk_cmd() {}
 		virtual void operator()(bunch_buffer_f& bb) const {
-			if (!pre_notch_) bb.notch();
+			bb.average();
+			bb.resize(2048);
 			bb.fft();
 			bb.amplitude();
+			bb.clean(0, bb.buffer_size() / 20);
 		}
 };
 
@@ -61,7 +62,6 @@ int main(int ac, char** av) {
 	int64_t start_time = 0; // 1st January 1970
 	int64_t end_time = std::numeric_limits<int64_t>::max();
 	bool enable_fullscreen;
-	bool pre_notch = false;
 	bool no_label = false;
 	bool black_white = false;
 	std::string path = "";
@@ -72,20 +72,21 @@ int main(int ac, char** av) {
 	try {
 		// parse command line
 		options_description desc("Allowed options");
-		desc.add_options()("help,h", "produce help message")("path,p",
-				value<std::string>(), "path to the datas (default : \".\")")(
-				"nb-acc,n", value<unsigned int>(),
-				"averaging in turn (default : 10)")("fullscreen,f",
-				"fullscreen")("output-file,o", value<std::string>(),
-				"output file (dump the values)")("output-image,b",
-				value<std::string>(), "output an image")("no-label",
-				"disable label in images")("input-file,i", value<std::string>(),
-				"input file (read from dump)")("bunch-mask,m",
-				value<std::string>(), "bunch mask (default : 111111)")(
-				"pre-notch", "in case data was already notched")("black-white",
-				"output picture in monochrome")("start-time",
-				value<std::string>(), "start time in ns from epoch")("end-time",
-				value<std::string>(), "end time in ns from epoch");
+		desc.add_options
+		()
+		("help,h", "produce help message")
+		("path,p", value<std::string>(), "path to the datas (default : \".\")")
+		("nb-acc,n", value<unsigned int>(),	"averaging in turn (default : 10)")
+		("fullscreen,f", "fullscreen")
+		("output-file,o", value<std::string>(), "output file (dump the values)")
+		("output-image,b", value<std::string>(), "output an image")
+		("no-label", "disable label in images")
+		("input-file,i", value<std::string>(), "input file (read from dump)")
+		("bunch-mask,m", value<std::string>(), "bunch mask (default : 111111)")
+		("pre-notch", "in case data was already notched")
+		("black-white", "output picture in monochrome")
+		("start-time", value<std::string>(), "start time in ns from epoch")
+		("end-time", value<std::string>(), "end time in ns from epoch");
 		variables_map vm;
 		store(command_line_parser(ac, av).options(desc).run(), vm);
 		if (vm.count("help")) {
@@ -116,10 +117,6 @@ int main(int ac, char** av) {
 		if (vm.count("output-image")) {
 			output_image = vm["output-image"].as<std::string>();
 			std::cout << "output image    : " << output_image << std::endl;
-		}
-		if (vm.count("pre-notch")) {
-			pre_notch = true;
-			std::cout << "pre notch       : true" << std::endl;
 		}
 		if (vm.count("no-label")) {
 			no_label = true;
@@ -166,8 +163,9 @@ int main(int ac, char** av) {
 		{
 			spectrogram spect(nb_acc, bunch_mask);
 			if (path.size()) {
-				chk_cmd cmd(pre_notch);
-				spect.load_files(path, cmd, start_time, end_time);
+				chk_cmd cmd;
+				fftwf_fft fft_instance;
+				spect.load_files(path, cmd, &fft_instance, start_time, end_time);
 			} else if (input_file.size()) {
 				spect.load_dump(input_file);
 			} else {

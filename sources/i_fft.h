@@ -25,42 +25,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef fftw_fft_HEADER_DEFINED
-#define fftw_fft_HEADER_DEFINED
+#ifndef i_fft_HEADER_DEFINED
+#define i_fft_HEADER_DEFINED
 
-#include <complex>
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/thread.hpp>
-#include "fftw3.h"
-#include "i_fft.h"
-
-using namespace boost::posix_time;
-
-class fftwf_fft : public i_fft_f {
-   protected :
-      static boost::mutex lock_;
-      std::vector<std::complex<float> > fftw_buffer_in_;
-      std::vector<std::complex<float> > fftw_buffer_out_;
-      size_t data_size_;
-   public :
-      virtual void prepare(
-    		  const std::vector<std::complex<float> >& in);
-      virtual boost::posix_time::time_duration run(
-    		  std::vector<std::complex<float> >& out);
+struct i_fft_f {
+    virtual void prepare(
+    		const std::vector<std::complex<float> >& in) = 0;
+    virtual boost::posix_time::time_duration run(
+    		std::vector<std::complex<float> >& out) = 0;
 };
 
-class fftwd_fft : public i_fft_d {
-   protected :
-      static boost::mutex lock_;
-      std::vector<std::complex<double> > fftw_buffer_in_;
-      std::vector<std::complex<double> > fftw_buffer_out_;
-      size_t data_size_;
-   public :
-      virtual void prepare(
-    		  const std::vector<std::complex<double> >& in);
-      virtual boost::posix_time::time_duration run(
-    		  std::vector<std::complex<double> >& out);
+struct i_fft_d {
+    virtual void prepare(
+    		const std::vector<std::complex<double> >& in) = 0;
+    virtual boost::posix_time::time_duration run(
+    		std::vector<std::complex<double> >& out) = 0;
 };
 
-#endif // fftw_fft_HEADER_DEFINED
-
+#endif // i_fft_HEADER_DEFINED

@@ -25,42 +25,37 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef fftw_fft_HEADER_DEFINED
-#define fftw_fft_HEADER_DEFINED
+#ifndef CL_fft_HEADER_DEFINED
+#define CL_fft_HEADER_DEFINED
 
-#include <complex>
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/thread.hpp>
-#include "fftw3.h"
+#define __CL_ENABLE_EXCEPTIONS
+#include <CL/cl.hpp>
 #include "i_fft.h"
 
-using namespace boost::posix_time;
-
-class fftwf_fft : public i_fft_f {
-   protected :
-      static boost::mutex lock_;
-      std::vector<std::complex<float> > fftw_buffer_in_;
-      std::vector<std::complex<float> > fftw_buffer_out_;
-      size_t data_size_;
-   public :
-      virtual void prepare(
-    		  const std::vector<std::complex<float> >& in);
-      virtual boost::posix_time::time_duration run(
-    		  std::vector<std::complex<float> >& out);
+class cl_fft : public i_fft_f {
+private :
+	cl::Buffer cl_buffer_in_x_;
+	cl::Buffer cl_buffer_out_y_;
+	size_t data_size_;
+	unsigned int device_used_;
+	std::vector<cl::Device> devices_;
+	cl::Context context_;
+	cl::CommandQueue queue_;
+	cl::Program program_;
+	cl::Kernel kernel_;
+	// debugging variables
+	cl_int err_;
+	cl::Event event_;
+public :
+	cl_fft();
+	virtual ~cl_fft() {}
+	// then before the next iteration
+	virtual void prepare(
+			const std::vector<std::complex<float> >& in);
+	// run the actual next step
+	virtual boost::posix_time::time_duration run(
+			std::vector<std::complex<float> >& out);
 };
 
-class fftwd_fft : public i_fft_d {
-   protected :
-      static boost::mutex lock_;
-      std::vector<std::complex<double> > fftw_buffer_in_;
-      std::vector<std::complex<double> > fftw_buffer_out_;
-      size_t data_size_;
-   public :
-      virtual void prepare(
-    		  const std::vector<std::complex<double> >& in);
-      virtual boost::posix_time::time_duration run(
-    		  std::vector<std::complex<double> >& out);
-};
-
-#endif // fftw_fft_HEADER_DEFINED
+#endif // CL_fft_HEADER_DEFINED
 

@@ -80,10 +80,11 @@ void spectrogram::average(
 }
 
 bunch_buffer_f spectrogram::buffer_from_file(
-	const boost::filesystem::path& path) const 
+	const boost::filesystem::path& path,
+	i_fft_f* fft_instance) const
 {
 	std::string full_path = fs::canonical(path).string();
-	bunch_buffer_f bb(full_path);
+	bunch_buffer_f bb(full_path, fft_instance);
 	if (!bb.buffer_size()) {
 		std::cout << std::endl;
 		throw std::runtime_error("Error invalid file : " + full_path);
@@ -142,6 +143,7 @@ spectrogram::~spectrogram() {}
 void spectrogram::load_files(
 	const std::string& path, 
 	const commands& cmd,
+	i_fft_f* fft_instance,
 	int64_t start_time,
 	int64_t end_time) 
 {
@@ -178,7 +180,7 @@ void spectrogram::load_files(
 				<< file_time << " "
 				<< full_path;
 			std::cout.flush();
-			bunch_buffer_f bb = buffer_from_file(*ite);
+			bunch_buffer_f bb = buffer_from_file(*ite, fft_instance);
 			if (bb.empty()) {
 				std::cout 
 					<< std::endl
@@ -188,7 +190,7 @@ void spectrogram::load_files(
 			}
 			if (!pitch_) {
 				pitch_ = bb.buffer_size() / 2;
-			} 
+			}
 			// save the bunch pattern
 			if (bb.get_bunch_pattern() != bunch_pattern_) { 
 				bunch_pattern_ = bb.get_bunch_pattern();
@@ -203,6 +205,7 @@ void spectrogram::load_files(
 			if (!(acc_count % nb_acc_)) {
 				// here come the computing
 				cmd(acc_bb);
+				pitch_ = acc_bb.buffer_size();
 				// apply bunch mask!
 				average(acc_bb, temp);
 				temp.resize(pitch_);

@@ -71,7 +71,7 @@ int main(int ac, char** av) {
 			std::string full_path = fs::canonical(*ite).string();
 			try {
 				std::cout << "checking file   : " << full_path << std::endl;
-				bunch_buffer_f bb(full_path);
+				bunch_buffer_f bb(full_path, NULL);
 				if (bb.empty()) {
 					std::cout << "file empty      : " << full_path << std::endl;
 					fs::remove(*ite);

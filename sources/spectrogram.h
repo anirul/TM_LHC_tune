@@ -64,7 +64,8 @@ class spectrogram {
 			const bunch_buffer_f& buffers,
 			std::vector<float>& out) const;
 		bunch_buffer_f buffer_from_file(
-			const boost::filesystem::path& path) const;
+			const boost::filesystem::path& path,
+			i_fft_f* fft_instance) const;
 		boost::posix_time::ptime ptime_from_file(
 			const boost::filesystem::path& path) const;
 		long long time_stamp_from_file(
@@ -78,6 +79,7 @@ class spectrogram {
 		void load_files(
 			const std::string& path, 
 			const commands& cmd,
+			i_fft_f* fft_instance,
 			int64_t start_time = 0, 
 			int64_t end_time = std::numeric_limits<int64_t>::max());
 		void save_dump(const std::string& file) const;

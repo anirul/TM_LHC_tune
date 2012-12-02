@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Frederic DUBOUCHET
+ * Copyright (c) 2012, Frederic Dubouchet
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -13,7 +13,7 @@
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY Frederic DUBOUCHET ``AS IS'' AND ANY
+ * THIS SOFTWARE IS PROVIDED BY Frederic Dubouchet ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL Frederic DUBOUCHET BE LIABLE FOR ANY
@@ -35,20 +35,17 @@
 #include "acquisition_buffer.h"
 #include "bunch_buffer.h"
 #include "spectrogram.h"
-#include "gsl_svd.h"
+#include "cl_fft.h"
 
 using namespace boost::program_options;
 using namespace boost::posix_time;
 
-class svd_cmd : public commands {
+class gpu_cmd : public commands {
 protected :
-	float threshold_svd_;
 public :
-	svd_cmd(float threshold_svd = 0.0f) :
-		threshold_svd_(threshold_svd) {}
 	virtual void operator()(bunch_buffer_f& bb) const {
 		bb.average();
-		bb.svd(threshold_svd_);
+		bb.resize(2048);
 		bb.fft();
 		bb.amplitude();
 		bb.clean(0, bb.buffer_size() / 20);
@@ -59,7 +56,6 @@ int main(int ac, char** av) {
 	unsigned int nb_acc = 10;
 	int64_t start_time = 0; // 1st January 1970
 	int64_t end_time = std::numeric_limits<int64_t>::max();
-	float threshold_svd = 0.0f;
 	std::string path = "";
 	std::string output_file = "";
 	std::bitset<16> bunch_mask(std::string("111111"));
@@ -74,8 +70,7 @@ int main(int ac, char** av) {
 		("output-file,o", value<std::string>(), "output file (dump the values)")
 		("bunch-mask,m", value<std::string>(), "bunch mask (default : 111111)")
 		("start-time", value<std::string>(), "start time in ns from epoch")
-		("end-time", value<std::string>(), "end time in ns from epoch")
-		("threshold-svd", value<float>(), "minimum of the SVD S values");
+		("end-time", value<std::string>(), "end time in ns from epoch");
 		variables_map vm;
 		store(command_line_parser(ac, av).options(desc).run(), vm);
 		if (vm.count("help")) {
@@ -102,10 +97,6 @@ int main(int ac, char** av) {
 			bunch_mask = std::bitset<16>(vm["bunch-mask"].as<std::string>());
 		}
 		std::cout << "bunch mask      : " << bunch_mask << std::endl;
-		if (vm.count("threshold-svd")) {
-			threshold_svd = vm["threshold-svd"].as<float>();
-		}
-		std::cout << "threshold SVD   : " << threshold_svd << std::endl;
 		if (vm.count("start-time")) {
 			{
 				std::string start_time_str = vm["start-time"].as<std::string>();
@@ -142,8 +133,8 @@ int main(int ac, char** av) {
 				throw std::runtime_error("invalid parameter list (see --help)");
 			}
 			if (path.size()) {
-				svd_cmd cmd(threshold_svd);
-				fftwf_fft fft_instance;
+				gpu_cmd cmd;
+				cl_fft fft_instance;
 				spect.load_files(path, cmd, &fft_instance, start_time, end_time);
 			}
 			if (output_file.size()) {

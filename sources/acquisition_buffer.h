@@ -35,6 +35,7 @@
 #include <vector>
 #include <complex>
 #include "fftw_fft.h"
+#include "i_fft.h"
 
 float rms_f(const std::vector<float>& vec);
 float average_f(const std::vector<float>& vec);
@@ -43,15 +44,19 @@ double rms_d(const std::vector<double>& vec);
 double average_d(const std::vector<double>& vec);
 double average_d(const std::vector<unsigned long>& vec);
 
-class acquisition_buffer_f : public fftwf_fft {
+class acquisition_buffer_f {
 protected :
 	std::vector<std::complex<float> > complex_buffer_;
+	i_fft_f* fft_instance_;
 public :
 	acquisition_buffer_f(
 			const std::vector<short>& in,
+			i_fft_f* fft_instance,
 			unsigned long pitch,
 			unsigned long offset);
-	acquisition_buffer_f(const std::string& values);
+	acquisition_buffer_f(
+			const std::string& values,
+			i_fft_f* fft_instance);
 	void buffer_complex(std::vector<std::complex<float> >& out) const;
 	void buffer_real(std::vector<float>& out) const;
 	void save_txt(std::ostream& os);
@@ -69,19 +74,24 @@ public :
 			unsigned long min,
 			unsigned long max);
 	bool empty() const;
+	void resize(size_t size);
 	float& operator[](size_t index);
 	const float& operator[](size_t index) const;
 };
 
-class acquisition_buffer_d : public fftwd_fft {
+class acquisition_buffer_d {
 protected :
 	std::vector<std::complex<double> > complex_buffer_;
+	i_fft_d* fft_instance_;
 public :
 	acquisition_buffer_d(
 			const std::vector<short>& in,
+			i_fft_d* fft_instance,
 			unsigned long pitch,
 			unsigned long offset);
-	acquisition_buffer_d(const std::string& values);
+	acquisition_buffer_d(
+			const std::string& values,
+			i_fft_d* fft_instance);
 	void buffer_complex(std::vector<std::complex<double> >& out) const;
 	void buffer_real(std::vector<double>& out) const;
 	void save_txt(std::ostream& os);
@@ -99,6 +109,7 @@ public :
 			unsigned long min,
 			unsigned long max);
 	bool empty() const;
+	void resize(size_t size);
 	double& operator[](size_t index);
 	const double& operator[](size_t index) const;
 };

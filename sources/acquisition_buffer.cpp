@@ -83,8 +83,10 @@ double average_d(const std::vector<unsigned long>& vec) {
 
 acquisition_buffer_f::acquisition_buffer_f(
 		const std::vector<short>& in,
+		i_fft_f* fft_instance,
 		unsigned long pitch,
 		unsigned long offset)
+			: fft_instance_(fft_instance)
 {
 	if (offset >= pitch)
 		throw std::runtime_error("offset cannot be >= to pitch");
@@ -97,8 +99,10 @@ acquisition_buffer_f::acquisition_buffer_f(
 
 acquisition_buffer_d::acquisition_buffer_d(
 		const std::vector<short>& in,
+		i_fft_d* fft_instance,
 		unsigned long pitch,
 		unsigned long offset)
+			: fft_instance_(fft_instance)
 {
 	if (offset >= pitch)
 		throw std::runtime_error("offset cannot be >= to pitch");
@@ -109,12 +113,20 @@ acquisition_buffer_d::acquisition_buffer_d(
 	complex_buffer_.resize(j);
 }
 
-acquisition_buffer_f::acquisition_buffer_f(const std::string& values) {
+acquisition_buffer_f::acquisition_buffer_f(
+		const std::string& values,
+		i_fft_f* fft_instance)
+			: fft_instance_(fft_instance)
+{
 	std::stringstream ss(values);
 	load_txt(ss);
 }
 
-acquisition_buffer_d::acquisition_buffer_d(const std::string& values) {
+acquisition_buffer_d::acquisition_buffer_d(
+		const std::string& values,
+		i_fft_d* fft_instance)
+			: fft_instance_(fft_instance)
+{
 	std::stringstream ss(values);
 	load_txt(ss);
 }
@@ -128,13 +140,13 @@ size_t acquisition_buffer_d::size() const {
 }
 
 void acquisition_buffer_f::clean(size_t begin, size_t end) {
-   for (size_t i = begin; i < end; ++i)
-      complex_buffer_[i] = std::complex<float>(0.0f, 0.0f);
+	for (size_t i = begin; i < end; ++i)
+		complex_buffer_[i] = std::complex<float>(0.0f, 0.0f);
 }
 
 void acquisition_buffer_d::clean(size_t begin, size_t end) {
-   for (size_t i = begin; i < end; ++i)
-      complex_buffer_[i] = std::complex<double>(0.0, 0.0);  
+	for (size_t i = begin; i < end; ++i)
+		complex_buffer_[i] = std::complex<double>(0.0, 0.0);
 }
 
 void acquisition_buffer_f::buffer_real(std::vector<float>& out) const {
@@ -214,8 +226,8 @@ double acquisition_buffer_d::check_rms() {
 void acquisition_buffer_f::fft() {
 	if (!complex_buffer_.size())
 		throw std::runtime_error("empty complex buffer!");
-	prepare(complex_buffer_);
-	run(complex_buffer_);
+	fft_instance_->prepare(complex_buffer_);
+	fft_instance_->run(complex_buffer_);
 	// only the bottom half is interesting
 	complex_buffer_.resize(complex_buffer_.size() / 2);
 }
@@ -223,8 +235,8 @@ void acquisition_buffer_f::fft() {
 void acquisition_buffer_d::fft() {
 	if (!complex_buffer_.size())
 		throw std::runtime_error("empty complex buffer!");
-	prepare(complex_buffer_);
-	run(complex_buffer_);
+	fft_instance_->prepare(complex_buffer_);
+	fft_instance_->run(complex_buffer_);
 	// only the bottom half is interesting
 	complex_buffer_.resize(complex_buffer_.size() / 2);
 }
@@ -375,4 +387,12 @@ double& acquisition_buffer_d::operator[](size_t index ) {
 
 const double& acquisition_buffer_d::operator[](size_t index) const {
 	return complex_buffer_[index].real();
+}
+
+void acquisition_buffer_f::resize(size_t size) {
+	complex_buffer_.resize(size);
+}
+
+void acquisition_buffer_d::resize(size_t size) {
+	complex_buffer_.resize(size);
 }

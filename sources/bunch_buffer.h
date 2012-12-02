@@ -38,6 +38,7 @@ class bunch_buffer_f {
 protected:
 	std::vector<acquisition_buffer_f> buffers_;
 	std::vector<short> bunch_pattern_;
+	i_fft_f* fft_instance_;
 protected:
 	void save_txt(
 			std::ostream& os,
@@ -47,8 +48,11 @@ public:
 	// constructor data and the number of bunches
 	bunch_buffer_f(
 			const std::vector<short>& data,
-			const std::vector<short>& bunch_pattern);
-	bunch_buffer_f(const std::string& file_name);
+			const std::vector<short>& bunch_pattern,
+			i_fft_f* fft_instance);
+	bunch_buffer_f(
+			const std::string& file_name,
+			i_fft_f* fft_instance);
 	bunch_buffer_f();
 	bunch_buffer_f(const bunch_buffer_f& bb);
 	virtual ~bunch_buffer_f();
@@ -84,12 +88,14 @@ public:
 	bool load_gzip(const std::string& file_name);
 	bool empty() const;
 	void clear();
+	void resize(size_t size);
 };
 
 class bunch_buffer_d {
 protected:
 	std::vector<acquisition_buffer_d> buffers_;
 	std::vector<short> bunch_pattern_;
+	i_fft_d* fft_instance_;
 protected:
 	void save_txt(
 			std::ostream& os,
@@ -99,8 +105,11 @@ public:
 	// constructor data and the number of bunches
 	bunch_buffer_d(
 			const std::vector<short>& data,
-			const std::vector<short>& bunch_pattern);
-	bunch_buffer_d(const std::string& file_name);
+			const std::vector<short>& bunch_pattern,
+			i_fft_d* fft_instance);
+	bunch_buffer_d(
+			const std::string& file_name,
+			i_fft_d* fft_instance);
 	bunch_buffer_d();
 	bunch_buffer_d(const bunch_buffer_d& bb);
 	virtual ~bunch_buffer_d();
@@ -136,6 +145,7 @@ public:
 	bool load_gzip(const std::string& file_name);
 	bool empty() const;
 	void clear();
+	void resize(size_t size);
 };
 
 #endif // bunch_buffer_HEADER_DEFINED

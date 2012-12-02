@@ -35,12 +35,13 @@
 #include "bunch_buffer.h"
 #include "gsl_svd.h"
 
+bunch_buffer_f::bunch_buffer_f() : fft_instance_(NULL) {}
 
-bunch_buffer_f::bunch_buffer_f() {}
+bunch_buffer_d::bunch_buffer_d() : fft_instance_(NULL) {}
 
-bunch_buffer_d::bunch_buffer_d() {}
-
-bunch_buffer_f::bunch_buffer_f(const bunch_buffer_f& bb) {
+bunch_buffer_f::bunch_buffer_f(const bunch_buffer_f& bb) :
+		fft_instance_(bb.fft_instance_)
+{
 	buffers_.insert(
 			buffers_.end(),
 			bb.buffers_.begin(),
@@ -51,7 +52,9 @@ bunch_buffer_f::bunch_buffer_f(const bunch_buffer_f& bb) {
 			bb.bunch_pattern_.end());
 }
 
-bunch_buffer_d::bunch_buffer_d(const bunch_buffer_d& bb) {
+bunch_buffer_d::bunch_buffer_d(const bunch_buffer_d& bb) :
+		fft_instance_(bb.fft_instance_)
+{
 	buffers_.insert(
 			buffers_.end(),
 			bb.buffers_.begin(),
@@ -116,21 +119,25 @@ bunch_buffer_d& bunch_buffer_d::operator+=(const bunch_buffer_d& bb) {
 
 bunch_buffer_f::bunch_buffer_f(
 		const std::vector<short>& data,
-		const std::vector<short>& bunch_pattern)
+		const std::vector<short>& bunch_pattern,
+		i_fft_f* fft_instance) :
+				fft_instance_(fft_instance)
 {
 	bunch_pattern_ = bunch_pattern;
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i) {
-		buffers_.push_back(acquisition_buffer_f(data, bunch_pattern_.size(), i));
+		buffers_.push_back(acquisition_buffer_f(data, fft_instance, bunch_pattern_.size(), i));
 	}
 }
 
 bunch_buffer_d::bunch_buffer_d(
 		const std::vector<short>& data,
-		const std::vector<short>& bunch_pattern)
+		const std::vector<short>& bunch_pattern,
+		i_fft_d* fft_instance) :
+				fft_instance_(fft_instance)
 {
 	bunch_pattern_ = bunch_pattern;
 	for (unsigned long i = 0; i < bunch_pattern.size(); ++i) {
-		buffers_.push_back(acquisition_buffer_d(data, bunch_pattern.size(), i));
+		buffers_.push_back(acquisition_buffer_d(data, fft_instance, bunch_pattern.size(), i));
 	}
 }
 
@@ -138,7 +145,11 @@ bunch_buffer_f::~bunch_buffer_f() {}
 
 bunch_buffer_d::~bunch_buffer_d() {}
 
-bunch_buffer_f::bunch_buffer_f(const std::string& file_name) {
+bunch_buffer_f::bunch_buffer_f(
+		const std::string& file_name,
+		i_fft_f* fft_instance) :
+				fft_instance_(fft_instance)
+{
 	if (file_name.find(".gz") != std::string::npos) {
 		load_gzip(file_name);
 		return;
@@ -149,7 +160,11 @@ bunch_buffer_f::bunch_buffer_f(const std::string& file_name) {
 	}
 }
 
-bunch_buffer_d::bunch_buffer_d(const std::string& file_name) {
+bunch_buffer_d::bunch_buffer_d(
+		const std::string& file_name,
+		i_fft_d* fft_instance) :
+			fft_instance_(fft_instance)
+{
 	if (file_name.find(".gz") != std::string::npos) {
 		load_gzip(file_name);
 		return;
@@ -496,7 +511,7 @@ void bunch_buffer_f::load_txt(std::istream& is) {
 		if (item.find("<buffer") != std::string::npos) {
 			std::string values;
 			std::getline(is, values);
-			buffers_.push_back(acquisition_buffer_f(values));
+			buffers_.push_back(acquisition_buffer_f(values, fft_instance_));
 		}
 	}
 }
@@ -521,7 +536,7 @@ void bunch_buffer_d::load_txt(std::istream& is) {
 		if (item.find("<buffer") != std::string::npos) {
 			std::string values;
 			std::getline(is, values);
-			buffers_.push_back(acquisition_buffer_d(values));
+			buffers_.push_back(acquisition_buffer_d(values, fft_instance_));
 		}
 	}
 }
@@ -621,3 +636,14 @@ void bunch_buffer_d::clear() {
 	buffers_.clear();
 	bunch_pattern_.clear();
 }
+
+void bunch_buffer_f::resize(size_t size) {
+	for (size_t i = 0; i < buffers_.size(); ++i)
+		buffers_[i].resize(size);
+}
+
+void bunch_buffer_d::resize(size_t size) {
+	for (size_t i = 0; i < buffers_.size(); ++i)
+		buffers_[i].resize(size);
+}
+
