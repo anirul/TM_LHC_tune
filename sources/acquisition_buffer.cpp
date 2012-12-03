@@ -223,22 +223,26 @@ double acquisition_buffer_d::check_rms() {
 	return rms_d(begin) / rms_d(end);
 }
 
-void acquisition_buffer_f::fft() {
+boost::posix_time::time_duration acquisition_buffer_f::fft() {
 	if (!complex_buffer_.size())
 		throw std::runtime_error("empty complex buffer!");
 	fft_instance_->prepare(complex_buffer_);
-	fft_instance_->run(complex_buffer_);
+	boost::posix_time::time_duration duration =
+			fft_instance_->run(complex_buffer_);
 	// only the bottom half is interesting
 	complex_buffer_.resize(complex_buffer_.size() / 2);
+	return duration;
 }
 
-void acquisition_buffer_d::fft() {
+boost::posix_time::time_duration acquisition_buffer_d::fft() {
 	if (!complex_buffer_.size())
 		throw std::runtime_error("empty complex buffer!");
 	fft_instance_->prepare(complex_buffer_);
-	fft_instance_->run(complex_buffer_);
+	boost::posix_time::time_duration duration =
+			fft_instance_->run(complex_buffer_);
 	// only the bottom half is interesting
 	complex_buffer_.resize(complex_buffer_.size() / 2);
+	return duration;
 }
 
 void acquisition_buffer_f::amplitude() {

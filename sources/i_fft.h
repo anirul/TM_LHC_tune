@@ -29,6 +29,8 @@
 #define i_fft_HEADER_DEFINED
 
 struct i_fft_f {
+	i_fft_f() {}
+	virtual ~i_fft_f() {}
     virtual void prepare(
     		const std::vector<std::complex<float> >& in) = 0;
     virtual boost::posix_time::time_duration run(
@@ -36,6 +38,8 @@ struct i_fft_f {
 };
 
 struct i_fft_d {
+	i_fft_d() {}
+	virtual ~i_fft_d() {}
     virtual void prepare(
     		const std::vector<std::complex<double> >& in) = 0;
     virtual boost::posix_time::time_duration run(

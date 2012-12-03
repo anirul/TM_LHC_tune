@@ -66,7 +66,7 @@ public :
 	void notch();
 	void average();
 	float check_rms();
-	void fft();
+	boost::posix_time::time_duration fft();
 	void amplitude();
 	void phase_deg();
 	void log10();
@@ -101,7 +101,7 @@ public :
 	void notch();
 	void average();
 	double check_rms();
-	void fft();
+	boost::posix_time::time_duration fft();
 	void amplitude();
 	void phase_deg();
 	void log10();

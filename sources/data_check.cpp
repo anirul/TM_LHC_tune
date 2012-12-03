@@ -49,7 +49,8 @@ class chk_cmd : public commands {
 		virtual void operator()(bunch_buffer_f& bb) const {
 			bb.average();
 			bb.resize(2048);
-			bb.fft();
+			time_duration duration = bb.fft();
+			std::cout << " fft time : " << duration;
 			bb.amplitude();
 			bb.clean(0, bb.buffer_size() / 20);
 		}

@@ -31,16 +31,19 @@
 #include <boost/iostreams/copy.hpp>
 #include <boost/iostreams/filter/gzip.hpp>
 #include <boost/iostreams/stream.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #include "bunch_buffer.h"
 #include "gsl_svd.h"
+
+using namespace boost::posix_time;
 
 bunch_buffer_f::bunch_buffer_f() : fft_instance_(NULL) {}
 
 bunch_buffer_d::bunch_buffer_d() : fft_instance_(NULL) {}
 
 bunch_buffer_f::bunch_buffer_f(const bunch_buffer_f& bb) :
-		fft_instance_(bb.fft_instance_)
+				fft_instance_(bb.fft_instance_)
 {
 	buffers_.insert(
 			buffers_.end(),
@@ -53,7 +56,7 @@ bunch_buffer_f::bunch_buffer_f(const bunch_buffer_f& bb) :
 }
 
 bunch_buffer_d::bunch_buffer_d(const bunch_buffer_d& bb) :
-		fft_instance_(bb.fft_instance_)
+				fft_instance_(bb.fft_instance_)
 {
 	buffers_.insert(
 			buffers_.end(),
@@ -121,7 +124,7 @@ bunch_buffer_f::bunch_buffer_f(
 		const std::vector<short>& data,
 		const std::vector<short>& bunch_pattern,
 		i_fft_f* fft_instance) :
-				fft_instance_(fft_instance)
+						fft_instance_(fft_instance)
 {
 	bunch_pattern_ = bunch_pattern;
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i) {
@@ -138,7 +141,7 @@ bunch_buffer_d::bunch_buffer_d(
 		const std::vector<short>& data,
 		const std::vector<short>& bunch_pattern,
 		i_fft_d* fft_instance) :
-				fft_instance_(fft_instance)
+						fft_instance_(fft_instance)
 {
 	bunch_pattern_ = bunch_pattern;
 	for (unsigned long i = 0; i < bunch_pattern.size(); ++i) {
@@ -158,7 +161,7 @@ bunch_buffer_d::~bunch_buffer_d() {}
 bunch_buffer_f::bunch_buffer_f(
 		const std::string& file_name,
 		i_fft_f* fft_instance) :
-				fft_instance_(fft_instance)
+						fft_instance_(fft_instance)
 {
 	if (file_name.find(".gz") != std::string::npos) {
 		load_gzip(file_name);
@@ -173,7 +176,7 @@ bunch_buffer_f::bunch_buffer_f(
 bunch_buffer_d::bunch_buffer_d(
 		const std::string& file_name,
 		i_fft_d* fft_instance) :
-			fft_instance_(fft_instance)
+					fft_instance_(fft_instance)
 {
 	if (file_name.find(".gz") != std::string::npos) {
 		load_gzip(file_name);
@@ -287,7 +290,10 @@ double bunch_buffer_d::check_rms() {
 	return acc / (double)bunch_pattern_.size();
 }
 
-void bunch_buffer_f::svd(float threshold) {
+boost::posix_time::time_duration bunch_buffer_f::svd(float threshold) {
+	ptime begin;
+	ptime end;
+	begin = microsec_clock::universal_time();
 	// M x N
 	gsl::matrix A(buffer_size(), bunch_count());
 	for (int y = 0; y < bunch_count(); ++y) {
@@ -308,14 +314,12 @@ void bunch_buffer_f::svd(float threshold) {
 	// S -> s
 	gsl::matrix s(bunch_count(), bunch_count());
 	for (size_t i = 0; i < bunch_count(); ++i) {
-      std::cout << ((i) ? " " : "\nS[") << S[i];
 		if (S[i] < threshold) {
 			s(i, i) = 0.0f;
 		} else {
 			s(i, i) = S[i];
 		}
 	}
-   std::cout << "]\n";
 
 	// vt = V^T
 	gsl::matrix vt = transpose(V);
@@ -327,68 +331,78 @@ void bunch_buffer_f::svd(float threshold) {
 			buffers_[y][x] = out(y, x);
 		}
 	}
+	end = microsec_clock::universal_time();
+	return end - begin;
 }
 
-void bunch_buffer_d::svd(double threshold) {
+boost::posix_time::time_duration bunch_buffer_d::svd(double threshold) {
+	ptime begin;
+	ptime end;
+	begin = microsec_clock::universal_time();
+
 	// M x N
-   gsl::matrix A(buffer_size(), bunch_count());
-   for (int y = 0; y < bunch_count(); ++y) {
-      for (int x = 0; x < buffer_size(); ++x) {
-         A(x, y) = buffers_[y][x];
-      }
-   }
-   // N x N
-   gsl::matrix X(bunch_count(), bunch_count());
-   gsl::vector work(bunch_count());
-   gsl::vector S(bunch_count());
-   gsl::matrix V(bunch_count(), bunch_count());
-   gsl::matrix U = A;
+	gsl::matrix A(buffer_size(), bunch_count());
+	for (int y = 0; y < bunch_count(); ++y) {
+		for (int x = 0; x < buffer_size(); ++x) {
+			A(x, y) = buffers_[y][x];
+		}
+	}
+	// N x N
+	gsl::matrix X(bunch_count(), bunch_count());
+	gsl::vector work(bunch_count());
+	gsl::vector S(bunch_count());
+	gsl::matrix V(bunch_count(), bunch_count());
+	gsl::matrix U = A;
 
-   // compute SVD
-   SVD_mod(U, X, V, S, work);
+	// compute SVD
+	SVD_mod(U, X, V, S, work);
 
-   // S -> s
-   gsl::matrix s(bunch_count(), bunch_count());
-   for (size_t i = 0; i < bunch_count(); ++i) {
-      std::cout << ((i) ? " " : "\nS[") << S[i];
-      if (S[i] < threshold) {
-         s(i, i) = 0.0f;
-      } else {
-         s(i, i) = S[i];
-      }
-   }
-   std::cout << "]\n";
+	// S -> s
+	gsl::matrix s(bunch_count(), bunch_count());
+	for (size_t i = 0; i < bunch_count(); ++i) {
+		if (S[i] < threshold) {
+			s(i, i) = 0.0f;
+		} else {
+			s(i, i) = S[i];
+		}
+	}
 
-   // vt = V^T
-   gsl::matrix vt = transpose(V);
+	// vt = V^T
+	gsl::matrix vt = transpose(V);
 
-   // out = U s vt (out ~ A)
-   gsl::matrix out = U * s * vt;
-   for (int y = 0; y < bunch_count(); ++y) {
-      for (int x = 0; x < bunch_count(); ++x) {
-         buffers_[y][x] = out(y, x);
-      }
-   }
+	// out = U s vt (out ~ A)
+	gsl::matrix out = U * s * vt;
+	for (int y = 0; y < bunch_count(); ++y) {
+		for (int x = 0; x < bunch_count(); ++x) {
+			buffers_[y][x] = out(y, x);
+		}
+	}
+	end = microsec_clock::universal_time();
+	return end - begin;
 }
 
 void bunch_buffer_f::clean(size_t begin, size_t end) {
-   for (size_t i = 0; i < bunch_pattern_.size(); ++i)
-      buffers_[i].clean(begin, end);
+	for (size_t i = 0; i < bunch_pattern_.size(); ++i)
+		buffers_[i].clean(begin, end);
 }
 
 void bunch_buffer_d::clean(size_t begin, size_t end) {
-   for (size_t i = 0; i < bunch_pattern_.size(); ++i)
-      buffers_[i].clean(begin, end);  
+	for (size_t i = 0; i < bunch_pattern_.size(); ++i)
+		buffers_[i].clean(begin, end);
 }
 
-void bunch_buffer_f::fft() {
+boost::posix_time::time_duration bunch_buffer_f::fft() {
+	boost::posix_time::time_duration duration = boost::posix_time::minutes(0);
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
-		buffers_[i].fft();
+		duration += buffers_[i].fft();
+	return duration;
 }
 
-void bunch_buffer_d::fft() {
+boost::posix_time::time_duration bunch_buffer_d::fft() {
+	boost::posix_time::time_duration duration = boost::posix_time::minutes(0);
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
-		buffers_[i].fft();
+		duration += buffers_[i].fft();
+	return duration;
 }
 
 void bunch_buffer_f::amplitude() {

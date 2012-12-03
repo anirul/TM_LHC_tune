@@ -6,11 +6,12 @@ ifeq ($(UNAME), Darwin)
 CC = clang
 CXX = clang++
 CFLAGS = -g -O0 \
+	-I.. \
 	-I/opt/local/include \
 	-I/usr/local/include \
 	-I/opt/local/include/opencv2
 LIBS = -L/opt/local/lib/ \
-	-framework GLUT -framework Cocoa -framework OpenGL -framework SFML \
+	-framework GLUT -framework Cocoa -framework OpenGL -framework SFML -framework OpenCL \
 	-lboost_program_options -lboost_system -lboost_iostreams -lboost_filesystem \
 	-lfftw3 -lfftw3f \
 	-lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_video -lopencv_objdetect \
