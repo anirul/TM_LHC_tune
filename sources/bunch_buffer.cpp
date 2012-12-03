@@ -125,7 +125,12 @@ bunch_buffer_f::bunch_buffer_f(
 {
 	bunch_pattern_ = bunch_pattern;
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i) {
-		buffers_.push_back(acquisition_buffer_f(data, fft_instance, bunch_pattern_.size(), i));
+		buffers_.push_back(
+				acquisition_buffer_f(
+						data,
+						fft_instance,
+						bunch_pattern_.size(),
+						i));
 	}
 }
 
@@ -137,7 +142,12 @@ bunch_buffer_d::bunch_buffer_d(
 {
 	bunch_pattern_ = bunch_pattern;
 	for (unsigned long i = 0; i < bunch_pattern.size(); ++i) {
-		buffers_.push_back(acquisition_buffer_d(data, fft_instance, bunch_pattern.size(), i));
+		buffers_.push_back(
+				acquisition_buffer_d(
+						data,
+						fft_instance,
+						bunch_pattern.size(),
+						i));
 	}
 }
 
@@ -208,7 +218,8 @@ void bunch_buffer_f::buffer(
 		std::vector<float>& out) const
 {
 	if (index >= bunch_pattern_.size())
-		throw std::runtime_error("bunch_buffer_f::buffer := index out of band");
+		throw std::runtime_error(
+				"bunch_buffer_f::buffer := index out of band");
 	buffers_[index].buffer_real(out);
 }
 
@@ -217,7 +228,8 @@ void bunch_buffer_d::buffer(
 		std::vector<double>& out) const
 {
 	if (index >= bunch_pattern_.size())
-		throw std::runtime_error("bunch_buffer_d::buffer := index out of band");
+		throw std::runtime_error(
+				"bunch_buffer_d::buffer := index out of band");
 	buffers_[index].buffer_real(out);
 }
 
