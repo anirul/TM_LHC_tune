@@ -49,12 +49,12 @@ private :
 public :
 	cl_fft();
 	virtual ~cl_fft() {}
-	// then before the next iteration
-	virtual void prepare(
-			const std::vector<std::complex<float> >& in);
-	// run the actual next step
-	virtual boost::posix_time::time_duration run(
-			std::vector<std::complex<float> >& out);
+	// run a single fft
+	virtual boost::posix_time::time_duration run_single(
+			std::vector<std::complex<float> >& in_out);
+	virtual boost::posix_time::time_duration run_multiple(
+			std::vector<std::complex<float> >& in_out,
+			size_t sub_vec);
 };
 
 #endif // CL_fft_HEADER_DEFINED

@@ -31,19 +31,21 @@
 struct i_fft_f {
 	i_fft_f() {}
 	virtual ~i_fft_f() {}
-    virtual void prepare(
-    		const std::vector<std::complex<float> >& in) = 0;
-    virtual boost::posix_time::time_duration run(
-    		std::vector<std::complex<float> >& out) = 0;
+	virtual boost::posix_time::time_duration run_single(
+			std::vector<std::complex<float> >& in_out) = 0;
+	virtual boost::posix_time::time_duration run_multiple(
+			std::vector<std::complex<float> >& in_out,
+			size_t sub_vec) = 0;
 };
 
 struct i_fft_d {
 	i_fft_d() {}
 	virtual ~i_fft_d() {}
-    virtual void prepare(
-    		const std::vector<std::complex<double> >& in) = 0;
-    virtual boost::posix_time::time_duration run(
-    		std::vector<std::complex<double> >& out) = 0;
+	virtual boost::posix_time::time_duration run_single(
+			std::vector<std::complex<double> >& in_out) = 0;
+	virtual boost::posix_time::time_duration run_multiple(
+			std::vector<std::complex<double> >& int_out,
+			size_t sub_vec) = 0;
 };
 
 #endif // i_fft_HEADER_DEFINED

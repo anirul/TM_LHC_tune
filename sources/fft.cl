@@ -30,18 +30,18 @@ typedef float2 real2_t;
 real2_t mul(real2_t a, real2_t b)
 {
 #if USE_MAD
-  return (real2_t)(mad(a.x, b.x, -a.y * b.y), mad(a.x, b.y, a.y * b.x)); // mad
+	return (real2_t)(mad(a.x, b.x, -a.y * b.y), mad(a.x, b.y, a.y * b.x)); // mad
 #else
-  return (real2_t)(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); // no mad
+	return (real2_t)(a.x * b.x - a.y * b.y, a.x * b.y + a.y * b.x); // no mad
 #endif
 }
 
 // Return A * exp(K*ALPHA*i)
 real2_t twiddle(real2_t a, int k, real_t alpha)
 {
-  real_t cs,sn;
-  sn = sincos((real_t)k * alpha, &cs);
-  return mul(a, (real2_t)(cs, sn));
+	real_t cs,sn;
+	sn = sincos((real_t)k * alpha, &cs);
+	return mul(a, (real2_t)(cs, sn));
 }
 
 // In-place DFT-2, output is (a,b). Arguments must be variables.
@@ -54,25 +54,35 @@ real2_t twiddle(real2_t a, int k, real_t alpha)
 // P is the length of input sub-sequences: 1,2,4,...,T.
 // Each DFT-2 has input (X[I],X[I+T]), I=0..T-1,
 // and output Y[J],Y|J+P], J = I with one 0 bit inserted at postion P. */
-__kernel void fftRadix2Kernel(__global const real2_t * x,__global real2_t * y,int p)
+__kernel void fftRadix2Kernel(
+	__global const real2_t * x,
+	__global real2_t * y,
+	int p)
 {
-  int t = get_global_size(0); // thread count
-  int i = get_global_id(0);   // thread index
-  int k = i & (p - 1);            // index in input sequence, in 0..P-1
-  int j = ((i - k) << 1) + k;     // output index
-  real_t alpha = -FFT_PI * (real_t)k / (real_t)p;
-  
-  // Read and twiddle input
-  x += i;
-  real2_t u0 = x[0];
-  real2_t u1 = twiddle(x[t], 1, alpha);
-
-  // In-place DFT-2
-  DFT2(u0, u1);
-
-  // Write output
-  y += j;
-  y[0] = u0;
-  y[p] = u1;
+	// thread count
+	int t = get_global_size(0);
+	// thread index
+  	int i = get_global_id(0);
+  	int z = get_global_id(1);
+  	// index in input sequence, in 0..P-1
+  	int k = i & (p - 1);
+  	// output index
+  	int j = ((i - k) << 1) + k;
+  	real_t alpha = -FFT_PI * (real_t)k / (real_t)p;
+  	
+	// Read and twiddle input
+	x += z * t * 2;
+	x += i;
+	real2_t u0 = x[0];
+	real2_t u1 = twiddle(x[t], 1, alpha);
+	
+	// In-place DFT-2
+	DFT2(u0, u1);
+	
+	// Write output
+	y += z * t * 2;
+	y += j;
+	y[0] = u0;
+	y[p] = u1;
 }
 

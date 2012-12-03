@@ -43,7 +43,7 @@ bunch_buffer_f::bunch_buffer_f() : fft_instance_(NULL) {}
 bunch_buffer_d::bunch_buffer_d() : fft_instance_(NULL) {}
 
 bunch_buffer_f::bunch_buffer_f(const bunch_buffer_f& bb) :
-				fft_instance_(bb.fft_instance_)
+						fft_instance_(bb.fft_instance_)
 {
 	buffers_.insert(
 			buffers_.end(),
@@ -56,7 +56,7 @@ bunch_buffer_f::bunch_buffer_f(const bunch_buffer_f& bb) :
 }
 
 bunch_buffer_d::bunch_buffer_d(const bunch_buffer_d& bb) :
-				fft_instance_(bb.fft_instance_)
+						fft_instance_(bb.fft_instance_)
 {
 	buffers_.insert(
 			buffers_.end(),
@@ -124,7 +124,7 @@ bunch_buffer_f::bunch_buffer_f(
 		const std::vector<short>& data,
 		const std::vector<short>& bunch_pattern,
 		i_fft_f* fft_instance) :
-						fft_instance_(fft_instance)
+								fft_instance_(fft_instance)
 {
 	bunch_pattern_ = bunch_pattern;
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i) {
@@ -141,7 +141,7 @@ bunch_buffer_d::bunch_buffer_d(
 		const std::vector<short>& data,
 		const std::vector<short>& bunch_pattern,
 		i_fft_d* fft_instance) :
-						fft_instance_(fft_instance)
+								fft_instance_(fft_instance)
 {
 	bunch_pattern_ = bunch_pattern;
 	for (unsigned long i = 0; i < bunch_pattern.size(); ++i) {
@@ -161,7 +161,7 @@ bunch_buffer_d::~bunch_buffer_d() {}
 bunch_buffer_f::bunch_buffer_f(
 		const std::string& file_name,
 		i_fft_f* fft_instance) :
-						fft_instance_(fft_instance)
+								fft_instance_(fft_instance)
 {
 	if (file_name.find(".gz") != std::string::npos) {
 		load_gzip(file_name);
@@ -176,7 +176,7 @@ bunch_buffer_f::bunch_buffer_f(
 bunch_buffer_d::bunch_buffer_d(
 		const std::string& file_name,
 		i_fft_d* fft_instance) :
-					fft_instance_(fft_instance)
+							fft_instance_(fft_instance)
 {
 	if (file_name.find(".gz") != std::string::npos) {
 		load_gzip(file_name);
@@ -290,7 +290,7 @@ double bunch_buffer_d::check_rms() {
 	return acc / (double)bunch_pattern_.size();
 }
 
-boost::posix_time::time_duration bunch_buffer_f::svd(float threshold) {
+time_duration bunch_buffer_f::svd(float threshold) {
 	ptime begin;
 	ptime end;
 	begin = microsec_clock::universal_time();
@@ -335,7 +335,7 @@ boost::posix_time::time_duration bunch_buffer_f::svd(float threshold) {
 	return end - begin;
 }
 
-boost::posix_time::time_duration bunch_buffer_d::svd(double threshold) {
+time_duration bunch_buffer_d::svd(double threshold) {
 	ptime begin;
 	ptime end;
 	begin = microsec_clock::universal_time();
@@ -391,17 +391,43 @@ void bunch_buffer_d::clean(size_t begin, size_t end) {
 		buffers_[i].clean(begin, end);
 }
 
-boost::posix_time::time_duration bunch_buffer_f::fft() {
-	boost::posix_time::time_duration duration = boost::posix_time::minutes(0);
+time_duration bunch_buffer_f::fft() {
+	std::vector<std::complex<float> > total;
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
-		duration += buffers_[i].fft();
+		total.insert(
+				total.end(),
+				buffers_[i].complex_buffer_.begin(),
+				buffers_[i].complex_buffer_.end());
+	time_duration duration =
+			fft_instance_->run_multiple(total, bunch_pattern_.size());
+	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i) {
+		size_t half = buffers_[i].complex_buffer_.size() / 2;
+		buffers_[i].complex_buffer_.resize(half);
+		memcpy(
+				&(buffers_[i].complex_buffer_[0]),
+				&total[i * half * 2],
+				half * sizeof(std::complex<float>));
+	}
 	return duration;
 }
 
-boost::posix_time::time_duration bunch_buffer_d::fft() {
-	boost::posix_time::time_duration duration = boost::posix_time::minutes(0);
+time_duration bunch_buffer_d::fft() {
+	std::vector<std::complex<double> > total;
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
-		duration += buffers_[i].fft();
+		total.insert(
+				total.end(),
+				buffers_[i].complex_buffer_.begin(),
+				buffers_[i].complex_buffer_.end());
+	time_duration duration =
+			fft_instance_->run_multiple(total, bunch_pattern_.size());
+	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i) {
+		size_t half = buffers_[i].complex_buffer_.size() / 2;
+		buffers_[i].complex_buffer_.resize(half);
+		memcpy(
+				&(buffers_[i].complex_buffer_[0]),
+				&total[i * half * 2],
+				half * sizeof(std::complex<double>));
+	}
 	return duration;
 }
 

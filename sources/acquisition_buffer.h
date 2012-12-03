@@ -46,8 +46,9 @@ double average_d(const std::vector<unsigned long>& vec);
 
 class acquisition_buffer_f {
 protected :
-	std::vector<std::complex<float> > complex_buffer_;
 	i_fft_f* fft_instance_;
+public :
+	std::vector<std::complex<float> > complex_buffer_;
 public :
 	acquisition_buffer_f(
 			const std::vector<short>& in,
@@ -81,8 +82,9 @@ public :
 
 class acquisition_buffer_d {
 protected :
-	std::vector<std::complex<double> > complex_buffer_;
 	i_fft_d* fft_instance_;
+public :
+	std::vector<std::complex<double> > complex_buffer_;
 public :
 	acquisition_buffer_d(
 			const std::vector<short>& in,

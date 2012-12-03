@@ -37,29 +37,31 @@
 using namespace boost::posix_time;
 
 class fftwf_fft : public i_fft_f {
-   protected :
-      static boost::mutex lock_;
-      std::vector<std::complex<float> > fftw_buffer_in_;
-      std::vector<std::complex<float> > fftw_buffer_out_;
-      size_t data_size_;
-   public :
-      virtual void prepare(
-    		  const std::vector<std::complex<float> >& in);
-      virtual boost::posix_time::time_duration run(
-    		  std::vector<std::complex<float> >& out);
+protected :
+	static boost::mutex lock_;
+	std::vector<std::complex<float> > fftw_buffer_in_;
+	std::vector<std::complex<float> > fftw_buffer_out_;
+	size_t data_size_;
+public :
+	virtual time_duration run_single(
+			std::vector<std::complex<float> >& in_out);
+	virtual time_duration run_multiple(
+			std::vector<std::complex<float> >& int_out,
+			size_t sub_vec);
 };
 
 class fftwd_fft : public i_fft_d {
-   protected :
-      static boost::mutex lock_;
-      std::vector<std::complex<double> > fftw_buffer_in_;
-      std::vector<std::complex<double> > fftw_buffer_out_;
-      size_t data_size_;
-   public :
-      virtual void prepare(
-    		  const std::vector<std::complex<double> >& in);
-      virtual boost::posix_time::time_duration run(
-    		  std::vector<std::complex<double> >& out);
+protected :
+	static boost::mutex lock_;
+	std::vector<std::complex<double> > fftw_buffer_in_;
+	std::vector<std::complex<double> > fftw_buffer_out_;
+	size_t data_size_;
+public :
+	virtual time_duration run_single(
+			std::vector<std::complex<double> >& in_out);
+	virtual time_duration run_multiple(
+			std::vector<std::complex<double> >& int_out,
+			size_t sub_vec);
 };
 
 #endif // fftw_fft_HEADER_DEFINED

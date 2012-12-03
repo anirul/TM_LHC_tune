@@ -30,63 +30,108 @@
 boost::mutex fftwf_fft::lock_;
 boost::mutex fftwd_fft::lock_;
 
-void fftwf_fft::prepare(const std::vector<std::complex<float> >& in) {
-   if (in.size() <= 0)
-      throw std::runtime_error("unvalid buffer size");
-   fftw_buffer_in_ = in;
-   fftw_buffer_out_.resize(in.size());
-}
-
-void fftwd_fft::prepare(const std::vector<std::complex<double> >& in) {
-   if (in.size() <= 0)
-      throw std::runtime_error("unvalid buffer size");
-   fftw_buffer_in_ = in;
-   fftw_buffer_out_.resize(in.size());
-}
-
-boost::posix_time::time_duration fftwf_fft::run(
-      std::vector<std::complex<float> >& out) 
+time_duration fftwf_fft::run_single(
+		std::vector<std::complex<float> >& in_out)
 {
-   ptime before;
-   ptime after;
-   {
-      boost::mutex::scoped_lock lock_it(lock_);
-      fftwf_plan plan;
-      before = microsec_clock::universal_time();
-      plan = fftwf_plan_dft_1d(
-            fftw_buffer_in_.size(),
-            (fftwf_complex*)&fftw_buffer_in_[0],
-            (fftwf_complex*)&fftw_buffer_out_[0],
-            FFTW_FORWARD,
-            FFTW_ESTIMATE);
-      fftwf_execute(plan);
-      after = microsec_clock::universal_time();
-      fftwf_destroy_plan(plan);
-   }
-   out = fftw_buffer_out_;
-   return after - before;
+	ptime before;
+	ptime after;
+	before = microsec_clock::universal_time();
+	if (in_out.size() <= 0)
+		throw std::runtime_error("unvalid buffer size");
+	fftw_buffer_in_ = in_out;
+	fftw_buffer_out_.resize(in_out.size());
+	{
+		boost::mutex::scoped_lock lock_it(lock_);
+		fftwf_plan plan;
+		plan = fftwf_plan_dft_1d(
+				fftw_buffer_in_.size(),
+				(fftwf_complex*)&fftw_buffer_in_[0],
+				(fftwf_complex*)&fftw_buffer_out_[0],
+				FFTW_FORWARD,
+				FFTW_ESTIMATE);
+		fftwf_execute(plan);
+		fftwf_destroy_plan(plan);
+	}
+	in_out = fftw_buffer_out_;
+	after = microsec_clock::universal_time();
+	return after - before;
 }
 
-boost::posix_time::time_duration fftwd_fft::run(
-      std::vector<std::complex<double> >& out)
+time_duration fftwd_fft::run_single(
+		std::vector<std::complex<double> >& in_out)
 {
-   ptime before;
-   ptime after;
-   {
-      boost::mutex::scoped_lock lock_it(lock_);
-      fftw_plan plan;
-      before = microsec_clock::universal_time();
-      plan = fftw_plan_dft_1d(
-            fftw_buffer_in_.size(),
-            (fftw_complex*)&fftw_buffer_in_[0],
-            (fftw_complex*)&fftw_buffer_out_[0],
-            FFTW_FORWARD,
-            FFTW_ESTIMATE);
-      fftw_execute(plan);
-      after = microsec_clock::universal_time();
-      fftw_destroy_plan(plan);
-   }
-   out = fftw_buffer_out_;
-   return after - before;
+	ptime before;
+	ptime after;
+	before = microsec_clock::universal_time();
+	if (in_out.size() <= 0)
+		throw std::runtime_error("unvalid buffer size");
+	fftw_buffer_in_ = in_out;
+	fftw_buffer_out_.resize(in_out.size());
+	{
+		boost::mutex::scoped_lock lock_it(lock_);
+		fftw_plan plan;
+		plan = fftw_plan_dft_1d(
+				fftw_buffer_in_.size(),
+				(fftw_complex*)&fftw_buffer_in_[0],
+				(fftw_complex*)&fftw_buffer_out_[0],
+				FFTW_FORWARD,
+				FFTW_ESTIMATE);
+		fftw_execute(plan);
+		fftw_destroy_plan(plan);
+	}
+	in_out = fftw_buffer_out_;
+	after = microsec_clock::universal_time();
+	return after - before;
 }
+
+time_duration fftwf_fft::run_multiple(
+		std::vector<std::complex<float> >& in_out,
+		size_t sub_vec)
+{
+	ptime before;
+	ptime after;
+	before = microsec_clock::universal_time();
+	size_t pitch = in_out.size() / sub_vec;
+	for (size_t i = 0; i < sub_vec; ++i) {
+		boost::mutex::scoped_lock lock_it(lock_);
+		fftw_plan plan;
+		plan = fftw_plan_dft_1d(
+				fftw_buffer_in_.size(),
+				(fftw_complex*)&fftw_buffer_in_[pitch * i],
+				(fftw_complex*)&fftw_buffer_out_[pitch * i],
+				FFTW_FORWARD,
+				FFTW_ESTIMATE);
+		fftw_execute(plan);
+		fftw_destroy_plan(plan);
+	}
+	in_out = fftw_buffer_out_;
+	after = microsec_clock::universal_time();
+	return after - before;
+}
+
+time_duration fftwd_fft::run_multiple(
+		std::vector<std::complex<double> >& in_out,
+		size_t sub_vec)
+{
+	ptime before;
+	ptime after;
+	before = microsec_clock::universal_time();
+	size_t pitch = in_out.size() / sub_vec;
+	for (size_t i = 0; i < sub_vec; ++i) {
+		boost::mutex::scoped_lock lock_it(lock_);
+		fftw_plan plan;
+		plan = fftw_plan_dft_1d(
+				fftw_buffer_in_.size(),
+				(fftw_complex*)&fftw_buffer_in_[pitch * i],
+				(fftw_complex*)&fftw_buffer_out_[pitch * i],
+				FFTW_FORWARD,
+				FFTW_ESTIMATE);
+		fftw_execute(plan);
+		fftw_destroy_plan(plan);
+	}
+	in_out = fftw_buffer_out_;
+	after = microsec_clock::universal_time();
+	return after - before;
+}
+
 
