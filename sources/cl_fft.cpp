@@ -86,6 +86,7 @@ cl_fft::cl_fft() {
 		devices_ = context_.getInfo<CL_CONTEXT_DEVICES>();
 	}
 	queue_ = cl::CommandQueue(context_, devices_[device_used_], 0, &err_);
+	std::cout << " Device name    : " << devices_[0].getInfo<CL_DEVICE_NAME>() << std::endl;
 	std::ifstream ifs("./fft.cl");
 	std::string kernel_source(
 			(std::istreambuf_iterator<char>(ifs)),
