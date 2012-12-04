@@ -5,7 +5,7 @@ UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
 CC = clang
 CXX = clang++
-CFLAGS = -g -O0 \
+CFLAGS = -O3 \
 	-I.. \
 	-I/opt/local/include \
 	-I/usr/local/include \
@@ -13,7 +13,7 @@ CFLAGS = -g -O0 \
 LIBS = -L/opt/local/lib/ \
 	-framework GLUT -framework Cocoa -framework OpenGL -framework SFML -framework OpenCL \
 	-lboost_program_options -lboost_system -lboost_iostreams -lboost_filesystem \
-	-lfftw3 -lfftw3f \
+	-lfftw3_threads -lfftw3f_threads -lfftw3 -lfftw3f \
 	-lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_video -lopencv_objdetect \
 	-lgsl -lcblas
 endif

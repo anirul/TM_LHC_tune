@@ -42,8 +42,8 @@ bunch_buffer_f::bunch_buffer_f() : fft_instance_(NULL) {}
 
 bunch_buffer_d::bunch_buffer_d() : fft_instance_(NULL) {}
 
-bunch_buffer_f::bunch_buffer_f(const bunch_buffer_f& bb) :
-						fft_instance_(bb.fft_instance_)
+bunch_buffer_f::bunch_buffer_f(const bunch_buffer_f& bb)
+: fft_instance_(bb.fft_instance_)
 {
 	buffers_.insert(
 			buffers_.end(),
@@ -55,8 +55,8 @@ bunch_buffer_f::bunch_buffer_f(const bunch_buffer_f& bb) :
 			bb.bunch_pattern_.end());
 }
 
-bunch_buffer_d::bunch_buffer_d(const bunch_buffer_d& bb) :
-						fft_instance_(bb.fft_instance_)
+bunch_buffer_d::bunch_buffer_d(const bunch_buffer_d& bb)
+: fft_instance_(bb.fft_instance_)
 {
 	buffers_.insert(
 			buffers_.end(),
@@ -69,6 +69,7 @@ bunch_buffer_d::bunch_buffer_d(const bunch_buffer_d& bb) :
 }
 
 bunch_buffer_f& bunch_buffer_f::operator=(const bunch_buffer_f& bb) {
+	fft_instance_ = bb.fft_instance_;
 	buffers_.clear();
 	bunch_pattern_.clear();
 	buffers_.insert(
@@ -83,6 +84,7 @@ bunch_buffer_f& bunch_buffer_f::operator=(const bunch_buffer_f& bb) {
 }
 
 bunch_buffer_d& bunch_buffer_d::operator=(const bunch_buffer_d& bb) {
+	fft_instance_ = bb.fft_instance_;
 	buffers_.clear();
 	bunch_pattern_.clear();
 	buffers_.insert(
@@ -97,6 +99,8 @@ bunch_buffer_d& bunch_buffer_d::operator=(const bunch_buffer_d& bb) {
 }
 
 bunch_buffer_f& bunch_buffer_f::operator+=(const bunch_buffer_f& bb) {
+	if (!fft_instance_)
+		fft_instance_ = bb.fft_instance_;
 	buffers_.insert(
 			buffers_.end(),
 			bb.buffers_.begin(),
@@ -109,6 +113,8 @@ bunch_buffer_f& bunch_buffer_f::operator+=(const bunch_buffer_f& bb) {
 }
 
 bunch_buffer_d& bunch_buffer_d::operator+=(const bunch_buffer_d& bb) {
+	if (!fft_instance_)
+		fft_instance_ = bb.fft_instance_;
 	buffers_.insert(
 			buffers_.end(),
 			bb.buffers_.begin(),
@@ -123,8 +129,8 @@ bunch_buffer_d& bunch_buffer_d::operator+=(const bunch_buffer_d& bb) {
 bunch_buffer_f::bunch_buffer_f(
 		const std::vector<short>& data,
 		const std::vector<short>& bunch_pattern,
-		i_fft_f* fft_instance) :
-								fft_instance_(fft_instance)
+		i_fft_f* fft_instance)
+: fft_instance_(fft_instance)
 {
 	bunch_pattern_ = bunch_pattern;
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i) {
@@ -140,8 +146,8 @@ bunch_buffer_f::bunch_buffer_f(
 bunch_buffer_d::bunch_buffer_d(
 		const std::vector<short>& data,
 		const std::vector<short>& bunch_pattern,
-		i_fft_d* fft_instance) :
-								fft_instance_(fft_instance)
+		i_fft_d* fft_instance)
+: fft_instance_(fft_instance)
 {
 	bunch_pattern_ = bunch_pattern;
 	for (unsigned long i = 0; i < bunch_pattern.size(); ++i) {
@@ -160,8 +166,8 @@ bunch_buffer_d::~bunch_buffer_d() {}
 
 bunch_buffer_f::bunch_buffer_f(
 		const std::string& file_name,
-		i_fft_f* fft_instance) :
-								fft_instance_(fft_instance)
+		i_fft_f* fft_instance)
+: fft_instance_(fft_instance)
 {
 	if (file_name.find(".gz") != std::string::npos) {
 		load_gzip(file_name);
@@ -175,8 +181,8 @@ bunch_buffer_f::bunch_buffer_f(
 
 bunch_buffer_d::bunch_buffer_d(
 		const std::string& file_name,
-		i_fft_d* fft_instance) :
-							fft_instance_(fft_instance)
+		i_fft_d* fft_instance)
+: fft_instance_(fft_instance)
 {
 	if (file_name.find(".gz") != std::string::npos) {
 		load_gzip(file_name);

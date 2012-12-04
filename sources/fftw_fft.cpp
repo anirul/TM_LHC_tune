@@ -86,52 +86,46 @@ time_duration fftwd_fft::run_single(
 
 time_duration fftwf_fft::run_multiple(
 		std::vector<std::complex<float> >& in_out,
-		size_t sub_vec)
+		size_t sub_vec_count)
 {
-	ptime before;
-	ptime after;
-	before = microsec_clock::universal_time();
-	size_t pitch = in_out.size() / sub_vec;
-	for (size_t i = 0; i < sub_vec; ++i) {
-		boost::mutex::scoped_lock lock_it(lock_);
-		fftw_plan plan;
-		plan = fftw_plan_dft_1d(
-				fftw_buffer_in_.size(),
-				(fftw_complex*)&fftw_buffer_in_[pitch * i],
-				(fftw_complex*)&fftw_buffer_out_[pitch * i],
-				FFTW_FORWARD,
-				FFTW_ESTIMATE);
-		fftw_execute(plan);
-		fftw_destroy_plan(plan);
+	time_duration total = minutes(0);
+	for (int i = 0; i < sub_vec_count; ++i) {
+		std::vector<std::complex<float> > sub_vec;
+		size_t sub_vec_size = in_out.size() / sub_vec_count;
+		sub_vec.resize(sub_vec_size);
+		memcpy(
+				&sub_vec[0],
+				&in_out[i * sub_vec_size],
+				sub_vec_size * sizeof(std::complex<float>));
+		total += run_single(sub_vec);
+		memcpy(
+				&in_out[i * sub_vec_size],
+				&sub_vec[0],
+				sub_vec_size * sizeof(std::complex<float>));
 	}
-	in_out = fftw_buffer_out_;
-	after = microsec_clock::universal_time();
-	return after - before;
+	return total;
 }
 
 time_duration fftwd_fft::run_multiple(
 		std::vector<std::complex<double> >& in_out,
-		size_t sub_vec)
+		size_t sub_vec_count)
 {
-	ptime before;
-	ptime after;
-	before = microsec_clock::universal_time();
-	size_t pitch = in_out.size() / sub_vec;
-	for (size_t i = 0; i < sub_vec; ++i) {
-		boost::mutex::scoped_lock lock_it(lock_);
-		fftw_plan plan;
-		plan = fftw_plan_dft_1d(
-				fftw_buffer_in_.size(),
-				(fftw_complex*)&fftw_buffer_in_[pitch * i],
-				(fftw_complex*)&fftw_buffer_out_[pitch * i],
-				FFTW_FORWARD,
-				FFTW_ESTIMATE);
-		fftw_execute(plan);
-		fftw_destroy_plan(plan);
+	time_duration total = minutes(0);
+	for (int i = 0; i < sub_vec_count; ++i) {
+		std::vector<std::complex<double> > sub_vec;
+		size_t sub_vec_size = in_out.size() / sub_vec_count;
+		sub_vec.resize(sub_vec_size);
+		memcpy(
+				&sub_vec[0],
+				&in_out[i * sub_vec_size],
+				sub_vec_size * sizeof(std::complex<double>));
+		total += run_single(sub_vec);
+		memcpy(
+				&in_out[i * sub_vec_size],
+				&sub_vec[0],
+				sub_vec_size * sizeof(std::complex<double>));
 	}
-	in_out = fftw_buffer_out_;
-	after = microsec_clock::universal_time();
-	return after - before;
+	return total;
 }
 
 

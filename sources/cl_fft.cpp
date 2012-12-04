@@ -215,13 +215,13 @@ time_duration cl_fft::run_multiple(
 		err_ = queue_.enqueueNDRangeKernel(
 				kernel_,
 				cl::NullRange,
-				cl::NDRange(data_size_ /sub_vec >> 1, sub_vec),
+				cl::NDRange((data_size_ /sub_vec) >> 1, sub_vec),
 				cl::NullRange,
 				NULL,
 				&event_);
 		queue_.finish();
 
-		if (i != (data_size_ >> 1)) {
+		if (i != ((data_size_ / sub_vec) >> 1)) {
 			err_ = queue_.enqueueCopyBuffer(
 					cl_buffer_out_y_,
 					cl_buffer_in_x_,

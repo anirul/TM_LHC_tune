@@ -135,8 +135,9 @@ int main(int ac, char** av) {
 			}
 			if (path.size()) {
 				gpu_cmd cmd;
-				cl_fft fft_instance;
-				spect.load_files(path, cmd, &fft_instance, start_time, end_time);
+				i_fft_f* fft_instance = new cl_fft();
+				spect.load_files(path, cmd, fft_instance, start_time, end_time);
+				delete fft_instance;
 			}
 			if (output_file.size()) {
 				spect.save_dump(output_file);
