@@ -46,8 +46,9 @@ public :
 	virtual void operator()(bunch_buffer_f& bb) const {
 		bb.average();
 		bb.resize(2048);
-		time_duration duration = bb.fft();
-		std::cout << " fft time : " << duration;
+		time_duration duration = minutes(0);
+		duration = bb.fft_multiple();
+		std::cout << "fft_multiple : " << duration;
 		bb.amplitude();
 		bb.clean(0, bb.buffer_size() / 20);
 	}
@@ -135,9 +136,8 @@ int main(int ac, char** av) {
 			}
 			if (path.size()) {
 				gpu_cmd cmd;
-				i_fft_f* fft_instance = new cl_fft();
-				spect.load_files(path, cmd, fft_instance, start_time, end_time);
-				delete fft_instance;
+				cl_fft fft_instance;
+				spect.load_files(path, cmd, &fft_instance, start_time, end_time);
 			}
 			if (output_file.size()) {
 				spect.save_dump(output_file);

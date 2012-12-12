@@ -176,9 +176,9 @@ void spectrogram::load_files(
 			boost::posix_time::ptime file_time = ptime_from_file(*ite);
 			std::cout 
 				<< "\rloading (data)  : " 
-				<< ++file_count << "/" << list_file.size() << " "
-				<< file_time << " "
-				<< full_path;
+				<< ++file_count << "/"
+				<< list_file.size() << " "
+				<< file_time;
 			std::cout.flush();
 			bunch_buffer_f bb = buffer_from_file(*ite, fft_instance);
 			if (bb.empty()) {
@@ -202,7 +202,7 @@ void spectrogram::load_files(
 			}
 			time_.push_back(time_stamp);
 			acc_bb += bb;
-			if (!(acc_count % nb_acc_)) {
+			if (acc_count && !(acc_count % nb_acc_)) {
 				// here come the computing
 				cmd(acc_bb);
 				pitch_ = acc_bb.buffer_size();

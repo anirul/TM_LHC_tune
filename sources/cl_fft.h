@@ -36,6 +36,8 @@ class cl_fft : public i_fft_f {
 private :
 	cl::Buffer cl_buffer_in_x_;
 	cl::Buffer cl_buffer_out_y_;
+	cl::Buffer cl_partial_in_x_;
+	cl::Buffer cl_partial_out_y_;
 	size_t data_size_;
 	unsigned int device_used_;
 	std::vector<cl::Device> devices_;

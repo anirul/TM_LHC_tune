@@ -5,7 +5,7 @@ UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
 CC = clang
 CXX = clang++
-CFLAGS = -O3 \
+CFLAGS = -g -O0 \
 	-I.. \
 	-I/opt/local/include \
 	-I/usr/local/include \

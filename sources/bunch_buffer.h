@@ -72,9 +72,10 @@ public:
 	void notch();
 	void average();
 	float check_rms();
-	boost::posix_time::time_duration svd(float threshold = 0.0f);
 	void clean(size_t begin, size_t end);
-	boost::posix_time::time_duration fft();
+	boost::posix_time::time_duration svd(float threshold = 0.0f);
+	boost::posix_time::time_duration fft_single();
+	boost::posix_time::time_duration fft_multiple();
 	void amplitude();
 	void phase_deg();
 	void log10();

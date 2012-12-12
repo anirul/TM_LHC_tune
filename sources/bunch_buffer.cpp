@@ -397,7 +397,16 @@ void bunch_buffer_d::clean(size_t begin, size_t end) {
 		buffers_[i].clean(begin, end);
 }
 
-time_duration bunch_buffer_f::fft() {
+time_duration bunch_buffer_f::fft_single() {
+	time_duration total = minutes(0);
+	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i) {
+		total += fft_instance_->run_single(
+				buffers_[i].complex_buffer_);
+	}
+	return total;
+}
+
+time_duration bunch_buffer_f::fft_multiple() {
 	std::vector<std::complex<float> > total;
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
 		total.insert(

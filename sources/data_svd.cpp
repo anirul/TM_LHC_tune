@@ -49,7 +49,7 @@ public :
 	virtual void operator()(bunch_buffer_f& bb) const {
 		bb.average();
 		time_duration duration_svd = bb.svd(threshold_svd_);
-		time_duration duration_fft = bb.fft();
+		time_duration duration_fft = bb.fft_multiple();
 		std::cout << " fft time : " << duration_fft;
 		std::cout << " svd time : " << duration_svd;
 		bb.amplitude();

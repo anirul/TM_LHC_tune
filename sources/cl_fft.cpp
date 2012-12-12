@@ -116,7 +116,7 @@ time_duration cl_fft::run_single(
 	ptime before;
 	ptime after;
 	before = microsec_clock::universal_time();
-	data_size_ = in_out.size();
+	data_size_ = in_out.size() / 2;
 	kernel_ = cl::Kernel(program_, "fftRadix2Kernel", &err_);
 	std::vector<cl_float2>::const_iterator ite;
 	//initialize our CPU memory arrays, send them to the device and set the kernel_ arguements
@@ -185,7 +185,8 @@ time_duration cl_fft::run_multiple(
 	ptime before;
 	ptime after;
 	before = microsec_clock::universal_time();
-	data_size_ = in_out.size();
+	data_size_ = in_out.size() / 2;
+	size_t sub_vec_size = data_size_ / sub_vec;
 	kernel_ = cl::Kernel(program_, "fftRadix2Kernel", &err_);
 	std::vector<cl_float2>::const_iterator ite;
 	//initialize our CPU memory arrays, send them to the device and set the kernel_ arguements
@@ -207,8 +208,8 @@ time_duration cl_fft::run_multiple(
 	err_ = kernel_.setArg(1, cl_buffer_out_y_);
 	//Wait for the command queue_ to finish these commands before proceeding
 	queue_.finish();
-	double p = log2(data_size_ / sub_vec);
-	for (int i = 1; i <= ((data_size_ / sub_vec) >> 1); i *= 2) {
+	double p = log2(sub_vec_size);
+	for (int i = 1; i <= ((sub_vec_size) >> 1); i *= 2) {
 
 		// enqueue the new parameter p
 		err_ = kernel_.setArg(2, i);
@@ -216,13 +217,13 @@ time_duration cl_fft::run_multiple(
 		err_ = queue_.enqueueNDRangeKernel(
 				kernel_,
 				cl::NullRange,
-				cl::NDRange((data_size_ /sub_vec) >> 1, sub_vec),
+				cl::NDRange((sub_vec_size) >> 1, sub_vec),
 				cl::NullRange,
 				NULL,
 				&event_);
 		queue_.finish();
 
-		if (i != ((data_size_ / sub_vec) >> 1)) {
+		if (i != ((sub_vec_size) >> 1)) {
 			err_ = queue_.enqueueCopyBuffer(
 					cl_buffer_out_y_,
 					cl_buffer_in_x_,
