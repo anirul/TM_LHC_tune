@@ -28,6 +28,8 @@
 #ifndef i_fft_HEADER_DEFINED
 #define i_fft_HEADER_DEFINED
 
+#include <complex>
+
 struct i_fft_f {
 	i_fft_f() {}
 	virtual ~i_fft_f() {}

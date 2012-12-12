@@ -68,7 +68,7 @@ int main(int ac, char** av) {
 		std::vector<fs::path>::iterator ite;
 		for (ite = list_file.begin(); ite != list_file.end(); ++ite) {
 			if (fs::is_directory(*ite)) continue;
-			std::string full_path = fs::canonical(*ite).string();
+			std::string full_path = (*ite).string();
 			try {
 				std::cout << "checking file   : " << full_path << std::endl;
 				bunch_buffer_f bb(full_path, NULL);

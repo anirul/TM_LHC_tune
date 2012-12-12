@@ -83,7 +83,7 @@ bunch_buffer_f spectrogram::buffer_from_file(
 	const boost::filesystem::path& path,
 	i_fft_f* fft_instance) const
 {
-	std::string full_path = fs::canonical(path).string();
+	std::string full_path = (path).string();
 	bunch_buffer_f bb(full_path, fft_instance);
 	if (!bb.buffer_size()) {
 		std::cout << std::endl;
@@ -99,7 +99,7 @@ bunch_buffer_f spectrogram::buffer_from_file(
 long long spectrogram::time_stamp_from_file(
 	const boost::filesystem::path& path) const 
 {
-	std::string full_path = fs::canonical(path).string();
+	std::string full_path = (path).string();
 	long long time_stamp = 0;
 	std::string str_time_stamp = "";
 	{ // get the time from file name
@@ -116,7 +116,7 @@ long long spectrogram::time_stamp_from_file(
 boost::posix_time::ptime spectrogram::ptime_from_file(
 	const boost::filesystem::path& path) const
 {
-	std::string full_path = fs::canonical(path).string();
+	std::string full_path = (path).string();
 	long long time_stamp = time_stamp_from_file(path);
 	boost::posix_time::ptime file_time;
 	{ // convert to time
@@ -168,7 +168,7 @@ void spectrogram::load_files(
 		unsigned int acc_count = 0;
 		unsigned int file_count = 0;
 		for (ite = list_file.begin(); ite != list_file.end(); ++ite) {
-			std::string full_path = fs::canonical(*ite).string();
+			std::string full_path = (*ite).string();
 			long long time_stamp = time_stamp_from_file(*ite);
 			// check boundaries
 			if (time_stamp < start_time || time_stamp > end_time)

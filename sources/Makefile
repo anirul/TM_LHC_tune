@@ -19,8 +19,8 @@ LIBS = -L/opt/local/lib/ \
 endif
 
 ifeq ($(UNAME), Linux)
-CC = clang
-CXX = clang++
+CC = gcc
+CXX = g++
 CFLAGS = -g -O0 \
 	-I.. \
 	-I/usr/local/include \
@@ -30,7 +30,7 @@ CFLAGS = -g -O0 \
 LIBS = -L/usr/local/lib -L/usr/local/lib64 -L/usr/lib64 \
 	-lglut -lGL -lGLU -lOpenCL \
 	-lboost_program_options -lboost_system -lboost_iostreams -lboost_filesystem \
-	-lfftw3_omp -lfftw3f_omp -lfftw3f -lfftw3 \
+	-lfftw3f -lfftw3 \
 	-lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_video -lopencv_objdetect \
 	-lgsl -lgslcblas -lm
 endif
