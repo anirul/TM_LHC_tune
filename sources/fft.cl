@@ -57,7 +57,7 @@ real2_t twiddle(real2_t a, int k, real_t alpha)
 __kernel void fftRadix2Kernel(
 	__global const real2_t * x,
 	__global real2_t * y,
-	int p)
+	const int p)
 {
 	// thread count
 	int t = get_global_size(0);
@@ -88,15 +88,14 @@ __kernel void fftRadix2Kernel(
 }
 
 __kernel void accumulate(
-	__global const real2_t* x,
-	__global real2_t* y,
-	int delta)
+	__global const real2_t * x,
+	__global real2_t * y)
 {
 	// thread count
 	int t = get_global_size(0);
 	// thread index
 	int i = get_global_id(0);
+	int z = get_global_id(1);
 	
-	x += delta * t;
-	y[i] = x[i];
+	y[i] += x[i + (z * t)];
 }

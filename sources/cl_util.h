@@ -16,7 +16,7 @@
  * THIS SOFTWARE IS PROVIDED BY Frederic Dubouchet ``AS IS'' AND ANY
  * EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL Frederic DUBOUCHET BE LIABLE FOR ANY
+ * DISCLAIMED. IN NO EVENT SHALL Frederic DUBOUCHEDT BE LIABLE FOR ANY
  * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
  * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
  * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -25,49 +25,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef CL_fft_HEADER_DEFINED
-#define CL_fft_HEADER_DEFINED
+#ifndef CL_UTIL_HEADER_DEFINED
+#define CL_UTIL_HEADER_DEFINED
 
-#define __CL_ENABLE_EXCEPTIONS
-#include <CL/cl.hpp>
-#include "i_fft.h"
+std::ostream& operator<<(std::ostream& os, const cl::Error& err);
 
-class cl_fft : public i_fft_f {
-private :
-	cl::Buffer cl_buffer_in_x_;
-	cl::Buffer cl_buffer_out_y_;
-	cl::Buffer cl_buffer_acc_;
-	size_t data_size_;
-	size_t sub_vec_size_;
-	unsigned int device_used_;
-	std::vector<cl::Device> devices_;
-	cl::Context context_;
-	cl::CommandQueue queue_;
-	cl::Program program_;
-	cl::Kernel kernel_fft_;
-	cl::Kernel kernel_acc_;
-	// debugging variables
-	cl_int err_;
-	cl::Event event_;
-public :
-	// subroutines for the run_multiple
-	boost::posix_time::time_duration cpu2gpu(
-			const std::vector<std::complex<float> >& in_out,
-			std::vector<std::complex<float> >& vec_out);
-	boost::posix_time::time_duration run_fft(size_t sub_vec);
-	boost::posix_time::time_duration run_acc(size_t sub_vec);
-	boost::posix_time::time_duration gpu2cpu(
-			std::vector<std::complex<float> >& vec_out);
-public :
-	cl_fft();
-	virtual ~cl_fft() {}
-	// run a single fft
-	virtual boost::posix_time::time_duration run_single(
-			std::vector<std::complex<float> >& in_out);
-	virtual boost::posix_time::time_duration run_multiple(
-			std::vector<std::complex<float> >& in_out,
-			size_t sub_vec);
-};
-
-#endif // CL_fft_HEADER_DEFINED
-
+#endif // CL_UTIL_HEADER_DEFINED

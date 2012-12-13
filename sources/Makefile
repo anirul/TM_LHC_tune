@@ -57,6 +57,8 @@ gsl_svd.o : gsl_svd.cpp gsl_svd.h
 	$(CXX) -o gsl_svd.o -c gsl_svd.cpp $(CFLAGS)
 cl_fft.o : cl_fft.h cl_fft.cpp
 	$(CXX) -o cl_fft.o -c cl_fft.cpp $(CFLAGS)
+cl_util.o : cl_util.h cl_util.cpp
+	$(CXX) -o cl_util.o -c cl_util.cpp $(CFLAGS)
 
 data_check.o : data_check.cpp fftw_fft.h acquisition_buffer.h bunch_buffer.h glut_win.h win_data_check.h
 	$(CXX) -o data_check.o -c data_check.cpp $(CFLAGS)
@@ -64,15 +66,15 @@ data_svd.o : data_svd.cpp spectrogram.h bunch_buffer.h acquisition_buffer.h fftw
 	$(CXX) -o data_svd.o -c data_svd.cpp $(CFLAGS)
 data_clean.o : data_clean.cpp fftw_fft.h acquisition_buffer.h bunch_buffer.h i_fft.h
 	$(CXX) -o data_clean.o -c data_clean.cpp $(CFLAGS)
-data_gpu.o : data_gpu.cpp cl_fft.h fftw_fft.h spectrogram.h bunch_buffer.h acquisition_buffer.h i_fft.h	
+data_gpu.o : data_gpu.cpp cl_fft.h fftw_fft.h spectrogram.h bunch_buffer.h acquisition_buffer.h i_fft.h	cl_util.h
 	$(CXX) -o data_gpu.o -c data_gpu.cpp $(CFLAGS)
 
 data_check : data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o cv_image.o gsl_svd.o
 	$(CXX) -o data_check data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o cv_image.o gsl_svd.o $(LIBS)
 data_svd : data_svd.o acquisition_buffer.o bunch_buffer.o spectrogram.o gsl_svd.o fftw_fft.o
 	$(CXX) -o data_svd data_svd.o acquisition_buffer.o bunch_buffer.o spectrogram.o gsl_svd.o fftw_fft.o $(LIBS)
-data_gpu : data_gpu.o acquisition_buffer.o bunch_buffer.o spectrogram.o gsl_svd.o fftw_fft.o cl_fft.o
-	$(CXX) -o data_gpu data_gpu.o acquisition_buffer.o bunch_buffer.o spectrogram.o gsl_svd.o fftw_fft.o cl_fft.o $(LIBS)
+data_gpu : data_gpu.o acquisition_buffer.o bunch_buffer.o spectrogram.o gsl_svd.o fftw_fft.o cl_fft.o cl_util.o
+	$(CXX) -o data_gpu data_gpu.o acquisition_buffer.o bunch_buffer.o spectrogram.o gsl_svd.o fftw_fft.o cl_fft.o cl_util.o $(LIBS)
 data_clean : data_clean.o acquisition_buffer.o bunch_buffer.o fftw_fft.o gsl_svd.o
 	$(CXX) -o data_clean data_clean.o acquisition_buffer.o bunch_buffer.o fftw_fft.o gsl_svd.o $(LIBS)
 

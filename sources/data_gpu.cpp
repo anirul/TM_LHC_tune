@@ -36,6 +36,7 @@
 #include "bunch_buffer.h"
 #include "spectrogram.h"
 #include "cl_fft.h"
+#include "cl_util.h"
 
 using namespace boost::program_options;
 using namespace boost::posix_time;
@@ -44,14 +45,14 @@ class gpu_cmd : public commands {
 protected :
 public :
 	virtual void operator()(bunch_buffer_f& bb) const {
-		bb.average();
-		bb.resize(2048);
-		time_duration duration = minutes(0);
-		duration = bb.fft_multiple();
-		std::cout << "fft_multiple : " << duration;
-		bb.amplitude();
-		bb.clean(0, bb.buffer_size() / 20);
-	}
+	bb.average();
+	bb.resize(2048);
+	time_duration duration = minutes(0);
+	duration = bb.fft_multiple();
+	std::cout << "fft_multiple : " << duration;
+	bb.amplitude();
+	bb.clean(0, bb.buffer_size() / 20);
+}
 };
 
 int main(int ac, char** av) {
@@ -144,6 +145,9 @@ int main(int ac, char** av) {
 				return 0;
 			}
 		}
+	} catch (cl::Error& err) {
+		std::cerr << "exception (CL)  : (" << err << ") " << err.what() << std::endl;
+		return -2;
 	} catch (std::exception& ex) {
 		std::cerr << "exception (std) : " << ex.what() << std::endl;
 		return -1;
