@@ -87,6 +87,16 @@ __kernel void fftRadix2Kernel(
 	y[p] = u1;
 }
 
+__kernel void prepare(
+	__global const short* x,
+	__global real2_t* y)
+{
+	// thread index
+	int i = get_global_id(0);
+	
+	y[i] = (real2_t)((real_t)x[i], 0.0f);
+}
+
 __kernel void accumulate(
 	__global const real2_t * x,
 	__global real2_t * y)

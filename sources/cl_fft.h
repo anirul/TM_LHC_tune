@@ -37,6 +37,7 @@ private :
 	cl::Buffer cl_buffer_in_x_;
 	cl::Buffer cl_buffer_out_y_;
 	cl::Buffer cl_buffer_acc_;
+	cl::Buffer cl_buffer_short_;
 	size_t data_size_;
 	size_t sub_vec_size_;
 	unsigned int device_used_;
@@ -46,18 +47,19 @@ private :
 	cl::Program program_;
 	cl::Kernel kernel_fft_;
 	cl::Kernel kernel_acc_;
+	cl::Kernel kernel_prepare_;
 	// debugging variables
 	cl_int err_;
 	cl::Event event_;
 public :
 	// subroutines for the run_multiple
 	boost::posix_time::time_duration cpu2gpu(
-			const std::vector<std::complex<float> >& in_out,
-			std::vector<std::complex<float> >& vec_out);
+			const std::vector<short>& in_short,
+			const std::vector<std::complex<float> >& vec_out);
+	boost::posix_time::time_duration run_prepare();
 	boost::posix_time::time_duration run_fft(size_t sub_vec);
 	boost::posix_time::time_duration run_acc(size_t sub_vec);
-	boost::posix_time::time_duration gpu2cpu(
-			std::vector<std::complex<float> >& vec_out);
+	boost::posix_time::time_duration gpu2cpu(std::vector<std::complex<float> >& vec_out);
 public :
 	cl_fft();
 	virtual ~cl_fft() {}

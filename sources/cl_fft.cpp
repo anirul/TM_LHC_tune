@@ -180,16 +180,16 @@ time_duration cl_fft::run_single(
 }
 
 time_duration cl_fft::cpu2gpu(
-		const std::vector<std::complex<float> >& in_out,
-		std::vector<std::complex<float> >& vec_out)
+		const std::vector<short>& in_short,
+		const std::vector<std::complex<float> >& vec_out)
 {
 	ptime before = microsec_clock::universal_time();
-	//initialize our CPU memory arrays, send them to the device and set the kernel_ arguements
+	//initialize our CPU memory arrays, send them to the device and set the kernel_ arguments
 	cl_buffer_in_x_ = cl::Buffer(
 			context_,
-			CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
+			CL_MEM_READ_WRITE,
 			sizeof(cl_float2) * data_size_,
-			(void*)&in_out[0],
+			NULL,
 			&err_);
 	cl_buffer_out_y_ = cl::Buffer(
 			context_,
@@ -202,6 +202,12 @@ time_duration cl_fft::cpu2gpu(
 			CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
 			sizeof(cl_float2) * vec_out.size(),
 			(void*)&vec_out[0],
+			&err_);
+	cl_buffer_short_ = cl::Buffer(
+			context_,
+			CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
+			sizeof(short) * in_short.size(),
+			(void*)&in_short[0],
 			&err_);
 	queue_.finish();
 	ptime after = microsec_clock::universal_time();
@@ -241,11 +247,24 @@ time_duration cl_fft::run_fft(size_t sub_vec)
 	return after - before;
 }
 
+time_duration cl_fft::run_prepare() {
+	ptime before = microsec_clock::universal_time();
+	err_ = queue_.enqueueNDRangeKernel(
+			kernel_prepare_,
+			cl::NullRange,
+			cl::NDRange(data_size_),
+			cl::NullRange,
+			NULL,
+			&event_);
+	queue_.finish();
+	ptime after = microsec_clock::universal_time();
+	return after - before;
+}
+
 // not at all sure about thread safeness here...
 time_duration cl_fft::run_acc(size_t sub_vec)
 {
 	ptime before = microsec_clock::universal_time();
-	queue_.finish();
 	err_ = queue_.enqueueNDRangeKernel(
 			kernel_acc_,
 			cl::NullRange,
@@ -288,24 +307,33 @@ time_duration cl_fft::run_multiple(
 	ptime after;
 	kernel_fft_ = cl::Kernel(program_, "fftRadix2Kernel", &err_);
 	kernel_acc_ = cl::Kernel(program_, "accumulate", &err_);
+	kernel_prepare_ = cl::Kernel(program_, "prepare", &err_);
 	std::vector<cl_float2>::const_iterator ite;
+	std::vector<short> in;
+	for (std::vector<std::complex<float> >::const_iterator ite = in_out.begin();
+			ite != in_out.end(); ++ite)
+		in.push_back((short)(ite->real()));
 	before = microsec_clock::universal_time();
-	time_duration cpu_2_gpu = cpu2gpu(in_out, vec_out);
+	time_duration cpu_2_gpu = cpu2gpu(in, vec_out);
 	//set the arguments of our kernel_
 	err_ = kernel_fft_.setArg(0, cl_buffer_in_x_);
 	err_ = kernel_fft_.setArg(1, cl_buffer_out_y_);
 	err_ = kernel_acc_.setArg(0, cl_buffer_out_y_);
 	err_ = kernel_acc_.setArg(1, cl_buffer_acc_);
+	err_ = kernel_prepare_.setArg(0, cl_buffer_short_);
+	err_ = kernel_prepare_.setArg(1, cl_buffer_in_x_);
 	//Wait for the command queue_ to finish these commands before proceeding
 	queue_.finish();
+	time_duration pre_time = run_prepare();
 	time_duration fft_time = run_fft(sub_vec);
 	time_duration acc_time = run_acc(sub_vec);
 	time_duration gpu_2_cpu = gpu2cpu(vec_out);
 	time_duration total = after - before;
 	std::cout << std::endl;
 	std::cout << "CPU => GPU      : " << cpu_2_gpu << std::endl;
-	std::cout << "GPU => CPU      : " << gpu_2_cpu << std::endl;
+	std::cout << "prepare time    : " << pre_time << std::endl;
 	std::cout << "fft time        : " << fft_time << std::endl;
 	std::cout << "acc time        : " << acc_time << std::endl;
+	std::cout << "GPU => CPU      : " << gpu_2_cpu << std::endl;
 	return total;
 }
