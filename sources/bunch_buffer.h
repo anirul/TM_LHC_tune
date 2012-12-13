@@ -79,6 +79,7 @@ public:
 	void amplitude();
 	void phase_deg();
 	void log10();
+	void singular();
 	bool save_txt(
 			const std::string& file_name,
 			const std::string& time_stamp);
@@ -135,6 +136,7 @@ public:
 	boost::posix_time::time_duration fft();
 	void amplitude();
 	void phase_deg();
+	void singular();
 	void log10();
 	bool save_txt(
 			const std::string& file_name,

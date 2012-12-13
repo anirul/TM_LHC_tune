@@ -476,6 +476,14 @@ void bunch_buffer_d::log10() {
 		buffers_[i].log10();
 }
 
+void bunch_buffer_f::singular() {
+	bunch_pattern_.resize(1);
+}
+
+void bunch_buffer_d::singular() {
+	bunch_pattern_.resize(1);
+}
+
 void bunch_buffer_f::save_txt(
 		std::ostream& os,
 		const std::string& time_stamp)

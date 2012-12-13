@@ -328,6 +328,7 @@ time_duration cl_fft::run_multiple(
 	time_duration fft_time = run_fft(sub_vec);
 	time_duration acc_time = run_acc(sub_vec);
 	time_duration gpu_2_cpu = gpu2cpu(vec_out);
+	after = microsec_clock::universal_time();
 	time_duration total = after - before;
 	std::cout << std::endl;
 	std::cout << "CPU => GPU      : " << cpu_2_gpu << std::endl;

@@ -44,12 +44,13 @@ using namespace boost::posix_time;
 class gpu_cmd : public commands {
 protected :
 public :
-	virtual void operator()(bunch_buffer_f& bb) const {
+	virtual void operator()(bunch_buffer_f& bb) const
+{
 	bb.average();
 	bb.resize(2048);
-	time_duration duration = minutes(0);
-	duration = bb.fft_multiple();
-	std::cout << "fft_multiple : " << duration;
+	time_duration duration = bb.fft_multiple();
+	std::cout << "fft_multiple    : " << duration << std::endl;
+	bb.singular();
 	bb.amplitude();
 	bb.clean(0, bb.buffer_size() / 20);
 }

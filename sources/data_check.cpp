@@ -50,7 +50,8 @@ class chk_cmd : public commands {
 			bb.average();
 			bb.resize(2048);
 			time_duration duration = bb.fft_multiple();
-			std::cout << " fft time : " << duration;
+			std::cout << std::endl;
+			std::cout << "fft time        : " << duration << std::endl;
 			bb.amplitude();
 			bb.clean(0, bb.buffer_size() / 20);
 		}
