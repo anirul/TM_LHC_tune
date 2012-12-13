@@ -86,7 +86,7 @@ cl_fft::cl_fft() {
 		devices_ = context_.getInfo<CL_CONTEXT_DEVICES>();
 	}
 	queue_ = cl::CommandQueue(context_, devices_[device_used_], 0, &err_);
-	std::cout << " Device name    : " << devices_[0].getInfo<CL_DEVICE_NAME>() << std::endl;
+	std::cout << "device name     : " << devices_[0].getInfo<CL_DEVICE_NAME>() << std::endl;
 	std::ifstream ifs("./fft.cl");
 	std::string kernel_source(
 			(std::istreambuf_iterator<char>(ifs)),
@@ -250,8 +250,9 @@ time_duration cl_fft::run_multiple(
 	time_duration cpu_2_gpu = after_copy_gpu - before;
 	time_duration gpu_2_cpu = after - before_copy_cpu;
 	time_duration total = after - before;
-	std::cout << std::endl << " CPU => GPU : " << cpu_2_gpu;
-	std::cout << " GPU => CPU : " << gpu_2_cpu;
-	std::cout << " computing time : " << total - (gpu_2_cpu + cpu_2_gpu) << std::endl;
+	std::cout << std::endl;
+	std::cout << "CPU => GPU      : " << cpu_2_gpu << std::endl;
+	std::cout << "GPU => CPU      : " << gpu_2_cpu << std::endl;
+	std::cout << "computing time  : " << total - (gpu_2_cpu + cpu_2_gpu) << std::endl;
 	return after - before;
 }

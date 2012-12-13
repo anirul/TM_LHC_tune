@@ -63,6 +63,7 @@ __kernel void fftRadix2Kernel(
 	int t = get_global_size(0);
 	// thread index
   	int i = get_global_id(0);
+	// fft index
   	int z = get_global_id(1);
   	// index in input sequence, in 0..P-1
   	int k = i & (p - 1);
@@ -86,3 +87,16 @@ __kernel void fftRadix2Kernel(
 	y[p] = u1;
 }
 
+__kernel void accumulate(
+	__global const real2_t* x,
+	__global real2_t* y,
+	int delta)
+{
+	// thread count
+	int t = get_global_size(0);
+	// thread index
+	int i = get_global_id(0);
+	
+	x += delta * t;
+	y[i] = x[i];
+}
