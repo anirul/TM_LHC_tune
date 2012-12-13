@@ -192,17 +192,18 @@ time_duration cl_fft::run_multiple(
 	//initialize our CPU memory arrays, send them to the device and set the kernel_ arguements
 	cl_buffer_in_x_ = cl::Buffer(
 			context_,
-			CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
+			CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
 			sizeof(cl_float2) * data_size_,
 			(void*)&in_out[0],
 			&err_);
 	cl_buffer_out_y_ = cl::Buffer(
 			context_,
-			CL_MEM_READ_WRITE,
+			CL_MEM_WRITE_ONLY,
 			sizeof(cl_float2) * data_size_,
 			NULL,
 			&err_);
 	queue_.finish();
+	ptime after_copy_gpu = microsec_clock::universal_time();
 	//set the arguments of our kernel_
 	err_ = kernel_.setArg(0, cl_buffer_in_x_);
 	err_ = kernel_.setArg(1, cl_buffer_out_y_);
@@ -235,6 +236,7 @@ time_duration cl_fft::run_multiple(
 			queue_.finish();
 		}
 	}
+	ptime before_copy_cpu = microsec_clock::universal_time();
 	err_ = queue_.enqueueReadBuffer(
 			cl_buffer_out_y_,
 			CL_TRUE,
@@ -245,5 +247,11 @@ time_duration cl_fft::run_multiple(
 			&event_);
 	queue_.finish();
 	after = microsec_clock::universal_time();
+	time_duration cpu_2_gpu = after_copy_gpu - before;
+	time_duration gpu_2_cpu = after - before_copy_cpu;
+	time_duration total = after - before;
+	std::cout << std::endl << " CPU => GPU : " << cpu_2_gpu;
+	std::cout << " GPU => CPU : " << gpu_2_cpu;
+	std::cout << " computing time : " << total - (gpu_2_cpu + cpu_2_gpu) << std::endl;
 	return after - before;
 }
