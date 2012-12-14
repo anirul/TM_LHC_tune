@@ -61,7 +61,7 @@ protected :
 			float divider) const;
 	boost::posix_time::time_duration normalize(
 			std::vector<float>& inout) const;
-	void average(
+	boost::posix_time::time_duration average(
 			const bunch_buffer_f& buffers,
 			std::vector<float>& out) const;
 	bunch_buffer_f buffer_from_file(

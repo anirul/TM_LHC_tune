@@ -68,10 +68,11 @@ time_duration spectrogram::normalize(std::vector<float>& inout) const {
 	return after - before;
 }
 
-void spectrogram::average(
+time_duration spectrogram::average(
 	const bunch_buffer_f& buffers,
 	std::vector<float>& out) const 
 {
+	ptime before = microsec_clock::universal_time();
 	std::vector<float> temp;
 	out.assign(buffers.buffer_size(), 0.0f);
 	for (unsigned int i = 0; i < buffers.bunch_count(); ++i) {
@@ -80,6 +81,8 @@ void spectrogram::average(
 			accumulate(out, out, temp);
 		}
 	}
+	ptime after = microsec_clock::universal_time();
+	return after - before;
 }
 
 bunch_buffer_f spectrogram::buffer_from_file(
@@ -210,7 +213,8 @@ void spectrogram::load_files(
 				cmd(acc_bb);
 				pitch_ = acc_bb.buffer_size();
 				// apply bunch mask!
-				average(acc_bb, temp);
+				time_duration average_time = average(acc_bb, temp);
+				std::cout << "average time    : " << average_time << std::endl;
 				temp.resize(pitch_);
 				time_duration norm_time = normalize(temp);
 				std::cout << "normalize time  : " << norm_time << std::endl;
