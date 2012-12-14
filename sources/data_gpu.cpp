@@ -49,7 +49,7 @@ public :
 	bb.average();
 	bb.resize(2048);
 	time_duration duration = bb.fft_multiple();
-	std::cout << "fft_multiple    : " << duration << std::endl;
+	std::cout << "fft time (GPU)  : " << duration << std::endl;
 	bb.singular();
 	bb.amplitude();
 	bb.clean(0, bb.buffer_size() / 20);
