@@ -52,7 +52,8 @@ class chk_cmd : public commands {
 			time_duration duration = bb.fft_multiple();
 			std::cout << std::endl;
 			std::cout << "fft time (FFTW) : " << duration << std::endl;
-			bb.amplitude();
+			time_duration amp_time = bb.amplitude();
+			std::cout << "amplitude time  : " << amp_time << std::endl;
 			bb.clean(0, bb.buffer_size() / 20);
 		}
 };

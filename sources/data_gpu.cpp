@@ -51,7 +51,8 @@ public :
 	time_duration duration = bb.fft_multiple();
 	std::cout << "fft time (GPU)  : " << duration << std::endl;
 	bb.singular();
-	bb.amplitude();
+	time_duration amp_time = bb.amplitude();
+	std::cout << "amplitude time  : " << amp_time << std::endl;
 	bb.clean(0, bb.buffer_size() / 20);
 }
 };
