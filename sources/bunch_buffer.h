@@ -76,7 +76,7 @@ public:
 	boost::posix_time::time_duration svd(float threshold = 0.0f);
 	boost::posix_time::time_duration fft_single();
 	boost::posix_time::time_duration fft_multiple();
-	void amplitude();
+	boost::posix_time::time_duration amplitude();
 	void phase_deg();
 	void log10();
 	void singular();
@@ -134,7 +134,7 @@ public:
 	boost::posix_time::time_duration svd(double threshold = 0.0);
 	void clean(size_t begin, size_t end);
 	boost::posix_time::time_duration fft();
-	void amplitude();
+	boost::posix_time::time_duration amplitude();
 	void phase_deg();
 	void singular();
 	void log10();

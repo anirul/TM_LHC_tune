@@ -57,12 +57,15 @@ void spectrogram::divide(
 		inout[i] = inout[i] / divider;
 }
 
-void spectrogram::normalize(std::vector<float>& inout) const {
+time_duration spectrogram::normalize(std::vector<float>& inout) const {
+	ptime before = microsec_clock::universal_time();
 	float max = inout[0];
 	for (unsigned int i = 0; i < inout.size(); ++i)
 		if (inout[i] > max) max = inout[i];
 	for (unsigned int i = 0; i < inout.size(); ++i)
 		inout[i] = inout[i] / max;
+	ptime after = microsec_clock::universal_time();
+	return after - before;
 }
 
 void spectrogram::average(
@@ -209,7 +212,8 @@ void spectrogram::load_files(
 				// apply bunch mask!
 				average(acc_bb, temp);
 				temp.resize(pitch_);
-				normalize(temp);
+				time_duration norm_time = normalize(temp);
+				std::cout << "normalize time  : " << norm_time << std::endl;
 				data_.insert(data_.end(), temp.begin(), temp.end());
 				acc_bb.clear();
 			}

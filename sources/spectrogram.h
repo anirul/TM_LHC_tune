@@ -44,53 +44,54 @@ struct commands {
 };
 
 class spectrogram {
-	protected :
-		uint32_t pitch_;
-		uint32_t nb_acc_;
-		std::bitset<16> bunch_mask_;
-		std::vector<short> bunch_pattern_;
-		std::vector<float> data_;
-		std::vector<long long> time_;
-	protected :
-		void accumulate(
+protected :
+	uint32_t pitch_;
+	uint32_t nb_acc_;
+	std::bitset<16> bunch_mask_;
+	std::vector<short> bunch_pattern_;
+	std::vector<float> data_;
+	std::vector<long long> time_;
+protected :
+	void accumulate(
 			std::vector<float>& out,
 			const std::vector<float>& in1,
 			const std::vector<float>& in2) const;
-		void divide(
+	void divide(
 			std::vector<float>& inout,
 			float divider) const;
-		void normalize(std::vector<float>& inout) const;
-		void average(
+	boost::posix_time::time_duration normalize(
+			std::vector<float>& inout) const;
+	void average(
 			const bunch_buffer_f& buffers,
 			std::vector<float>& out) const;
-		bunch_buffer_f buffer_from_file(
+	bunch_buffer_f buffer_from_file(
 			const boost::filesystem::path& path,
 			i_fft_f* fft_instance) const;
-		boost::posix_time::ptime ptime_from_file(
+	boost::posix_time::ptime ptime_from_file(
 			const boost::filesystem::path& path) const;
-		long long time_stamp_from_file(
+	long long time_stamp_from_file(
 			const boost::filesystem::path& path) const;
-	public :
-		spectrogram(
+public :
+	spectrogram(
 			uint32_t nb_acc,
 			const std::bitset<16>& bunch_mask);
-		virtual ~spectrogram();
-	public :
-		void load_files(
+	virtual ~spectrogram();
+public :
+	void load_files(
 			const std::string& path, 
 			const commands& cmd,
 			i_fft_f* fft_instance,
 			int64_t start_time = 0, 
 			int64_t end_time = std::numeric_limits<int64_t>::max());
-		void save_dump(const std::string& file) const;
-		void load_dump(const std::string& file);
-		uint32_t pitch() const;
-		uint32_t line_count() const;
-		const std::vector<float>& data() const;
-		const std::vector<short>& bunch_pattern() const;
-		const std::bitset<16>& bunch_mask() const;
-		const float* line(uint32_t index, uint32_t nb_lines) const;
-		long long time(uint32_t index) const;
+	void save_dump(const std::string& file) const;
+	void load_dump(const std::string& file);
+	uint32_t pitch() const;
+	uint32_t line_count() const;
+	const std::vector<float>& data() const;
+	const std::vector<short>& bunch_pattern() const;
+	const std::bitset<16>& bunch_mask() const;
+	const float* line(uint32_t index, uint32_t nb_lines) const;
+	long long time(uint32_t index) const;
 };
 
 #endif // spectrogram_HEADER_DEFINED

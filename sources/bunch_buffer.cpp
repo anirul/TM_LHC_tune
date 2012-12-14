@@ -446,14 +446,20 @@ time_duration bunch_buffer_d::fft() {
 	return duration;
 }
 
-void bunch_buffer_f::amplitude() {
+time_duration bunch_buffer_f::amplitude() {
+	ptime before = microsec_clock::universal_time();
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
 		buffers_[i].amplitude();
+	ptime after = microsec_clock::universal_time();
+	return after - before;
 }
 
-void bunch_buffer_d::amplitude() {
+time_duration bunch_buffer_d::amplitude() {
+	ptime before = microsec_clock::universal_time();
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
 		buffers_[i].amplitude();
+	ptime after = microsec_clock::universal_time();
+	return after - before;
 }
 
 void bunch_buffer_f::phase_deg() {
