@@ -138,7 +138,7 @@
     <rect style="fill: #ffffff" x="220" y="400" width="160" height="40"/>
     <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="220" y="400" width="160" height="40"/>
     <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="300" y="423.9">
-      <tspan x="300" y="423.9">memory CPU-&gt; GPU </tspan>
+      <tspan x="300" y="423.9">memory GPU-&gt; CPU </tspan>
     </text>
   </g>
   <g>
@@ -152,7 +152,7 @@
     <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="490,397.764 485,387.764 490,390.264 495,387.764 "/>
   </g>
   <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="380" y="420">
-    <tspan x="380" y="420">~15ms</tspan>
+    <tspan x="380" y="420">~20ms</tspan>
   </text>
   <g>
     <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="180" y1="240" x2="180" y2="470.264"/>
