@@ -39,6 +39,8 @@
 #include "cl_fft.h"
 #include "cl_util.h"
 
+#define PIPELINE_GPU
+
 using namespace boost::posix_time;
 
 cl_fft::cl_fft() {
@@ -209,7 +211,9 @@ time_duration cl_fft::cpu2gpu(
 			sizeof(short) * in_short.size(),
 			(void*)&in_short[0],
 			&err_);
+#ifndef PIPELINE_GPU
 	queue_.finish();
+#endif
 	ptime after = microsec_clock::universal_time();
 	return after - before;
 }
@@ -230,7 +234,9 @@ time_duration cl_fft::run_fft(size_t sub_vec)
 				cl::NullRange,
 				NULL,
 				&event_);
+#ifndef PIPELINE_GPU
 		queue_.finish();
+#endif
 		if (i != ((sub_vec_size_) >> 1)) {
 			err_ = queue_.enqueueCopyBuffer(
 					cl_buffer_out_y_,
@@ -240,7 +246,9 @@ time_duration cl_fft::run_fft(size_t sub_vec)
 					data_size_ * sizeof(cl_float2),
 					NULL,
 					&event_);
+#ifndef PIPELINE_GPU
 			queue_.finish();
+#endif
 		}
 	}
 	ptime after = microsec_clock::universal_time();
@@ -256,7 +264,9 @@ time_duration cl_fft::run_prepare() {
 			cl::NullRange,
 			NULL,
 			&event_);
+#ifndef PIPELINE_GPU
 	queue_.finish();
+#endif
 	ptime after = microsec_clock::universal_time();
 	return after - before;
 }
@@ -272,7 +282,9 @@ time_duration cl_fft::run_acc(size_t sub_vec)
 			cl::NullRange,
 			NULL,
 			&event_);
+#ifndef PIPELINE_GPU
 	queue_.finish();
+#endif
 	ptime after = microsec_clock::universal_time();
 	return after - before;
 }
@@ -289,7 +301,9 @@ time_duration cl_fft::gpu2cpu(
 			&out[0],
 			NULL,
 			&event_);
+#ifndef PIPELINE_GPU
 	queue_.finish();
+#endif
 	ptime after = microsec_clock::universal_time();
 	return after - before;
 }
@@ -328,6 +342,9 @@ time_duration cl_fft::run_multiple(
 	time_duration fft_time = run_fft(sub_vec);
 	time_duration acc_time = run_acc(sub_vec);
 	time_duration gpu_2_cpu = gpu2cpu(vec_out);
+#ifdef PIPELINE_GPU
+	queue_.finish();
+#endif
 	after = microsec_clock::universal_time();
 	time_duration total = after - before;
 	std::cout << std::endl;
