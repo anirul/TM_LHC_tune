@@ -4,89 +4,89 @@
   <g>
     <rect style="fill: #ffffff" x="180" y="40" width="160" height="40"/>
     <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="180" y="40" width="160" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="63.9">
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="63.9">
       <tspan x="260" y="63.9">Serial Link -&gt; PCI-e</tspan>
     </text>
   </g>
   <g>
-    <rect style="fill: #ffffff" x="60" y="200" width="160" height="40"/>
-    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="60" y="200" width="160" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="140" y="223.9">
-      <tspan x="140" y="223.9">CPU (FFTW)</tspan>
+    <rect style="fill: #ffffff" x="60" y="280" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="60" y="280" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="140" y="303.9">
+      <tspan x="140" y="303.9">CPU (FFTW)</tspan>
     </text>
   </g>
   <g>
-    <rect style="fill: #ffffff" x="300" y="200" width="160" height="40"/>
-    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="300" y="200" width="160" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="380" y="223.9">
-      <tspan x="380" y="223.9">GPU (Kepler)</tspan>
+    <rect style="fill: #ffffff" x="300" y="280" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="300" y="280" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="380" y="303.9">
+      <tspan x="380" y="303.9">GPU (Kepler)</tspan>
     </text>
   </g>
   <g>
     <rect style="fill: #ffffff" x="180" y="120" width="160" height="40"/>
     <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="180" y="120" width="160" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="143.9">
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="143.9">
       <tspan x="260" y="143.9">CPU (i7)</tspan>
-    </text>
-  </g>
-  <g>
-    <rect style="fill: #ffffff" x="340" y="240" width="200" height="40"/>
-    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="340" y="240" width="200" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="440" y="263.9">
-      <tspan x="440" y="263.9">memory CPU -&gt; GPU </tspan>
-    </text>
-  </g>
-  <g>
-    <rect style="fill: #ffffff" x="340" y="280" width="200" height="40"/>
-    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="340" y="280" width="200" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="440" y="303.9">
-      <tspan x="440" y="303.9">prepare (short -&gt; float2) </tspan>
     </text>
   </g>
   <g>
     <rect style="fill: #ffffff" x="340" y="320" width="200" height="40"/>
     <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="340" y="320" width="200" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="440" y="343.9">
-      <tspan x="440" y="343.9">FFT (radix2) * log2(N)</tspan>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="440" y="343.9">
+      <tspan x="440" y="343.9">memory CPU -&gt; GPU </tspan>
     </text>
   </g>
   <g>
-    <rect style="fill: #ffffff" x="440" y="400" width="200" height="40"/>
-    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="440" y="400" width="200" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="540" y="423.9">
-      <tspan x="540" y="423.9">accumulate (float2 -&gt;float)</tspan>
+    <rect style="fill: #ffffff" x="340" y="360" width="200" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="340" y="360" width="200" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="440" y="383.9">
+      <tspan x="440" y="383.9">prepare (short -&gt; float2) </tspan>
     </text>
   </g>
   <g>
-    <rect style="fill: #ffffff" x="140" y="480" width="160" height="40"/>
-    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="140" y="480" width="160" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="220" y="503.9">
-      <tspan x="220" y="503.9">SVD</tspan>
+    <rect style="fill: #ffffff" x="340" y="400" width="200" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="340" y="400" width="200" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="440" y="423.9">
+      <tspan x="440" y="423.9">FFT (radix2) * log2(N)</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="440" y="480" width="200" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="440" y="480" width="200" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="540" y="503.9">
+      <tspan x="540" y="503.9">accumulate (float2 -&gt;float)</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="260" y="200" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="260" y="200" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="340" y="223.9">
+      <tspan x="340" y="223.9">SVD</tspan>
     </text>
   </g>
   <g>
     <rect style="fill: #ffffff" x="180" y="680" width="160" height="40"/>
     <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="180" y="680" width="160" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="703.9">
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="703.9">
       <tspan x="260" y="703.9">Normalize</tspan>
     </text>
   </g>
   <g>
     <rect style="fill: #ffffff" x="180" y="760" width="160" height="40"/>
     <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="180" y="760" width="160" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="783.9">
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="783.9">
       <tspan x="260" y="783.9">CERN MiddleWare</tspan>
     </text>
   </g>
   <g>
-    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="300" y1="160" x2="300" y2="190.264"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="300" y1="160" x2="300" y2="190.264"/>
     <polygon style="fill: #000000" points="300,197.764 295,187.764 300,190.264 305,187.764 "/>
     <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="300,197.764 295,187.764 300,190.264 305,187.764 "/>
   </g>
   <g>
-    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="220" y1="160" x2="220" y2="190.264"/>
-    <polygon style="fill: #000000" points="220,197.764 215,187.764 220,190.264 225,187.764 "/>
-    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="220,197.764 215,187.764 220,190.264 225,187.764 "/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="180" y1="160" x2="180" y2="270.264"/>
+    <polygon style="fill: #000000" points="180,277.764 175,267.764 180,270.264 185,267.764 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="180,277.764 175,267.764 180,270.264 185,267.764 "/>
   </g>
   <g>
     <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="260" y1="80" x2="260" y2="110.264"/>
@@ -98,107 +98,114 @@
     <polygon style="fill: #000000" points="260,757.764 255,747.764 260,750.264 265,747.764 "/>
     <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="260,757.764 255,747.764 260,750.264 265,747.764 "/>
   </g>
-  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="540" y="260">
-    <tspan x="540" y="260">~5ms</tspan>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="540" y="340">
+    <tspan x="540" y="340">~5ms</tspan>
   </text>
-  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="540" y="300">
-    <tspan x="540" y="300">~5ms</tspan>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="540" y="380">
+    <tspan x="540" y="380">~5ms</tspan>
   </text>
-  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="540" y="340">
-    <tspan x="540" y="340">~19ms</tspan>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="540" y="420">
+    <tspan x="540" y="420">~19ms</tspan>
   </text>
   <g>
-    <rect style="fill: #ffffff" x="440" y="440" width="200" height="40"/>
-    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="440" y="440" width="200" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="540" y="463.9">
-      <tspan x="540" y="463.9">memory GPU -&gt; CPU </tspan>
+    <rect style="fill: #ffffff" x="440" y="520" width="200" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="440" y="520" width="200" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="540" y="543.9">
+      <tspan x="540" y="543.9">memory GPU -&gt; CPU </tspan>
     </text>
   </g>
-  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="640" y="420">
-    <tspan x="640" y="420">~1ms</tspan>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="640" y="500">
+    <tspan x="640" y="500">~1ms</tspan>
   </text>
-  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="640" y="460">
-    <tspan x="640" y="460">~0.3ms</tspan>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="640" y="540">
+    <tspan x="640" y="540">~0.3ms</tspan>
   </text>
   <g>
     <rect style="fill: #ffffff" x="180" y="640" width="160" height="40"/>
     <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="180" y="640" width="160" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="663.9">
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="663.9">
       <tspan x="260" y="663.9">Amplitude</tspan>
     </text>
   </g>
   <g>
     <rect style="fill: #ffffff" x="140" y="560" width="160" height="40"/>
     <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="140" y="560" width="160" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="220" y="583.9">
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="220" y="583.9">
       <tspan x="220" y="583.9">accumulate</tspan>
     </text>
   </g>
   <g>
-    <rect style="fill: #ffffff" x="220" y="400" width="160" height="40"/>
-    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="220" y="400" width="160" height="40"/>
-    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="300" y="423.9">
-      <tspan x="300" y="423.9">memory GPU-&gt; CPU </tspan>
+    <rect style="fill: #ffffff" x="220" y="480" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="220" y="480" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="300" y="503.9">
+      <tspan x="300" y="503.9">memory GPU-&gt; CPU </tspan>
     </text>
   </g>
   <g>
-    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="340" y1="360" x2="340" y2="390.264"/>
-    <polygon style="fill: #000000" points="340,397.764 335,387.764 340,390.264 345,387.764 "/>
-    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="340,397.764 335,387.764 340,390.264 345,387.764 "/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="340" y1="440" x2="340" y2="470.264"/>
+    <polygon style="fill: #000000" points="340,477.764 335,467.764 340,470.264 345,467.764 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="340,477.764 335,467.764 340,470.264 345,467.764 "/>
   </g>
   <g>
-    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="490" y1="360" x2="490" y2="390.264"/>
-    <polygon style="fill: #000000" points="490,397.764 485,387.764 490,390.264 495,387.764 "/>
-    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="490,397.764 485,387.764 490,390.264 495,387.764 "/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="490" y1="440" x2="490" y2="470.264"/>
+    <polygon style="fill: #000000" points="490,477.764 485,467.764 490,470.264 495,467.764 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="490,477.764 485,467.764 490,470.264 495,467.764 "/>
   </g>
-  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="380" y="420">
-    <tspan x="380" y="420">~20ms</tspan>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="380" y="500">
+    <tspan x="380" y="500">~20ms</tspan>
   </text>
   <g>
-    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="180" y1="240" x2="180" y2="470.264"/>
-    <polygon style="fill: #000000" points="180,477.764 175,467.764 180,470.264 185,467.764 "/>
-    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="180,477.764 175,467.764 180,470.264 185,467.764 "/>
-  </g>
-  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="100" y1="240" x2="100" y2="580"/>
-  <g>
-    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="100" y1="580" x2="130.264" y2="580"/>
-    <polygon style="fill: #000000" points="137.764,580 127.764,585 130.264,580 127.764,575 "/>
-    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="137.764,580 127.764,585 130.264,580 127.764,575 "/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="140" y1="320" x2="140" y2="550.264"/>
+    <polygon style="fill: #000000" points="140,557.764 135,547.764 140,550.264 145,547.764 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="140,557.764 135,547.764 140,550.264 145,547.764 "/>
   </g>
   <g>
-    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="260" y1="440" x2="260" y2="470.264"/>
-    <polygon style="fill: #000000" points="260,477.764 255,467.764 260,470.264 265,467.764 "/>
-    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="260,477.764 255,467.764 260,470.264 265,467.764 "/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="260" y1="520" x2="260" y2="550.264"/>
+    <polygon style="fill: #000000" points="260,557.764 255,547.764 260,550.264 265,547.764 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="260,557.764 255,547.764 260,550.264 265,547.764 "/>
   </g>
   <g>
-    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="220" y1="520" x2="220" y2="550.264"/>
-    <polygon style="fill: #000000" points="220,557.764 215,547.764 220,550.264 225,547.764 "/>
-    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="220,557.764 215,547.764 220,550.264 225,547.764 "/>
-  </g>
-  <g>
-    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="260" y1="600" x2="260" y2="630.264"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="260" y1="600" x2="260" y2="630.264"/>
     <polygon style="fill: #000000" points="260,637.764 255,627.764 260,630.264 265,627.764 "/>
     <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="260,637.764 255,627.764 260,630.264 265,627.764 "/>
   </g>
-  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="540" y1="480" x2="540" y2="580"/>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="540" y1="560" x2="540" y2="580"/>
   <g>
     <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="540" y1="580" x2="349.325" y2="637.202"/>
     <polygon style="fill: #000000" points="342.142,639.357 350.283,631.695 349.325,637.202 353.157,641.273 "/>
     <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="342.142,639.357 350.283,631.695 349.325,637.202 353.157,641.273 "/>
   </g>
-  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="220" y="220">
-    <tspan x="220" y="220">~120ms</tspan>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="220" y="300">
+    <tspan x="220" y="300">~120ms</tspan>
   </text>
-  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="300" y="500">
-    <tspan x="300" y="500">~4s (with 300 bunches)</tspan>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="420" y="220">
+    <tspan x="420" y="220">~4s (with 300 bunches)</tspan>
   </text>
-  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="340" y="700">
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="340" y="700">
     <tspan x="340" y="700">~20us</tspan>
   </text>
-  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="340" y="660">
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="340" y="660">
     <tspan x="340" y="660">~90us</tspan>
   </text>
-  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="300" y="580">
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="300" y="580">
     <tspan x="300" y="580">~55us</tspan>
   </text>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="220" y1="160" x2="220" y2="260"/>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="340" y1="260" x2="220" y2="260"/>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="260" y1="220" x2="100" y2="220"/>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="100" y1="220" x2="100" y2="270.264"/>
+    <polygon style="fill: #000000" points="100,277.764 95,267.764 100,270.264 105,267.764 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="100,277.764 95,267.764 100,270.264 105,267.764 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="340" y1="260" x2="340" y2="270.264"/>
+    <polygon style="fill: #000000" points="340,277.764 335,267.764 340,270.264 345,267.764 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="340,277.764 335,267.764 340,270.264 345,267.764 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000" x1="380" y1="240" x2="380" y2="270.264"/>
+    <polygon style="fill: #000000" points="380,277.764 375,267.764 380,270.264 385,267.764 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="380,277.764 375,267.764 380,270.264 385,267.764 "/>
+  </g>
 </svg>
