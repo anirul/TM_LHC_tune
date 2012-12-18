@@ -47,15 +47,15 @@ class chk_cmd : public commands {
 public :
 	chk_cmd() {}
 	virtual void operator()(bunch_buffer_f& bb, std::vector<float>& out) const {
+		std::cout << std::endl;
+		time_duration notch_time = bb.notch();
+		std::cout << "notch time      : " << notch_time << std::endl;
 		out.resize(2048);
-		bb.average();
 		bb.resize(2048);
 		time_duration duration = bb.fft_multiple();
-		std::cout << std::endl;
 		std::cout << "fft time (FFTW) : " << duration << std::endl;
 		time_duration amp_time = bb.amplitude();
 		std::cout << "amplitude time  : " << amp_time << std::endl;
-		bb.clean(0, bb.buffer_size() / 20);
 		time_duration acc_time = bb.accumulate(out);
 		std::cout << "accumulate time : " << acc_time << std::endl;
 		time_duration norm_time = bb.normalize(out);

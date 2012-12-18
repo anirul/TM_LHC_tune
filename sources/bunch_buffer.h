@@ -72,13 +72,14 @@ public:
 	size_t buffer_size() const;
 	float check_rms();
 	void clean(size_t begin, size_t end);
-	boost::posix_time::time_duration average();
-	boost::posix_time::time_duration notch();
-	boost::posix_time::time_duration svd(float threshold = 0.0f);
-	boost::posix_time::time_duration fft_single();
-	boost::posix_time::time_duration fft_multiple();
-	boost::posix_time::time_duration amplitude();
-	boost::posix_time::time_duration accumulate(std::vector<float>& out);
+	time_duration average();
+	time_duration notch();
+	time_duration svd(float threshold = 0.0f);
+	time_duration fft_single();
+	time_duration fft_multiple();
+	time_duration amplitude();
+	time_duration amplitude(std::vector<float> &out);
+	time_duration accumulate(std::vector<float>& out);
 	void phase_deg();
 	void log10();
 	bool save_txt(
@@ -132,13 +133,14 @@ public:
 	size_t buffer_size() const;
 	double check_rms();
 	void clean(size_t begin, size_t end);
-	boost::posix_time::time_duration average();
-	boost::posix_time::time_duration notch();
-	boost::posix_time::time_duration svd(double threshold = 0.0f);
-	boost::posix_time::time_duration fft_single();
-	boost::posix_time::time_duration fft_multiple();
-	boost::posix_time::time_duration amplitude();
-	boost::posix_time::time_duration accumulate(std::vector<double>& out);
+	time_duration average();
+	time_duration notch();
+	time_duration svd(double threshold = 0.0f);
+	time_duration fft_single();
+	time_duration fft_multiple();
+	time_duration amplitude();
+	time_duration amplitude(std::vector<double> &out);
+	time_duration accumulate(std::vector<double>& out);
 	void phase_deg();
 	void log10();
 	bool save_txt(

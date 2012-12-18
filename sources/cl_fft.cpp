@@ -278,7 +278,7 @@ time_duration cl_fft::run_acc(size_t sub_vec)
 	err_ = queue_.enqueueNDRangeKernel(
 			kernel_acc_,
 			cl::NullRange,
-			cl::NDRange(sub_vec_size_, sub_vec),
+			cl::NDRange(sub_vec_size_ >> 1, sub_vec),
 			cl::NullRange,
 			NULL,
 			&event_);
@@ -330,12 +330,12 @@ time_duration cl_fft::run_multiple(
 	before = microsec_clock::universal_time();
 	time_duration cpu_2_gpu = cpu2gpu(in, vec_out);
 	//set the arguments of our kernel_
+	err_ = kernel_prepare_.setArg(0, cl_buffer_short_);
+	err_ = kernel_prepare_.setArg(1, cl_buffer_in_x_);
 	err_ = kernel_fft_.setArg(0, cl_buffer_in_x_);
 	err_ = kernel_fft_.setArg(1, cl_buffer_out_y_);
 	err_ = kernel_acc_.setArg(0, cl_buffer_out_y_);
 	err_ = kernel_acc_.setArg(1, cl_buffer_acc_);
-	err_ = kernel_prepare_.setArg(0, cl_buffer_short_);
-	err_ = kernel_prepare_.setArg(1, cl_buffer_in_x_);
 	//Wait for the command queue_ to finish these commands before proceeding
 	queue_.finish();
 	time_duration pre_time = run_prepare();
@@ -346,7 +346,6 @@ time_duration cl_fft::run_multiple(
 	in_out = vec_out;
 	after = microsec_clock::universal_time();
 	time_duration total = after - before;
-	std::cout << std::endl;
 	std::cout << "CPU => GPU      : " << cpu_2_gpu << std::endl;
 	std::cout << "prepare time    : " << pre_time << std::endl;
 	std::cout << "fft time        : " << fft_time << std::endl;

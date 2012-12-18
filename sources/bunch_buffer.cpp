@@ -535,6 +535,22 @@ time_duration bunch_buffer_d::amplitude() {
 	return after - before;
 }
 
+time_duration bunch_buffer_f::amplitude(std::vector<float>& out) {
+	ptime before = microsec_clock::universal_time();
+	buffers_[0].amplitude();
+	buffers_[0].buffer_real(out);
+	ptime after = microsec_clock::universal_time();
+	return after - before;
+}
+
+time_duration bunch_buffer_d::amplitude(std::vector<double>& out) {
+	ptime before = microsec_clock::universal_time();
+	buffers_[0].amplitude();
+	buffers_[0].buffer_real(out);
+	ptime after = microsec_clock::universal_time();
+	return after - before;
+}
+
 void bunch_buffer_f::phase_deg() {
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
 		buffers_[i].phase_deg();

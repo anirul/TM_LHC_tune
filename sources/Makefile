@@ -35,7 +35,7 @@ LIBS = -L/usr/local/lib -L/usr/local/lib64 -L/usr/lib64 \
 	-lgsl -lgslcblas -lm
 endif
 
-ALL=data_check data_svd data_clean data_gpu
+ALL=data_check data_svd data_clean data_gpu data_display
 
 all: $(ALL)
 
@@ -59,6 +59,8 @@ cl_fft.o : cl_fft.h cl_fft.cpp
 	$(CXX) -o cl_fft.o -c cl_fft.cpp $(CFLAGS)
 cl_util.o : cl_util.h cl_util.cpp
 	$(CXX) -o cl_util.o -c cl_util.cpp $(CFLAGS)
+win_data_display.o : win_data_display.h win_data_display.cpp glut_win.h
+	$(CXX) -o win_data_display.o -c win_data_display.cpp $(CFLAGS)
 
 data_check.o : data_check.cpp fftw_fft.h acquisition_buffer.h bunch_buffer.h glut_win.h win_data_check.h
 	$(CXX) -o data_check.o -c data_check.cpp $(CFLAGS)
@@ -68,6 +70,8 @@ data_clean.o : data_clean.cpp fftw_fft.h acquisition_buffer.h bunch_buffer.h i_f
 	$(CXX) -o data_clean.o -c data_clean.cpp $(CFLAGS)
 data_gpu.o : data_gpu.cpp cl_fft.h fftw_fft.h spectrogram.h bunch_buffer.h acquisition_buffer.h i_fft.h	cl_util.h
 	$(CXX) -o data_gpu.o -c data_gpu.cpp $(CFLAGS)
+data_dsplay.o : data_display.cpp cl_fft.h fftw_fft.h spectrogram.h bunch_buffer.h acquisition_buffer.h i_fft.h cl_util.h glut_win.h win_data_display.h
+	$(CXX) -o data_display.o -c data_display.cpp $(CFLAGS)
 
 data_check : data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o cv_image.o gsl_svd.o
 	$(CXX) -o data_check data_check.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o win_data_check.o spectrogram.o cv_image.o gsl_svd.o $(LIBS)
@@ -77,7 +81,9 @@ data_gpu : data_gpu.o acquisition_buffer.o bunch_buffer.o spectrogram.o gsl_svd.
 	$(CXX) -o data_gpu data_gpu.o acquisition_buffer.o bunch_buffer.o spectrogram.o gsl_svd.o fftw_fft.o cl_fft.o cl_util.o $(LIBS)
 data_clean : data_clean.o acquisition_buffer.o bunch_buffer.o fftw_fft.o gsl_svd.o
 	$(CXX) -o data_clean data_clean.o acquisition_buffer.o bunch_buffer.o fftw_fft.o gsl_svd.o $(LIBS)
-
+data_display : data_display.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o cl_fft.o cl_util.o win_data_check.o spectrogram.o cv_image.o gsl_svd.o
+	$(CXX) -o data_display data_display.o glut_win.o acquisition_buffer.o bunch_buffer.o fftw_fft.o cl_fft.o cl_util.o win_data_check.o spectrogram.o cv_image.o gsl_svd.o $(LIBS)
+	
 clean:
 	rm -f $(ALL) *.o
 

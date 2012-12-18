@@ -47,17 +47,19 @@ public :
 	svd_cmd(float threshold_svd = 0.0f) :
 		threshold_svd_(threshold_svd) {}
 	virtual void operator()(bunch_buffer_f& bb, std::vector<float>& out) const {
-		out.resize(2048);
-		bb.average();
-		bb.resize(2048);
 		std::cout << std::endl;
+		out.resize(2048);
+		time_duration avg_time = bb.average();
+		std::cout << "average time    : " << avg_time << std::endl;
+		bb.resize(2048);
 		time_duration duration_svd = bb.svd(threshold_svd_);
-		std::cout << " svd time : " << duration_svd;
+		std::cout << "svd time        : " << duration_svd << std::endl;
+		out.resize(2048);
+		bb.resize(2048);
 		time_duration duration = bb.fft_multiple();
 		std::cout << "fft time (FFTW) : " << duration << std::endl;
 		time_duration amp_time = bb.amplitude();
 		std::cout << "amplitude time  : " << amp_time << std::endl;
-		bb.clean(0, bb.buffer_size() / 20);
 		time_duration acc_time = bb.accumulate(out);
 		std::cout << "accumulate time : " << acc_time << std::endl;
 		time_duration norm_time = bb.normalize(out);

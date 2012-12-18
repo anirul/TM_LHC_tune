@@ -46,15 +46,18 @@ protected :
 public :
 	gpu_cmd() {}
 	virtual void operator()(bunch_buffer_f& bb, std::vector<float>& out) const {
-		out.resize(2048);
-		bb.average();
+		std::cout << std::endl;
+		time_duration notch_time = bb.notch();
+		std::cout << "notch time      : " << notch_time << std::endl;
+		out.resize(1024);
+//		time_duration avg_time = bb.average();
+//		std::cout << "average time    : " << avg_time << std::endl;
 		bb.resize(2048);
 		time_duration duration = bb.fft_multiple();
 		std::cout << "fft time (GPU)  : " << duration << std::endl;
-		time_duration amp_time = bb.amplitude();
-		std::cout << "amplitude time  : " << amp_time << std::endl;
-		bb.clean(0, bb.buffer_size() / 20);
-		bb.buffer(0, out);
+//		bb.clean(0, bb.buffer_size() / 50);
+//		time_duration amp_time = bb.amplitude(out);
+//		std::cout << "amplitude time  : " << amp_time << std::endl;
 		time_duration norm_time = bb.normalize(out);
 		std::cout << "normalize time  : " << norm_time << std::endl;
 	}
