@@ -19,7 +19,7 @@
     <rect style="fill: #ffffff" x="300" y="280" width="160" height="40"/>
     <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="300" y="280" width="160" height="40"/>
     <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="380" y="303.9">
-      <tspan x="380" y="303.9">GPU (Kepler)</tspan>
+      <tspan x="380" y="303.9">GPU (Fermi)</tspan>
     </text>
   </g>
   <g>
