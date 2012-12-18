@@ -44,18 +44,23 @@ using namespace boost::program_options;
 using namespace boost::posix_time;
 
 class chk_cmd : public commands {
-	public :
-		chk_cmd() {}
-		virtual void operator()(bunch_buffer_f& bb) const {
-			bb.average();
-			bb.resize(2048);
-			time_duration duration = bb.fft_multiple();
-			std::cout << std::endl;
-			std::cout << "fft time (FFTW) : " << duration << std::endl;
-			time_duration amp_time = bb.amplitude();
-			std::cout << "amplitude time  : " << amp_time << std::endl;
-			bb.clean(0, bb.buffer_size() / 20);
-		}
+public :
+	chk_cmd() {}
+	virtual void operator()(bunch_buffer_f& bb, std::vector<float>& out) const {
+		out.resize(2048);
+		bb.average();
+		bb.resize(2048);
+		time_duration duration = bb.fft_multiple();
+		std::cout << std::endl;
+		std::cout << "fft time (FFTW) : " << duration << std::endl;
+		time_duration amp_time = bb.amplitude();
+		std::cout << "amplitude time  : " << amp_time << std::endl;
+		bb.clean(0, bb.buffer_size() / 20);
+		time_duration acc_time = bb.accumulate(out);
+		std::cout << "accumulate time : " << acc_time << std::endl;
+		time_duration norm_time = bb.normalize(out);
+		std::cout << "normalize time  : " << norm_time << std::endl;
+	}
 };
 
 int main(int ac, char** av) {
@@ -134,10 +139,10 @@ int main(int ac, char** av) {
 			std::cout << "black & white   : true" << std::endl;
 		}
 		if (vm.count("start-time")) {
-        	{
-            	std::string start_time_str = vm["start-time"].as<std::string>();
-            	start_time = boost::lexical_cast<long long>(start_time_str);
-         	}
+			{
+				std::string start_time_str = vm["start-time"].as<std::string>();
+				start_time = boost::lexical_cast<long long>(start_time_str);
+			}
 			boost::posix_time::ptime ptime_time;
 			{ // convert to time
 				ptime_time = boost::posix_time::from_time_t(
@@ -149,10 +154,10 @@ int main(int ac, char** av) {
 					<< ptime_time << "]" << std::endl;
 		}
 		if (vm.count("end-time")) {
-         	{
-   				std::string end_time_str = vm["end-time"].as<std::string>();
-            	end_time = boost::lexical_cast<long long>(end_time_str);
-         	}
+			{
+				std::string end_time_str = vm["end-time"].as<std::string>();
+				end_time = boost::lexical_cast<long long>(end_time_str);
+			}
 			boost::posix_time::ptime ptime_time;
 			{ // convert to time
 				ptime_time = boost::posix_time::from_time_t(

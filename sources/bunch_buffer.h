@@ -64,22 +64,23 @@ public:
 			const unsigned long min,
 			const unsigned long max);
 	std::vector<short> get_bunch_pattern() const;
+	time_duration normalize(std::vector<float>& inout) const;
 	void buffer(
 			const unsigned long index,
 			std::vector<float>& out) const;
 	size_t bunch_count() const;
 	size_t buffer_size() const;
-	void notch();
-	void average();
 	float check_rms();
 	void clean(size_t begin, size_t end);
+	boost::posix_time::time_duration average();
+	boost::posix_time::time_duration notch();
 	boost::posix_time::time_duration svd(float threshold = 0.0f);
 	boost::posix_time::time_duration fft_single();
 	boost::posix_time::time_duration fft_multiple();
 	boost::posix_time::time_duration amplitude();
+	boost::posix_time::time_duration accumulate(std::vector<float>& out);
 	void phase_deg();
 	void log10();
-	void singular();
 	bool save_txt(
 			const std::string& file_name,
 			const std::string& time_stamp);
@@ -123,20 +124,22 @@ public:
 			const unsigned long min,
 			const unsigned long max);
 	std::vector<short> get_bunch_pattern() const;
+	time_duration normalize(std::vector<double>& inout) const;
 	void buffer(
 			const unsigned long index,
 			std::vector<double>& out) const;
 	size_t bunch_count() const;
 	size_t buffer_size() const;
-	void notch();
-	void average();
 	double check_rms();
-	boost::posix_time::time_duration svd(double threshold = 0.0);
 	void clean(size_t begin, size_t end);
-	boost::posix_time::time_duration fft();
+	boost::posix_time::time_duration average();
+	boost::posix_time::time_duration notch();
+	boost::posix_time::time_duration svd(double threshold = 0.0f);
+	boost::posix_time::time_duration fft_single();
+	boost::posix_time::time_duration fft_multiple();
 	boost::posix_time::time_duration amplitude();
+	boost::posix_time::time_duration accumulate(std::vector<double>& out);
 	void phase_deg();
-	void singular();
 	void log10();
 	bool save_txt(
 			const std::string& file_name,

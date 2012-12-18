@@ -38,51 +38,12 @@
 namespace fs = boost::filesystem;
 namespace bt = boost::posix_time;
 
-void spectrogram::accumulate(
-	std::vector<float>& out,
-	const std::vector<float>& in1,
-	const std::vector<float>& in2) const
-{
-	unsigned int min = (in1.size() < in2.size()) ? in1.size() : in2.size();
-	out.resize(min);
-	for (unsigned int i = 0; i < out.size(); ++i)
-		out[i] = in1[i] + in2[i];
-}
-
 void spectrogram::divide(
 	std::vector<float>& inout,
 	float divider) const
 {
 	for (unsigned int i = 0; i < inout.size(); ++i)
 		inout[i] = inout[i] / divider;
-}
-
-time_duration spectrogram::normalize(std::vector<float>& inout) const {
-	ptime before = microsec_clock::universal_time();
-	float max = inout[0];
-	for (unsigned int i = 0; i < inout.size(); ++i)
-		if (inout[i] > max) max = inout[i];
-	for (unsigned int i = 0; i < inout.size(); ++i)
-		inout[i] = inout[i] / max;
-	ptime after = microsec_clock::universal_time();
-	return after - before;
-}
-
-time_duration spectrogram::average(
-	const bunch_buffer_f& buffers,
-	std::vector<float>& out) const 
-{
-	ptime before = microsec_clock::universal_time();
-	std::vector<float> temp;
-	out.assign(buffers.buffer_size(), 0.0f);
-	for (unsigned int i = 0; i < buffers.bunch_count(); ++i) {
-		if (bunch_mask_[i]) {
-			buffers.buffer(i, temp);
-			accumulate(out, out, temp);
-		}
-	}
-	ptime after = microsec_clock::universal_time();
-	return after - before;
 }
 
 bunch_buffer_f spectrogram::buffer_from_file(
@@ -209,15 +170,11 @@ void spectrogram::load_files(
 			time_.push_back(time_stamp);
 			acc_bb += bb;
 			if (acc_count && !(acc_count % nb_acc_)) {
+				std::vector<float> temp;
 				// here come the computing
-				cmd(acc_bb);
+				cmd(acc_bb, temp);
 				pitch_ = acc_bb.buffer_size();
 				// apply bunch mask!
-				time_duration average_time = average(acc_bb, temp);
-				std::cout << "average time    : " << average_time << std::endl;
-				temp.resize(pitch_);
-				time_duration norm_time = normalize(temp);
-				std::cout << "normalize time  : " << norm_time << std::endl;
 				data_.insert(data_.end(), temp.begin(), temp.end());
 				acc_bb.clear();
 			}

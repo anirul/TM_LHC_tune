@@ -222,6 +222,28 @@ std::vector<short> bunch_buffer_d::get_bunch_pattern() const {
 	return bunch_pattern_;
 }
 
+time_duration bunch_buffer_f::normalize(std::vector<float>& inout) const {
+	ptime before = microsec_clock::universal_time();
+	float max = inout[0];
+	for (unsigned int i = 0; i < inout.size(); ++i)
+		if (inout[i] > max) max = inout[i];
+	for (unsigned int i = 0; i < inout.size(); ++i)
+		inout[i] = inout[i] / max;
+	ptime after = microsec_clock::universal_time();
+	return after - before;
+}
+
+time_duration bunch_buffer_d::normalize(std::vector<double>& inout) const {
+	ptime before = microsec_clock::universal_time();
+	double max = inout[0];
+	for (unsigned int i = 0; i < inout.size(); ++i)
+		if (inout[i] > max) max = inout[i];
+	for (unsigned int i = 0; i < inout.size(); ++i)
+		inout[i] = inout[i] / max;
+	ptime after = microsec_clock::universal_time();
+	return after - before;
+}
+
 void bunch_buffer_f::buffer(
 		const unsigned long index,
 		std::vector<float>& out) const
@@ -262,24 +284,66 @@ size_t bunch_buffer_d::buffer_size() const {
 	return 0;
 }
 
-void bunch_buffer_f::notch() {
+time_duration bunch_buffer_f::notch() {
+	ptime begin = microsec_clock::universal_time();
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
 		buffers_[i].notch();
+	ptime end = microsec_clock::universal_time();
+	return end - begin;
 }
 
-void bunch_buffer_f::average() {
-	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
-		buffers_[i].average();
-}
-
-void bunch_buffer_d::average() {
-	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
-		buffers_[i].average();
-}
-
-void bunch_buffer_d::notch() {
+time_duration bunch_buffer_d::notch() {
+	ptime begin = microsec_clock::universal_time();
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
 		buffers_[i].notch();
+	ptime end = microsec_clock::universal_time();
+	return end - begin;
+}
+
+time_duration bunch_buffer_f::average() {
+	ptime before = microsec_clock::universal_time();
+	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
+		buffers_[i].average();
+	ptime after = microsec_clock::universal_time();
+	return after - before;
+}
+
+time_duration bunch_buffer_d::average() {
+	ptime before = microsec_clock::universal_time();
+	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
+		buffers_[i].average();
+	ptime after = microsec_clock::universal_time();
+	return after - before;
+}
+
+time_duration bunch_buffer_f::accumulate(std::vector<float>& out) {
+	ptime before = microsec_clock::universal_time();
+	std::vector<float> temp;
+	out.assign(buffer_size(), 0.0f);
+	for (unsigned int i = 0; i < bunch_count(); ++i) {
+		buffer(i, temp);
+		if (!out.size())
+			out.resize(temp.size());
+		for (size_t i = 0; i < temp.size(); ++i)
+			out[i] += temp[i];
+	}
+	ptime after = microsec_clock::universal_time();
+	return after - before;
+}
+
+time_duration bunch_buffer_d::accumulate(std::vector<double>& out) {
+	ptime before = microsec_clock::universal_time();
+	std::vector<double> temp;
+	out.assign(buffer_size(), 0.0f);
+	for (unsigned int i = 0; i < bunch_count(); ++i) {
+		buffer(i, temp);
+		if (!out.size())
+			out.resize(temp.size());
+		for (size_t i = 0; i < temp.size(); ++i)
+			out[i] += temp[i];
+	}
+	ptime after = microsec_clock::universal_time();
+	return after - before;
 }
 
 float bunch_buffer_f::check_rms() {
@@ -406,6 +470,15 @@ time_duration bunch_buffer_f::fft_single() {
 	return total;
 }
 
+time_duration bunch_buffer_d::fft_single() {
+	time_duration total = minutes(0);
+	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i) {
+		total += fft_instance_->run_single(
+				buffers_[i].complex_buffer_);
+	}
+	return total;
+}
+
 time_duration bunch_buffer_f::fft_multiple() {
 	std::vector<std::complex<float> > total;
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
@@ -426,7 +499,7 @@ time_duration bunch_buffer_f::fft_multiple() {
 	return duration;
 }
 
-time_duration bunch_buffer_d::fft() {
+time_duration bunch_buffer_d::fft_multiple() {
 	std::vector<std::complex<double> > total;
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
 		total.insert(
@@ -480,14 +553,6 @@ void bunch_buffer_f::log10() {
 void bunch_buffer_d::log10() {
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i)
 		buffers_[i].log10();
-}
-
-void bunch_buffer_f::singular() {
-	bunch_pattern_.resize(1);
-}
-
-void bunch_buffer_d::singular() {
-	bunch_pattern_.resize(1);
 }
 
 void bunch_buffer_f::save_txt(

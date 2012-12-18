@@ -40,7 +40,9 @@
 struct commands {
 	commands() {}
 	virtual ~commands() {}
-	virtual void operator()(bunch_buffer_f& bb) const = 0;
+	virtual void operator()(
+			bunch_buffer_f& bb,
+			std::vector<float>& out) const = 0;
 };
 
 class spectrogram {
