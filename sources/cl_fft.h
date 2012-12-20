@@ -34,6 +34,7 @@
 
 class cl_fft : public i_fft_f {
 private :
+	bool pipeline_;
 	cl::Buffer cl_buffer_in_x_;
 	cl::Buffer cl_buffer_out_y_;
 	cl::Buffer cl_buffer_acc_;
@@ -61,7 +62,7 @@ public :
 	boost::posix_time::time_duration run_acc(size_t sub_vec);
 	boost::posix_time::time_duration gpu2cpu(std::vector<std::complex<float> >& vec_out);
 public :
-	cl_fft();
+	cl_fft(bool pipeline = true, bool cl_cpu = false);
 	virtual ~cl_fft() {}
 	// run a single fft
 	virtual boost::posix_time::time_duration run_single(

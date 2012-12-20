@@ -67,25 +67,20 @@ void save_to_file(
 				uint8_t green = 0x0;
 				uint8_t blue = 0x0;
 				float val = spect.data()[(y * size.first) + x];
-				if (val < 0.25f) { // black to blue
-					val *= 4.0f;
+				if (val < 1.0f / 3.0f) { // black to blue
+					val *= 3.0f;
 					blue = (uint32_t)(255.0f * val);
-				} else if (val < 0.5f) { // blue to green
-					val -= 0.25f;
-					val *= 4.0f;
-					blue = (uint8_t)(255.0f * (1.0f / val));
+				} else if (val < 2.0f / 3.0f) { // blue to green
+					val -= 1.0f / 3.0f;
+					val *= 3.0f;
+					blue = (uint8_t)(255.0f);
 					green = (uint8_t)(255.0f * val);
-				} else if (val < 0.75f) { // green to red
-					val -= 0.5f;
-					val *= 4.0f;
-					green = (uint8_t)(255.0f * (1.0f / val));
+				} else  { // green to red
+					val -= 2.0f / 3.0f;
+					val *= 3.0f;
+					blue = (uint8_t)(255.0f);
+					green = (uint8_t)(255.0f);
 					red = (uint8_t)(255.0f * val);
-				} else { // red to white
-					val -= 0.75f;
-					val *= 4.0f;
-					blue = (uint8_t)(255.0f * val);
-					green = (uint8_t)(255.0f * val);
-					red = 0xff;
 				}
 				cv::Vec3b pixel(blue, green, red);
 				img.at<cv::Vec3b>(y, x) = pixel;

@@ -107,9 +107,16 @@ __kernel void accumulate(
 	int i = get_global_id(0);
 	int z = get_global_id(1);
 	
-//	real2_t f = x[i + (z * t)];
+	// get value
+	real2_t f = x[i + (z * t)];
+	
+	// compute vector
+//	real_t l = f.x * f.x;
+//	real_t l = sqrt(f.x * f.x + f.y * f.y); 
+	real_t l = length(f);
 //	real_t l = hypot(f.x, f.y);
-//	y[i].x += l;
-	y[i] += x[i + (z * t)];
+
+	// add
+	y[i].x += l;
 }
 

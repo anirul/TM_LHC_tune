@@ -488,6 +488,13 @@ time_duration bunch_buffer_f::fft_multiple() {
 				buffers_[i].complex_buffer_.end());
 	time_duration duration =
 			fft_instance_->run_multiple(total, bunch_pattern_.size());
+//	{
+//		std::vector<std::complex<float> >::const_iterator ite;
+//		std::cout << total.size() << " := ";
+//		for (ite = total.begin(); ite != total.end(); ++ite)
+//			std::cout << (*ite) << ", ";
+//		std::cout << std::endl;
+//	}
 	for (unsigned long i = 0; i < bunch_pattern_.size(); ++i) {
 		size_t half = buffers_[i].complex_buffer_.size() / 2;
 		buffers_[i].complex_buffer_.resize(half);

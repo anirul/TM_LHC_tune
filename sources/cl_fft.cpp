@@ -39,17 +39,15 @@
 #include "cl_fft.h"
 #include "cl_util.h"
 
-#define PIPELINE_GPU
-
 using namespace boost::posix_time;
 
-cl_fft::cl_fft() {
+cl_fft::cl_fft(bool pipeline, bool cl_cpu) : pipeline_(pipeline) {
 	//setup devices_ and context_
 	std::vector<cl::Platform> platforms;
 	err_ = cl::Platform::get(&platforms);
 	device_used_ = 0;
 	data_size_ = 0;
-	err_ = platforms[0].getDevices(CL_DEVICE_TYPE_GPU, &devices_);
+	err_ = platforms[0].getDevices((cl_cpu) ? CL_DEVICE_TYPE_CPU : CL_DEVICE_TYPE_GPU, &devices_);
 	int t = devices_.front().getInfo<CL_DEVICE_TYPE>();
 	try {
 #if defined (__APPLE__) || defined(MACOSX)
@@ -85,7 +83,7 @@ cl_fft::cl_fft() {
 	} catch (const cl::Error& er) {
 		std::cerr << "Warning         : could not attach GL and CL toghether!" << std::endl;
 		cl_context_properties properties[] = { CL_CONTEXT_PLATFORM, (cl_context_properties)(platforms[0])(), 0};
-		context_ = cl::Context(CL_DEVICE_TYPE_GPU, properties);
+		context_ = cl::Context((cl_cpu) ? CL_DEVICE_TYPE_CPU : CL_DEVICE_TYPE_GPU, properties);
 		devices_ = context_.getInfo<CL_CONTEXT_DEVICES>();
 	}
 	queue_ = cl::CommandQueue(context_, devices_[device_used_], 0, &err_);
@@ -143,7 +141,6 @@ time_duration cl_fft::run_single(
 	queue_.finish();
 	double p = log2(data_size_);
 	for (int i = 1; i <= (data_size_ >> 1); i *= 2) {
-
 		// enqueue the new parameter p
 		err_ = kernel_fft_.setArg(2, i);
 		// make the computation
@@ -201,7 +198,7 @@ time_duration cl_fft::cpu2gpu(
 			&err_);
 	cl_buffer_acc_ = cl::Buffer(
 			context_,
-			CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
+			CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
 			sizeof(cl_float2) * vec_out.size(),
 			(void*)&vec_out[0],
 			&err_);
@@ -211,9 +208,8 @@ time_duration cl_fft::cpu2gpu(
 			sizeof(short) * in_short.size(),
 			(void*)&in_short[0],
 			&err_);
-#ifndef PIPELINE_GPU
-	queue_.finish();
-#endif
+	if (!pipeline_)
+		queue_.finish();
 	ptime after = microsec_clock::universal_time();
 	return after - before;
 }
@@ -234,9 +230,8 @@ time_duration cl_fft::run_fft(size_t sub_vec)
 				cl::NullRange,
 				NULL,
 				&event_);
-#ifndef PIPELINE_GPU
-		queue_.finish();
-#endif
+		if (!pipeline_)
+			queue_.finish();
 		if (i != ((sub_vec_size_) >> 1)) {
 			err_ = queue_.enqueueCopyBuffer(
 					cl_buffer_out_y_,
@@ -246,9 +241,8 @@ time_duration cl_fft::run_fft(size_t sub_vec)
 					data_size_ * sizeof(cl_float2),
 					NULL,
 					&event_);
-#ifndef PIPELINE_GPU
-			queue_.finish();
-#endif
+			if (!pipeline_)
+				queue_.finish();
 		}
 	}
 	ptime after = microsec_clock::universal_time();
@@ -264,9 +258,8 @@ time_duration cl_fft::run_prepare() {
 			cl::NullRange,
 			NULL,
 			&event_);
-#ifndef PIPELINE_GPU
-	queue_.finish();
-#endif
+	if (!pipeline_)
+		queue_.finish();
 	ptime after = microsec_clock::universal_time();
 	return after - before;
 }
@@ -278,13 +271,12 @@ time_duration cl_fft::run_acc(size_t sub_vec)
 	err_ = queue_.enqueueNDRangeKernel(
 			kernel_acc_,
 			cl::NullRange,
-			cl::NDRange(sub_vec_size_ >> 1, sub_vec),
+			cl::NDRange(sub_vec_size_, sub_vec),
 			cl::NullRange,
 			NULL,
 			&event_);
-#ifndef PIPELINE_GPU
-	queue_.finish();
-#endif
+	if (!pipeline_)
+		queue_.finish();
 	ptime after = microsec_clock::universal_time();
 	return after - before;
 }
@@ -301,9 +293,8 @@ time_duration cl_fft::gpu2cpu(
 			&out[0],
 			NULL,
 			&event_);
-#ifndef PIPELINE_GPU
-	queue_.finish();
-#endif
+	if (!pipeline_)
+		queue_.finish();
 	ptime after = microsec_clock::universal_time();
 	return after - before;
 }
@@ -322,11 +313,13 @@ time_duration cl_fft::run_multiple(
 	kernel_fft_ = cl::Kernel(program_, "fftRadix2Kernel", &err_);
 	kernel_acc_ = cl::Kernel(program_, "accumulate", &err_);
 	kernel_prepare_ = cl::Kernel(program_, "prepare", &err_);
-	std::vector<cl_float2>::const_iterator ite;
 	std::vector<short> in;
-	for (std::vector<std::complex<float> >::const_iterator ite = in_out.begin();
-			ite != in_out.end(); ++ite)
-		in.push_back((short)(ite->real()));
+	{
+		std::vector<std::complex<float> >::const_iterator ite;
+		for (ite = in_out.begin(); ite != in_out.end(); ++ite) {
+			in.push_back((short)(ite->real()));
+		}
+	}
 	before = microsec_clock::universal_time();
 	time_duration cpu_2_gpu = cpu2gpu(in, vec_out);
 	//set the arguments of our kernel_
@@ -337,12 +330,14 @@ time_duration cl_fft::run_multiple(
 	err_ = kernel_acc_.setArg(0, cl_buffer_out_y_);
 	err_ = kernel_acc_.setArg(1, cl_buffer_acc_);
 	//Wait for the command queue_ to finish these commands before proceeding
-	queue_.finish();
+	if (pipeline_)
+		queue_.finish();
 	time_duration pre_time = run_prepare();
 	time_duration fft_time = run_fft(sub_vec);
 	time_duration acc_time = run_acc(sub_vec);
 	time_duration gpu_2_cpu = gpu2cpu(vec_out);
-	queue_.finish();
+	if (pipeline_)
+		queue_.finish();
 	in_out = vec_out;
 	after = microsec_clock::universal_time();
 	time_duration total = after - before;

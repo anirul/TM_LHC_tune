@@ -132,7 +132,7 @@ void spectrogram::load_files(
 		std::vector<fs::path>::iterator ite;
 		bunch_buffer_f acc_bb;
 		std::vector<float> temp;
-		unsigned int acc_count = 0;
+		unsigned int acc_count = 1;
 		unsigned int file_count = 0;
 		for (ite = list_file.begin(); ite != list_file.end(); ++ite) {
 			std::string full_path = (*ite).string();
@@ -169,7 +169,7 @@ void spectrogram::load_files(
 			}
 			time_.push_back(time_stamp);
 			acc_bb += bb;
-			if (acc_count && !(acc_count % nb_acc_)) {
+			if (!(acc_count % nb_acc_)) {
 				std::vector<float> temp;
 				// here come the computing
 				cmd(acc_bb, temp);

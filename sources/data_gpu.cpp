@@ -46,18 +46,15 @@ protected :
 public :
 	gpu_cmd() {}
 	virtual void operator()(bunch_buffer_f& bb, std::vector<float>& out) const {
+		size_t new_size = (size_t)log2(bb.buffer_size());
+		new_size = powl(2, (double)new_size);
 		std::cout << std::endl;
 		time_duration notch_time = bb.notch();
 		std::cout << "notch time      : " << notch_time << std::endl;
-		out.resize(1024);
-//		time_duration avg_time = bb.average();
-//		std::cout << "average time    : " << avg_time << std::endl;
-		bb.resize(2048);
+		bb.resize(new_size);
 		time_duration duration = bb.fft_multiple();
 		std::cout << "fft time (GPU)  : " << duration << std::endl;
-//		bb.clean(0, bb.buffer_size() / 50);
-//		time_duration amp_time = bb.amplitude(out);
-//		std::cout << "amplitude time  : " << amp_time << std::endl;
+		bb.buffer(0, out);
 		time_duration norm_time = bb.normalize(out);
 		std::cout << "normalize time  : " << norm_time << std::endl;
 	}
@@ -70,6 +67,8 @@ int main(int ac, char** av) {
 	std::string path = "";
 	std::string output_file = "";
 	std::bitset<16> bunch_mask(std::string("111111"));
+	bool pipeline = true;
+	bool cl_cpu = false;
 	try {
 		// parse command line
 		options_description desc("Allowed options");
@@ -80,6 +79,8 @@ int main(int ac, char** av) {
 		("nb-acc,n", value<unsigned int>(),	"averaging in turn (default : 10)")
 		("output-file,o", value<std::string>(), "output file (dump the values)")
 		("bunch-mask,m", value<std::string>(), "bunch mask (default : 111111)")
+		("no-pipeline", "disable pipeline OpenCL (default : on")
+		("cl-cpu", "enable OpenCL on CPU (default : off)")
 		("start-time", value<std::string>(), "start time in ns from epoch")
 		("end-time", value<std::string>(), "end time in ns from epoch");
 		variables_map vm;
@@ -138,6 +139,14 @@ int main(int ac, char** av) {
 			std::cout << "end time        : " << end_time << " [" << ptime_time
 					<< "]" << std::endl;
 		}
+		if (vm.count("no-pipeline")) {
+			pipeline = false;
+		}
+		std::cout << "pipeline        : " << ((pipeline) ? "enable" : "disable") << std::endl;
+		if (vm.count("cl-cpu")) {
+			cl_cpu = true;
+			std::cout << "OpenCL on CPU   : enable" << std::endl;
+		}
 		{ // do stuff
 			spectrogram spect(nb_acc, bunch_mask);
 			if (!path.size() || !output_file.size()) {
@@ -145,7 +154,7 @@ int main(int ac, char** av) {
 			}
 			if (path.size()) {
 				gpu_cmd cmd;
-				cl_fft fft_instance;
+				cl_fft fft_instance(pipeline, cl_cpu);
 				spect.load_files(path, cmd, &fft_instance, start_time, end_time);
 			}
 			if (output_file.size()) {
