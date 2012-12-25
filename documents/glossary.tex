@@ -1,0 +1,65 @@
+%my glossary (for the TM LHC tune)
+
+\newglossaryentry{bunch}{
+   name=bunch,
+   description={
+      particules trapped inside an \gls{RF} bucket circulating in the 
+      machine},
+   plural=bunches}
+\newglossaryentry{bucket}{
+   name={bucket},
+   description={
+      at every \gls{RF} period in the \gls{rffreq} there is a 
+      bucket, in each of these bucket a particles bunch can potentially be 
+      stored in the ring},
+   plural={buckets}}
+\newglossaryentry{rffreq}{
+   name={RF frequency ($f_0$)},
+   description={
+      the base frequency of the \gls{RF} in the \glspl{cavity} in the case of
+      the LHC this frequency is 400.789MHz, this frequency dictate the number of
+      bucket that the machine can have}}
+\newglossaryentry{cavity}{
+   name={cavity},
+   description={
+      \gls{RF} structure made to accelerate the particles, it uses a high power 
+      radio frequency into a resonating structure to increase the energy 
+      of the particles},
+   plural={cavities}}
+\newglossaryentry{VME}{
+   name={VMEbus},
+   description={
+      a computer bus standard widespread at CERN, in the case of the LHC
+      \gls{RF} the bus has a larger board and some of the pins are used to 
+      route custom signals between cards}}
+\newglossaryentry{kicker}{
+   name={kicker},
+   description={
+      machine in an accelerator that can kick the beam transversally, used to
+      kick the beam in or out (injection or extraction kicker) of the beam pipe 
+      but also in our case excite the beam transversally},
+   plural={kickers}}
+\newglossaryentry{damper}{
+   name={damper},
+   description={
+      machine in an accelerator that damp the transverse oscillation of the 
+      beam by applying a transverse electric field},
+   plural={dampers}}
+\newglossaryentry{tune}{
+   name={betatron tune},
+   description={
+      the betatron tune is the frequency of the oscillations of the 
+      \glspl{bunch} divided by the \gls{rffreq}}}
+\newglossaryentry{h}{
+   name={harmonic number ($H$)},
+   description={
+      the harmonic number is the number of bucket an accelerator can have in 
+      the ring, in the case of the \gls{LHC} 35'640}}
+\newglossaryentry{FFTW}{
+   name={FFTW},
+   description={
+      is a C subroutine library for computing the discrete Fourier transform 
+      (DFT) in one or more dimensions, of arbitrary input size, and of both 
+      real and complex data (as well as of even/odd data, i.e. the discrete 
+      cosine/sine transforms or DCT/DST)}}
+

@@ -1,0 +1,100 @@
+% Introduction
+%
+%	Motivation
+%	State of the Research
+%	Goals and Outline
+
+\chapter{Introduction}
+
+In a particle accelerator, the charged particles circulate around the ring
+and oscillate due to the magnets and the accelerating structures. The 
+accelerating structures, in the \gls{LHC} supra-conducting \glspl{cavity} 
+apply a strong electrical field that oscillates at the \gls{rffreq} 
+to particles in order to collect and accelerate particles in \glspl{bunch} 
+inside a frequency \gls{bucket}.
+
+The particles inside a bucket are oscillating longitudinally along the 
+ring and transversally in the vertical and horizontal plane. The longitudinal
+oscillations are damped by the beam control system. But the transversal
+oscillations must be damped by a separate system~: the 
+\gls{ADT}\cite{Benews11,Zhabitsky:1141925}.
+
+One of the key parameters of the accelerator is the betatron tune. The 
+betatron tune, $Q$, is the quotient of the betatron oscillation and the 
+particle frequencies.
+
+$$f_\beta = Q * f_0$$
+
+This value allow us to check if the particle beam is stable and don't reach
+any dangerous instabilities.
+
+\section{Tune measurement in the LHC}
+
+In order to measure the betatron tune in an accelerator we use \glspl{BPM}.
+These monitors are able to measure the position of the beam in the vacuum 
+chamber.
+
+\subsection{Actual system}
+
+In the present setup \gls{BI} group is using their \gls{BBQ} 
+\cite{Boccardi:1156349} system to acquire the tune over a certain number
+of machine turn (256 to 128'000). This can work as a passive instrument or as 
+an on demand system by exciting 12 \glspl{bunch} in the beam with the 
+\gls{MKQA}. \Gls{ADT} has also been used for tune measurement 
+excitation\cite{HofleEvian10}. 
+
+In normal operation, as the \gls{ADT} is active, it is difficult to have a
+good picture of the excited bunches and make a fine tune measurement~: the
+oscillations created by the \gls{MKQA} are damped by the \gls{ADT}. There
+have been studies to disable the \gls{ADT} for a certain number of bunches in
+order to get a better tune measurement\cite{HofleEvian11}, but this may
+not be sufficient.
+
+\subsection{Proposed system}
+
+The \gls{ADT} also have \glspl{BPM} and these can have per bunch 
+measurement\cite{BphMeas07}. This could allow a much precise measurement. But due 
+to the high among of data to be processed (estimated to 640 mega bytes per 
+seconds for each \gls{BPM}) we need dedicated hardware to compute the 
+correct tune\cite{HofleChamonix12}.
+
+During the 2012 normal operation of the \gls{LHC}, data will be acquired using
+the \gls{ADT} acquisition system and data processing techniques will be 
+tried to asses the modification that will be needed in order to make a 
+reliable \gls{tune} measurement at a reasonable rate\cite{HofleChamonix12}.
+
+The current \gls{VME} implementation has some serious issues in particular 
+the bus is quite slow the data rate of the bus is around 40 megabits per 
+seconds. The data need to either be processed on the acquisition board or 
+to be off-loaded to another computer using the serial link available on the 
+board\cite{Baudrenghien:1124094}.
+
+\subsubsection{DSP on VME board}
+
+\Glspl{DSP} are able to compute \glspl{FFT} at high rate and these are used
+already in the machine at different places to make high speed feedback loops.
+The question is~: is it fast enough to compute all the \glspl{FFT} needed, 
+\glspl{DSP} are two orders of magnitude slower than \glspl{GPU}. We also 
+would have to develop a completely new system in order to be able to use them, 
+in fact we don't have \glspl{DSP} in the present \gls{ADT}. The cost of 
+development and the complexity of the deployment should also be studied.
+
+\subsubsection{FPGA pre-processing on VME board}
+
+Like in the approach using \glspl{DSP} on VME boards, the question of computing 
+power is still unsolved. We already have in house experience and we already 
+have a lot of \gls{FPGA} installed in the \gls{ADT}. But if we want to do it we 
+will have to create a new card able to replace the existing one and to make the 
+computation. This mean create a potential problem in the existing setup. The 
+cost is also to be studied we have to develop a new card, test it and install 
+it in the \gls{LHC}.
+
+\subsubsection{GPU off-board computing}
+
+This solution can be integrated easily in the present setup. The present 
+acquisition cards already have a digital output and could be used to transfer
+the data in another crate that could do the computations. The \glspl{GPU} are
+cheap (compare to the price of developing a new \gls{VME} card) and easily
+scalable. The \gls{GPU} should have largely enough computing power to be able
+to make the \glspl{FFT}. Another interesting aspect of this solution is the 
+ability to test it using \gls{CPU}.
