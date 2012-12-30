@@ -33,12 +33,6 @@ compute the \gls{tune}.
 
 \section{Measurement with the ADT}
 
-\begin{figure}[H]
-\caption{Spectrogram of the beam position taken on the 16 October 2012}
-\centering
-\includegraphics[scale=0.2]{spectrogram.pdf}
-\end{figure}
-
 In order to check the feasibility of the system and to have a good prototype
 the first test will be to excite some of the \glspl{bunch} and acquire the
 \gls{tune} using the \gls{ADT} during the end of 2012 run.
@@ -47,3 +41,31 @@ A piece of software has been developed that will acquire the bunch by bunch
 acquisition and compute various algorithm on the data using the \gls{CPU} 
 and the \gls{FFTW} library in the \gls{CERN} infrastructure using \gls{CO} 
 group control system and the \gls{OP} group infrastructure.
+
+\section{Experimental Set-up}
+
+Using the \gls{ADT} \glspl{BPM} we acquired data in the machine during 3 
+independant \glspl{MD}. Most of the data taking was done in parallel to 
+other normal LHC operation or during \gls{ADT} dedicated \gls{MD} time.
+
+   \subsection{Hardware}
+
+\begin{figure}
+\caption{ADT acquisition hardware}
+\centering
+\includegraphics[scale=0.3]{acquisition.pdf}
+\end{figure}
+
+   \subsection{Estimated Bandwith}
+
+\begin{figure}
+\caption{Acquisition data flow}
+\centering
+\includegraphics[scale=0.3]{dataflow.pdf}
+\end{figure}
+
+   \subsection{Software}
+
+\section{FFT}
+
+\section{SVD}

@@ -55,11 +55,15 @@ not be sufficient.
 The \gls{ADT} also have \glspl{BPM} and these can have per bunch 
 measurement\cite{BphMeas07}. This could allow a much precise measurement. But due 
 to the high among of data to be processed (estimated to 640 mega bytes per 
-seconds for each \gls{BPM}) we need dedicated hardware to compute the 
+seconds for each \gls{BPM}) dedicated hardware is needed to compute the 
 correct tune\cite{HofleChamonix12}.
 
-During the 2012 normal operation of the \gls{LHC}, data will be acquired using
-the \gls{ADT} acquisition system and data processing techniques will be 
+In order to be able to apply direct correction to beam oscilliation the 
+\gls{tune} has to be measured at a high frequency, this has been estimated by
+\gls{BI} to be between 5 and 10[Hz], once every 100 to 200[ms].
+
+During the 2012 normal operation of the \gls{LHC}, data has be acquired using
+the \gls{ADT} acquisition system and data processing techniques has been 
 tried to asses the modification that will be needed in order to make a 
 reliable \gls{tune} measurement at a reasonable rate\cite{HofleChamonix12}.
 
@@ -87,7 +91,8 @@ have a lot of \gls{FPGA} installed in the \gls{ADT}. But if we want to do it we
 will have to create a new card able to replace the existing one and to make the 
 computation. This mean create a potential problem in the existing setup. The 
 cost is also to be studied we have to develop a new card, test it and install 
-it in the \gls{LHC}.
+it in the \gls{LHC}. Also the number of card and FPGA is not well understood,
+it could be anywhere between 4 and 3000 (FIXME).
 
 \subsubsection{GPU off-board computing}
 
@@ -98,3 +103,4 @@ cheap (compare to the price of developing a new \gls{VME} card) and easily
 scalable. The \gls{GPU} should have largely enough computing power to be able
 to make the \glspl{FFT}. Another interesting aspect of this solution is the 
 ability to test it using \gls{CPU}.
+

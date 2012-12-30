@@ -1,6 +1,6 @@
 % my main entry on the LaTeX report for my master thesis
 
-\documentclass[a4paper]{report}
+\documentclass[a4paper]{memoir}
 \usepackage[acronym,toc]{glossaries}
 \usepackage{url}
 \usepackage{graphicx}
@@ -11,14 +11,13 @@
 \include{glossary}
 \include{acronym}
 
-\title{Betatron tune measurement in the LHC using GPU}
+\title{Betatron tune measurement in the LHC damper using GPU}
 \author{Fr\'ed\'eric Dubouchet}
 \date{\today}
 
 \begin{document}
 
 \maketitle
-\tableofcontents
 
 \begin{abstract}
 This paper describes the betatron tune measurement in the \gls{LHC} at the
@@ -27,6 +26,10 @@ implementations using the \gls{ADT} acquisitions. The \gls{ADT} data have to
 be processed to be able to extract the \gls{tune}. This paper studies the use
 of \glspl{GPU} to process \gls{bunch} position acquisition data.
 \end{abstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
 
 \include{introduction}
 \include{methodology}
@@ -37,6 +40,10 @@ of \glspl{GPU} to process \gls{bunch} position acquisition data.
 \printglossaries
 \bibliographystyle{plain}
 \bibliography{bibliography}
+
+\newpage
+\section*{Acknowledgements}
+Thanks everyone from CERN and from Heppia (TODO).
 
 \end{document}
 
