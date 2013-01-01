@@ -49,7 +49,7 @@ cl_fft::cl_fft(bool pipeline, bool cl_cpu) : pipeline_(pipeline) {
 	data_size_ = 0;
 	bool device_found = false;
 	for (platform_used_ = 0; (platform_used_ < platforms.size()) && !device_found; ++platform_used_) {
-		err_ = platforms[0].getDevices((cl_cpu) ? CL_DEVICE_TYPE_CPU : CL_DEVICE_TYPE_GPU, &devices_);
+		err_ = platforms[platform_used_].getDevices((cl_cpu) ? CL_DEVICE_TYPE_CPU : CL_DEVICE_TYPE_GPU, &devices_);
 		int t = devices_.front().getInfo<CL_DEVICE_TYPE>();
 		try {
 			cl_context_properties properties[] = { CL_CONTEXT_PLATFORM, (cl_context_properties)(platforms[platform_used_])(), 0};
