@@ -47,45 +47,21 @@ cl_fft::cl_fft(bool pipeline, bool cl_cpu) : pipeline_(pipeline) {
 	err_ = cl::Platform::get(&platforms);
 	device_used_ = 0;
 	data_size_ = 0;
-	err_ = platforms[0].getDevices((cl_cpu) ? CL_DEVICE_TYPE_CPU : CL_DEVICE_TYPE_GPU, &devices_);
-	int t = devices_.front().getInfo<CL_DEVICE_TYPE>();
-	try {
-#if defined (__APPLE__) || defined(MACOSX)
-		CGLContextObj kCGLContext = CGLGetCurrentContext();
-		CGLShareGroupObj kCGLShareGroup = CGLGetShareGroup(kCGLContext);
-		cl_context_properties props[] =
-		{
-				CL_CONTEXT_PROPERTY_USE_CGL_SHAREGROUP_APPLE, (cl_context_properties)kCGLShareGroup,
-				0
-		};
-		context_ = cl::Context(props);
-#endif
-#if defined WIN32 // Win32
-		cl_context_properties props[] =
-		{
-				CL_GL_CONTEXT_KHR, (cl_context_properties)wglGetCurrentContext(),
-				CL_WGL_HDC_KHR, (cl_context_properties)wglGetCurrentDC(),
-				CL_CONTEXT_PLATFORM, (cl_context_properties)(platforms[0])(),
-				0
-		};
-		context_ = cl::Context(CL_DEVICE_TYPE_GPU, props);
-#endif
-#if defined __linux__
-		cl_context_properties props[] =
-		{
-				CL_GL_CONTEXT_KHR, (cl_context_properties)glXGetCurrentContext(),
-				CL_GLX_DISPLAY_KHR, (cl_context_properties)glXGetCurrentDisplay(),
-				CL_CONTEXT_PLATFORM, (cl_context_properties)(platforms[0])(),
-				0
-		};
-		context_ = cl::Context(CL_DEVICE_TYPE_GPU, props);
-#endif
-	} catch (const cl::Error& er) {
-		std::cerr << "Warning         : could not attach GL and CL toghether!" << std::endl;
-		cl_context_properties properties[] = { CL_CONTEXT_PLATFORM, (cl_context_properties)(platforms[0])(), 0};
-		context_ = cl::Context((cl_cpu) ? CL_DEVICE_TYPE_CPU : CL_DEVICE_TYPE_GPU, properties);
-		devices_ = context_.getInfo<CL_CONTEXT_DEVICES>();
+	bool device_found = false;
+	for (platform_used_ = 0; (platform_used_ < platforms.size()) && !device_found; ++platform_used_) {
+		err_ = platforms[0].getDevices((cl_cpu) ? CL_DEVICE_TYPE_CPU : CL_DEVICE_TYPE_GPU, &devices_);
+		int t = devices_.front().getInfo<CL_DEVICE_TYPE>();
+		try {
+			cl_context_properties properties[] = { CL_CONTEXT_PLATFORM, (cl_context_properties)(platforms[platform_used_])(), 0};
+			context_ = cl::Context((cl_cpu) ? CL_DEVICE_TYPE_CPU : CL_DEVICE_TYPE_GPU, properties);
+			devices_ = context_.getInfo<CL_CONTEXT_DEVICES>();
+			std::cout << "Info            : selected device on platform (" << platform_used_ << ")" << std::endl;
+			device_found = true;
+		} catch (const cl::Error& err) {
+			std::cerr << "Warning         : no suitable device on platform (" << platform_used_ << ")" << std::endl;
+		}
 	}
+	if (!device_found) throw std::runtime_error("could not find a valid device!");
 	queue_ = cl::CommandQueue(context_, devices_[device_used_], 0, &err_);
 	std::cout << "device name     : " << devices_[0].getInfo<CL_DEVICE_NAME>() << std::endl;
 	std::ifstream ifs("./fft.cl");

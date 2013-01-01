@@ -41,6 +41,7 @@ private :
 	cl::Buffer cl_buffer_short_;
 	size_t data_size_;
 	size_t sub_vec_size_;
+	unsigned int platform_used_;
 	unsigned int device_used_;
 	std::vector<cl::Device> devices_;
 	cl::Context context_;
