@@ -49,9 +49,9 @@ cl_fft::cl_fft(bool pipeline, bool cl_cpu) : pipeline_(pipeline) {
 	data_size_ = 0;
 	bool device_found = false;
 	for (platform_used_ = 0; (platform_used_ < platforms.size()) && !device_found; ++platform_used_) {
-		err_ = platforms[platform_used_].getDevices((cl_cpu) ? CL_DEVICE_TYPE_CPU : CL_DEVICE_TYPE_GPU, &devices_);
-		int t = devices_.front().getInfo<CL_DEVICE_TYPE>();
 		try {
+			err_ = platforms[platform_used_].getDevices((cl_cpu) ? CL_DEVICE_TYPE_CPU : CL_DEVICE_TYPE_GPU, &devices_);
+			int t = devices_.front().getInfo<CL_DEVICE_TYPE>();
 			cl_context_properties properties[] = { CL_CONTEXT_PLATFORM, (cl_context_properties)(platforms[platform_used_])(), 0};
 			context_ = cl::Context((cl_cpu) ? CL_DEVICE_TYPE_CPU : CL_DEVICE_TYPE_GPU, properties);
 			devices_ = context_.getInfo<CL_CONTEXT_DEVICES>();
@@ -63,7 +63,7 @@ cl_fft::cl_fft(bool pipeline, bool cl_cpu) : pipeline_(pipeline) {
 	}
 	if (!device_found) throw std::runtime_error("could not find a valid device!");
 	queue_ = cl::CommandQueue(context_, devices_[device_used_], 0, &err_);
-	std::cout << "device name     : " << devices_[0].getInfo<CL_DEVICE_NAME>() << std::endl;
+	std::cout << "device name     : " << devices_[device_used_].getInfo<CL_DEVICE_NAME>() << std::endl;
 	std::ifstream ifs("./fft.cl");
 	std::string kernel_source(
 			(std::istreambuf_iterator<char>(ifs)),
