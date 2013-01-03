@@ -52,7 +52,11 @@ cl_fft::cl_fft(bool pipeline, bool cl_cpu) : pipeline_(pipeline) {
 		try {
 			err_ = platforms[platform_used_].getDevices((cl_cpu) ? CL_DEVICE_TYPE_CPU : CL_DEVICE_TYPE_GPU, &devices_);
 			int t = devices_.front().getInfo<CL_DEVICE_TYPE>();
-			cl_context_properties properties[] = { CL_CONTEXT_PLATFORM, (cl_context_properties)(platforms[platform_used_])(), 0};
+			cl_context_properties properties[] = {
+					CL_CONTEXT_PLATFORM,
+					(cl_context_properties)(platforms[platform_used_])(),
+					0
+			};
 			context_ = cl::Context((cl_cpu) ? CL_DEVICE_TYPE_CPU : CL_DEVICE_TYPE_GPU, properties);
 			devices_ = context_.getInfo<CL_CONTEXT_DEVICES>();
 			std::cout << "Info            : selected device on platform (" << platform_used_ << ")" << std::endl;
