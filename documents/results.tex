@@ -8,9 +8,21 @@
 
 \chapter{Results}
 
+\section{Implemented System}
+
+\begin{figure}
+\caption{Time flow with different implementations and with 3000 bunches of 
+2048 points each.}
+\centering
+\includegraphics[scale=0.4]{PC-flow.pdf}
+\end{figure}
+
+
+\section{Notch filter}
+
 \section{FFT}
 
-\subsection{FFTW}
+   \subsection{FFTW}
 
 \begin{figure}
 \caption{Spectrogram of the beam position taken on the 16 October 2012}
@@ -20,14 +32,13 @@
 
    \subsection{FFT with OpenCL on GPU}
 
-   \subsubsection{Performances}
+   \subsection{FFT with OpenCL on CPU}
 
-\begin{figure}
-\caption{Time flow with different implementations and with 3000 bunches of 
-2048 points each.}
-\centering
-\includegraphics[scale=0.4]{PC-flow.pdf}
-\end{figure}
+\section{Amplitude}
+
+\section{SVD}
+
+\section{Performances}
 
    \subsection{Pipelining}
 
@@ -36,10 +47,6 @@
 
    \subsection{Memory}
 
-   \subsection{FFT with OpenCL on CPU}
-
-
-
-\section{SVD}
+   \subsection{Time}
 
 

@@ -6,6 +6,8 @@
 
 \chapter{Introduction}
 
+\section{State of knowledge}
+
 In a particle accelerator, the charged particles circulate around the ring
 and oscillate due to the magnets and the accelerating structures. The 
 accelerating structures, in the \gls{LHC} supra-conducting \glspl{cavity} 
@@ -28,13 +30,12 @@ $$f_\beta = Q * f_0$$
 This value allow us to check if the particle beam is stable and don't reach
 any dangerous instabilities.
 
+% Literacy survey
 \section{Tune measurement in the LHC}
 
 In order to measure the betatron tune in an accelerator we use \glspl{BPM}.
 These monitors are able to measure the position of the beam in the vacuum 
 chamber.
-
-\subsection{Actual system}
 
 In the present setup \gls{BI} group is using their \gls{BBQ} 
 \cite{Boccardi:1156349} system to acquire the tune over a certain number
@@ -50,7 +51,8 @@ have been studies to disable the \gls{ADT} for a certain number of bunches in
 order to get a better tune measurement\cite{HofleEvian11}, but this may
 not be sufficient.
 
-\subsection{Proposed system}
+% The source of Ideas
+\section{Proposed system}
 
 The \gls{ADT} also have \glspl{BPM} and these can have per bunch 
 measurement\cite{BphMeas07}. This could allow a much precise measurement. But due 
@@ -73,7 +75,7 @@ seconds. The data need to either be processed on the acquisition board or
 to be off-loaded to another computer using the serial link available on the 
 board\cite{Baudrenghien:1124094}.
 
-\subsubsection{DSP on VME board}
+\subsection{DSP on VME board}
 
 \Glspl{DSP} are able to compute \glspl{FFT} at high rate and these are used
 already in the machine at different places to make high speed feedback loops.
@@ -83,7 +85,7 @@ would have to develop a completely new system in order to be able to use them,
 in fact we don't have \glspl{DSP} in the present \gls{ADT}. The cost of 
 development and the complexity of the deployment should also be studied.
 
-\subsubsection{FPGA pre-processing on VME board}
+\subsection{FPGA pre-processing on VME board}
 
 Like in the approach using \glspl{DSP} on VME boards, the question of computing 
 power is still unsolved. We already have in house experience and we already 
@@ -94,7 +96,7 @@ cost is also to be studied we have to develop a new card, test it and install
 it in the \gls{LHC}. Also the number of card and FPGA is not well understood,
 it could be anywhere between 4 and 3000 (FIXME).
 
-\subsubsection{GPU off-board computing}
+\subsection{GPU off-board computing}
 
 This solution can be integrated easily in the present setup. The present 
 acquisition cards already have a digital output and could be used to transfer
@@ -103,4 +105,12 @@ cheap (compare to the price of developing a new \gls{VME} card) and easily
 scalable. The \gls{GPU} should have largely enough computing power to be able
 to make the \glspl{FFT}. Another interesting aspect of this solution is the 
 ability to test it using \gls{CPU}.
+
+\section{Problem definition}
+
+   \subsection{Algorithm}
+
+   \subsection{Hardware}
+   
+   \subsection{Timing}
 
