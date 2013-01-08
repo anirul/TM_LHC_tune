@@ -57,11 +57,11 @@ public :
 	// subroutines for the run_multiple
 	boost::posix_time::time_duration cpu2gpu(
 			const std::vector<short>& in_short,
-			const std::vector<std::complex<float> >& vec_out);
+			const std::vector<float>& vec_out);
 	boost::posix_time::time_duration run_prepare();
 	boost::posix_time::time_duration run_fft(size_t sub_vec);
 	boost::posix_time::time_duration run_acc(size_t sub_vec);
-	boost::posix_time::time_duration gpu2cpu(std::vector<std::complex<float> >& vec_out);
+	boost::posix_time::time_duration gpu2cpu(std::vector<float>& vec_out);
 public :
 	cl_fft(bool pipeline = true, bool cl_cpu = false);
 	virtual ~cl_fft() {}

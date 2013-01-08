@@ -160,7 +160,7 @@ time_duration cl_fft::run_single(
 
 time_duration cl_fft::cpu2gpu(
 		const std::vector<short>& in_short,
-		const std::vector<std::complex<float> >& vec_out)
+		const std::vector<float>& vec_out)
 {
 	ptime before = microsec_clock::universal_time();
 	//initialize our CPU memory arrays, send them to the device and set the kernel_ arguments
@@ -179,7 +179,7 @@ time_duration cl_fft::cpu2gpu(
 	cl_buffer_acc_ = cl::Buffer(
 			context_,
 			CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR,
-			sizeof(cl_float2) * vec_out.size(),
+			sizeof(cl_float) * vec_out.size(),
 			(void*)&vec_out[0],
 			&err_);
 	cl_buffer_short_ = cl::Buffer(
@@ -261,15 +261,14 @@ time_duration cl_fft::run_acc(size_t sub_vec)
 	return after - before;
 }
 
-time_duration cl_fft::gpu2cpu(
-		std::vector<std::complex<float> >& out)
+time_duration cl_fft::gpu2cpu(std::vector<float>& out)
 {
 	ptime before = microsec_clock::universal_time();
 	err_ = queue_.enqueueReadBuffer(
 			cl_buffer_acc_,
 			CL_TRUE,
 			0,
-			out.size() * sizeof(cl_float2),
+			out.size() * sizeof(cl_float),
 			&out[0],
 			NULL,
 			&event_);
@@ -285,8 +284,8 @@ time_duration cl_fft::run_multiple(
 {
 	data_size_ = in_out.size();
 	sub_vec_size_ = data_size_ / sub_vec;
-	std::vector<std::complex<float> > vec_out;
-	vec_out.assign(sub_vec_size_, std::complex<float>(0.0f, 0.0f));
+	std::vector<float> vec_out;
+	vec_out.assign(sub_vec_size_, 0.0f);
 	// prepare and copy the memories
 	ptime before;
 	ptime after;
@@ -318,8 +317,10 @@ time_duration cl_fft::run_multiple(
 	time_duration gpu_2_cpu = gpu2cpu(vec_out);
 	if (pipeline_)
 		queue_.finish();
-	in_out = vec_out;
 	after = microsec_clock::universal_time();
+	in_out.resize(vec_out.size());
+	for (size_t i = 0; i < vec_out.size(); ++i)
+		in_out[i] = std::complex<float>(vec_out[i], 0.0f);
 	time_duration total = after - before;
 	std::cout << "CPU => GPU      : " << cpu_2_gpu << std::endl;
 	std::cout << "prepare time    : " << pre_time << std::endl;

@@ -27,7 +27,7 @@ CFLAGS = -g -O0 \
 	-I/usr/include \
 	-I/usr/include/opencv2 \
 	-I/usr/lib/x86_64-linux-gnu 
-LIBS = -L/usr/local/lib -L/usr/local/lib64 -L/usr/lib64 \
+LIBS = -L/usr/lib64/nvidia -L/usr/local/lib -L/usr/local/lib64 -L/usr/lib64 \
 	-lglut -lGL -lGLU -lOpenCL \
 	-lboost_program_options -lboost_system -lboost_iostreams -lboost_filesystem \
 	-lfftw3f -lfftw3 \
