@@ -23,7 +23,7 @@ As \glspl{FFT} on \glspl{GPU} start to be be faster than \glspl{CPU} around $2^{
 
 \section{Measurement with the ADT}
 
-In order to check the feasibility of the system and to have a good prototype the first test will be to excite some of the \glspl{bunch} and acquire the \gls{tune} using the \gls{ADT} during the end of 2012 run.
+In order to check the feasibility of the system and to have a good prototype the first test will be to excite some of the \glspl{bunch} and acquire the \gls{tune} using the \gls{ADT} during the end of 2012 run\cite{Valuch12}.
 
 A piece of software has been developed that will acquire the bunch by bunch acquisition and compute various algorithm on the data using the \gls{CPU} and the \gls{FFTW} library in the \gls{CERN} infrastructure using \gls{CO} group control system and the \gls{OP} group infrastructure.
 
@@ -33,17 +33,15 @@ A piece of software has been developed that will acquire the bunch by bunch acqu
 
 	The experimental set up is not presently able to acquire more than a certain number of bunches due to memory limitation 16k and interupt frequency so during the \glspl{MD} only 6 bunches were acquired by bunch by planes.
 
-\begin{figure}
-\caption{ADT acquisition hardware}
-\centering
-\includegraphics[scale=0.3]{acquisition.pdf}
-\end{figure}
-
    \subsection{Software}
 
 \section{FFT}
 
+Used the algorithm described here\cite{Govindaraju07}.
+
 \section{SVD}
+
+Used the GNU scientific library.
 
 \section{Machine development sessions}
 

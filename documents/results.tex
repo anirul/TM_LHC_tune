@@ -10,11 +10,11 @@
 
 \section{Implemented System}
 
-\begin{figure}
+\begin{figure}[H]
 \caption{Time flow with different implementations and with 3000 bunches of 
 2048 points each.}
 \centering
-\includegraphics[scale=0.4]{PC-flow.pdf}
+\includegraphics[scale=0.3]{PC-flow.pdf}
 \end{figure}
 
 
@@ -30,36 +30,15 @@ Some words about FFTs.
 
    Some words that explain what is FFTW and why is was chosen as a reference
 
-\begin{figure}
-\caption{Spectrogram of the beam position taken on the 16 October 2012 using FFTW}
-\centering
-\includegraphics[scale=0.3]
-{md-121016-vb1-m1-6bunches-10acc-fftw-cpu.pdf}
-\end{figure}
-
    \subsection{FFT with OpenCL on GPU}
 
    Some words on the implementation used for calculating FFT on OpenCL reference to the image of the spectrogram.
-
-\begin{figure}
-\caption{Spectrogram of the beam position taken on the 16 October 2012 using OpenCL on GPU}
-\centering
-\includegraphics[scale=0.3]
-{md-121016-vb1-m1-6bunches-10acc-gputopia-cl-gpu.pdf}
-\end{figure}
 
    \subsection{FFT with OpenCL on CPU}
 
    Some words on the fact that you can run the code on the CPU as well and then reference on the figure.
 
    Also talk about the fact that there is less noise in the OpenCL CPU version than the OpenCL GPU version.
-
-\begin{figure}
-\caption{Spectrogram of the beam position taken on the 16 October 2012 using OpenCL on CPU}
-\centering
-\includegraphics[scale=0.3]
-{md-121016-vb1-m1-6bunches-10acc-cl-cpu-np.pdf}
-\end{figure}
 
 \section{Amplitude}
 
@@ -86,3 +65,7 @@ Calculation made by accumulation to simulate the number of bunches that could be
    \subsection{Time}
 
 	Add table with time performances and discution.
+
+\section{Spectrogram}
+
+Some word definition of Spectrogram. Display some spectrogram.

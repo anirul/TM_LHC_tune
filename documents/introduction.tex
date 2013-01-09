@@ -60,6 +60,12 @@ Implement a GPU based system that can deliver a tune value for each beam and pla
 
    \subsection{Hardware}
 
+   \begin{figure}[H]
+	\caption{ADT acquisition hardware}
+	\centering
+	\includegraphics[scale=0.3]{acquisition.pdf}
+	\end{figure}
+
    Per bunch position mesearment has to be avalable to the system for each beam and each plane. This should be provided from the ADTDSPU card and has to be transfered through a serial link to the CPU/GPU crate for computation.
 
    We need a card in the CPU/GPU crate to unserialize the data and transfer them to the GPU memory. It may be possible to copy from the acquisition card directly to the GPU memory.
