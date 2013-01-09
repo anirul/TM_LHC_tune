@@ -66,6 +66,31 @@ Calculation made by accumulation to simulate the number of bunches that could be
 
 	Add table with time performances and discution.
 
+	\begin{table}[H]
+		\caption{Speed for 3000 batch of 2048 points}
+		\begin{tabular}{|l|lrrcr|}
+			\hline
+				Device & Type & Threads & Speed [GHz] & pipeline & Time [ms] \\
+			\hline
+			\hline
+				Xeon X5650 & FFTW & 12 & 2.67 & N/A & 291 \\
+				Xeon X5650 & OpenCL & 12 & 2.67 & enable & 284 \\
+				Xeon X5650 & OpenCL & 12 & 2.67 & disable & 288 \\
+			\hline
+				i7-3720QM & FFTW & 8 & 2.6 & N/A & 310 \\
+				i7-3720QM & OpenCL & 8 & 2.6 & enable & 272 \\
+				i7-3720QM & OpenCL & 8 & 2.6 & disable & 273 \\
+			\hline
+			\hline
+				Tesla M2090 & OpenCL & 512 & 1.3 & enable & 35 \\
+				Tesla M2090 & OpenCL & 512 & 1.3 & disable & 37 \\
+			\hline
+				GeForce 650M & OpenCL & 384 & 0.9 & enable & 355 \\
+				GeForce 650M & OpenCL & 384 & 0.9 & disable & 365 \\
+			\hline
+		\end{tabular}
+	\end{table}
+
 \section{Spectrogram}
 
 Some word definition of Spectrogram. Display some spectrogram.
