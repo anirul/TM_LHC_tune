@@ -8,11 +8,11 @@
 
 General purpose programming on graphical processors is a new field with a growing community of practitioners. Until recently only proprietary interfaces existed to harness the power of these chips. With the arrival of the \gls{OpenCL} a new open interface has appeared, and with it a hope for a unified, simple and portable framework for general purpose computing on heterogeneous hardware.
 
-\section{OpenCL a quick overview}
+\section{OpenCL}
 
 The \gls{OpenCL} is the open standard for \gls{GPGPU} programming. It is maintained by the Khronos group, and was initially proposed by Apple. Many companies of the industry are members of the \gls{OpenCL} Working group: Altera, AMD, Apple, ARM, Broadcom, Codeplay, DMP, EA, Ericsson, Fixstars, Freescale, Hi corp, IBM, Intel, Imagination Technologies, Kestrel Institute, Kishonti, Los Alamos, Motorola, Movidius, Multicoreware, Nokia, NVIDIA, OpenEye, Presagis, Qualcomm, Rightware, Samsung, ST, Symbio, Texas Instruments, The University of West Australia, Vivante and Xilinx.
 \begin{quotation}
-OpenCL\texttrademark is the first open, royalty-free standard for cross-platform, parallel programming of modern processors found in personal computers, servers and handheld/embedded devices. \gls{OpenCL} greatly improves speed and responsiveness for a wide spectrum of applications in numerous market categories from gaming and entertainment to scientific and medical software.
+OpenCL\texttrademark is the first open, royalty-free standard for cross-platform, parallel programming of modern processors found in personal computers, servers and hand-held / embedded devices. \gls{OpenCL} greatly improves speed and responsiveness for a wide spectrum of applications in numerous market categories from gaming and entertainment to scientific and medical software.
 \end{quotation}
 \begin{quotation}
 The Khronos Group is a not for profit industry consortium creating open standards for the authoring and acceleration of parallel computing, graphics, dynamic media, computer vision and sensor processing on a wide variety of platforms and devices. All Khronos members are able to contribute to the development of Khronos \gls{API} specifications, are empowered to vote at various stages before public deployment, and are able to accelerate the delivery of their cutting-edge 3D platforms and applications through early access to specification drafts and conformance tests.
@@ -20,3 +20,62 @@ The Khronos Group is a not for profit industry consortium creating open standard
 
 \subsection{Architecture}
 
+\gls{OpenCL} is not really a language but an \gls{API} and a kernel language derived from C99 that is compiled for, and executed on the device itself. It defines an abstract hardware architecture onto which the real hardware is mapped. Every piece of hardware (\gls{CPU}, \gls{GPU}, others) is called a device. This device is divided into work groups, each of which is further subdivided into work items.
+
+\begin{figure}[H]
+\caption{OpenCL Device Model\cite{OpenCLInAction}}
+\centering
+\includegraphics[scale=0.5]{OpenCL_Device_Model.pdf}
+\end{figure}
+
+\subsection{OpenCL API}
+
+The \gls{OpenCL} \gls{API} is composed of two parts: The host code that runs on the CPU which runs kernel handling event synchronization and manages the memory buffer, and the device code, which is a kernel language based on the C99 specification.
+
+\begin{figure}
+\caption{Kernel Distribution among OpenCL-compliant devices\cite{OpenCLInAction}}
+\centering
+\includegraphics[scale=0.5]{OpenCL_Objects.pdf}
+\end{figure}
+
+The host \gls{API} is written in C but there is a C++ interface provided by Khronos, which is the interface used in this paper. Several other wrappers for other languages are also available, such as Java, C\#, Python, and even javascript with something called WebCL (also specified by the Khronos group). 
+
+The device code the \gls{OpenCL} kernel code is based on is C99, adding some extensions like vectorization, image access, and linear algebra functions.
+
+The workload is itself specified in terms of context, program and command queues. The context contains the parameters of the current problem and manages the devices available for computation, as well as the programs and the command queues. The program consists of the set of kernels which are constructed from \gls{OpenCL} code. The context is responsible for dispatching these kernels into command queues. Each command queue is a set of commands that can be executed in any order, or simultaneously. A command queue is limited to a single device.
+
+Events fired by devices are also available for triggering specific actions in case a finer synchronization mechanism is needed. Once the device has finished, the host receives and processes the output data via the buffer \gls{API}.
+
+\section{Other GPGPU languages}
+
+For the purpose of completeness we present also the other general purpose computing languages used on \gls{GPU}, shader languages will also be briefly mentioned they are not a real general purpose computing language but are still in use.
+
+\subsection{CUDA}
+
+\Gls{CUDA} is the most used interface for general purpose \gls{GPU} programming. It was developed by NVIDIA and has been used for many years and is still very much in use. This only works on NVIDIA cards, and will not run on \glspl{CPU}. Since it is a proprietary language, NVIDIA is in total control of the API and the development kit. It is interesting to note that NVIDIA is talking about releasing the interface of the compiler to academics.
+
+The abstraction level in \gls{CUDA} is less strong, that is, the language is closer to the architecture. This means it could potentially offer more optimization possibilities to the programmer. We will see that this is not a key element as the compiler is able to reach this level of optimization without having to compromise code readability.
+
+\Gls{CUDA} has its kernel and \gls{GPU} code directly embedded inside the C/C++ code. In \gls{OpenCL} the code is separated from the C/C++ host code. This can lead to incompatibilities with C++ as valid C++ code will be flagged as invalid by the \gls{CUDA} compiler. This problem does not exist for \gls{OpenCL} as the compiler is a separate entity and the code is fed to it via the \gls{API}. This design code from the fact that \gls{OpenCL} can have many target that won't produce a different compiled code. This means that compiled \gls{OpenCL} code is not portable across platforms and you should always keep the code non compiled in the executable.
+
+\Gls{CUDA} offers a full suite of libraries and tools that are presently not available in \gls{OpenCL}. Among these are performance tuning tools and libraries for matrices and \glspl{FFT}. Recently many implementations of common algorithms have started to appear for \gls{OpenCL}, and unlike with \gls{CUDA} these are directly available to any computing device.
+
+\subsection{DirectCompute}
+
+This is the Microsoft interface, highly tied to the Windows platform. DirectCompute is part of the DirectX API, the game development tools for Windows. It works with DirectX 10 and 11 under Windows Vista and Windows 7. 
+
+DirectCompute shares a lot of concepts with both \gls{CUDA} and \gls{OpenCL}, and is presently working with both AMD and NVIDIA graphic cards.
+
+\subsection{Shader Languages}
+
+Shaders are the steps that the graphic card has to make before rendering to the screen. There is mainly two steps the vertex shader, also called vertex code and the pixel shader, also called fragment code, vertex shader is manipulating the data as point in space, as vector and the pixel shader the final rendering as pixels on screen.
+
+There are many different shader languages. The main ones are: Cg, the NVIDIA “neutral” shading language one of the first \gls{GPGPU} language widely used. \Gls{HLSL}, the Microsoft version tightly coupled with DirectX, and therefore easier to use on a Microsoft platform (XNA). \Gls{GLSL}, the \gls{OpenGL} version, that is supported widely but not implemented completely on all platforms.
+
+Before the general purpose graphic processing languages appeared this was the only way to access the power of the graphic card, and this is still much in use today. As it was developed over many years, this is a very stable technology and there are many examples and libraries using theses languages.
+
+Shader languages are oriented toward graphics programming and are therefore not well-adapted to some of the algorithms we could want to implement. They are made to handle vectors of four components: position, color, normal. This can be quite inconvenient. This is also their strength as this is what the \gls{GPU} was originally built for. Communication between host and \gls{GPU} tend to be messy at best, especially with non-graphical structures.
+
+\section{Conclusion}
+
+The system is going to run on dedicated \gls{CERN} computers that are under \gls{SLC} so the fact that it has to run under Linux is a must. The ability to be able to test the whole system on CPU and to compare the processing speed is also a key factor. The system should be able to be expanded and not be tight to any hardware provider. \Gls{OpenCL} is then the only \gls{API} that can offer all theses .

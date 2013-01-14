@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="27cm" height="31cm" viewBox="39 19 522 602" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="120" y1="20" x2="120" y2="60"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="120" y1="20" x2="280" y2="20"/>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="120" y1="60" x2="280" y2="60"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="204" y="45">
+      <tspan x="204" y="45">ADTDSPU (VME)</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="160" y="100" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="160" y="100" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="240" y="123.9">
+      <tspan x="240" y="123.9">ADTDSPU (Driver)</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="160" y1="100" x2="160" y2="69.7361"/>
+    <polygon style="fill: #000000" points="160,62.2361 165,72.2361 160,69.7361 155,72.2361 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="160,62.2361 165,72.2361 160,69.7361 155,72.2361 "/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="160" y="80">
+    <tspan x="160" y="80"> Register RW</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="262" y1="60" x2="262" y2="90.2639"/>
+    <polygon style="fill: #000000" points="262,97.7639 257,87.7639 262,90.2639 267,87.7639 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="262,97.7639 257,87.7639 262,90.2639 267,87.7639 "/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="262" y="80">
+    <tspan x="262" y="80"> Interupt</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="280" y="260" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="280" y="260" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="360" y="283.9">
+      <tspan x="360" y="283.9">Control Interface</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="280" y="220" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="280" y="220" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="360" y="243.9">
+      <tspan x="360" y="243.9">Real Time Task</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="160" y1="280" x2="160" y2="149.736"/>
+    <polygon style="fill: #000000" points="160,142.236 165,152.236 160,149.736 155,152.236 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="160,142.236 165,152.236 160,149.736 155,152.236 "/>
+  </g>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="280" y1="280" x2="160" y2="280"/>
+  <g>
+    <rect style="fill: #ffffff" x="220" y="180" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="220" y="180" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="300" y="203.9">
+      <tspan x="300" y="203.9">ADTDSPU Control</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="200" y1="240" x2="270.264" y2="240"/>
+    <polygon style="fill: #000000" points="277.764,240 267.764,245 270.264,240 267.764,235 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="277.764,240 267.764,245 270.264,240 267.764,235 "/>
+  </g>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="200" y1="140" x2="200" y2="240"/>
+  <g>
+    <rect style="fill: #ffffff" x="220" y="380" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="220" y="380" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="300" y="403.9">
+      <tspan x="300" y="403.9">Acquisition software</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="280" y="420" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="280" y="420" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="360" y="443.9">
+      <tspan x="360" y="443.9">Real Time Task</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="280" y="460" width="160" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="280" y="460" width="160" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="360" y="483.9">
+      <tspan x="360" y="483.9">Control Interface</tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 20; stroke: #000000" x1="51" y1="340" x2="549" y2="340"/>
+    <path style="fill: #ffffff" d="M 41 340 C 41,337.5 43.5,335 46,335 C 48.5,335 51,337.5 51,340 C 51,342.5 48.5,345 46,345 C 43.5,345 41,342.5 41,340z"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 41 340 C 41,337.5 43.5,335 46,335 C 48.5,335 51,337.5 51,340 C 51,342.5 48.5,345 46,345 C 43.5,345 41,342.5 41,340"/>
+    <path style="fill: #ffffff" d="M 559 340 C 559,342.5 556.5,345 554,345 C 551.5,345 549,342.5 549,340 C 549,337.5 551.5,335 554,335 C 556.5,335 559,337.5 559,340z"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 559 340 C 559,342.5 556.5,345 554,345 C 551.5,345 549,342.5 549,340 C 549,337.5 551.5,335 554,335 C 556.5,335 559,337.5 559,340"/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="480" y1="440" x2="449.736" y2="440"/>
+    <polygon style="fill: #000000" points="442.236,440 452.236,435 449.736,440 452.236,445 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="442.236,440 452.236,435 449.736,440 452.236,445 "/>
+  </g>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="440" y1="240" x2="480" y2="240"/>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="480" y1="240" x2="480" y2="440"/>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="480" y="320">
+    <tspan x="480" y="320"> Trigger</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="400" y1="420" x2="400" y2="309.736"/>
+    <polygon style="fill: #000000" points="400,302.236 405,312.236 400,309.736 395,312.236 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="400,302.236 405,312.236 400,309.736 395,312.236 "/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="480" y="300">
+    <tspan x="480" y="300"></tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="400" y="360">
+    <tspan x="400" y="360"> Query</tspan>
+  </text>
+  <g>
+    <path style="fill: #ffffff" d="M 240 596 L 400,580 L 400,620 L 240,620 L 240,596z"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 240 596 L 400,580 L 400,620 L 240,620 L 240,596"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="320" y="612">
+      <tspan x="320" y="612">Control Interface</tspan>
+    </text>
+  </g>
+  <g>
+    <path style="fill: #ffffff" d="M 80 413.333 C 100,403.333 110,400 130,400 C 150,400 160,403.333 180,413.333 L 180,466.667 C 160,476.667 150,480 130,480 C 110,480 100,476.667 80,466.667 L 80,413.333z"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 80 413.333 C 100,403.333 110,400 130,400 C 150,400 160,403.333 180,413.333 L 180,466.667 C 160,476.667 150,480 130,480 C 110,480 100,476.667 80,466.667 L 80,413.333"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 80 413.333 C 100,423.333 110,426.667 130,426.667 C 150,426.667 160,423.333 180,413.333"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="130" y="450.667">
+      <tspan x="130" y="450.667">NFS </tspan>
+    </text>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="280" y1="440" x2="189.736" y2="440"/>
+    <polygon style="fill: #000000" points="182.236,440 192.236,435 189.736,440 192.236,445 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="182.236,440 192.236,435 189.736,440 192.236,445 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 20; stroke: #000000" x1="51" y1="540" x2="549" y2="540"/>
+    <path style="fill: #ffffff" d="M 41 540 C 41,537.5 43.5,535 46,535 C 48.5,535 51,537.5 51,540 C 51,542.5 48.5,545 46,545 C 43.5,545 41,542.5 41,540z"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 41 540 C 41,537.5 43.5,535 46,535 C 48.5,535 51,537.5 51,540 C 51,542.5 48.5,545 46,545 C 43.5,545 41,542.5 41,540"/>
+    <path style="fill: #ffffff" d="M 559 540 C 559,542.5 556.5,545 554,545 C 551.5,545 549,542.5 549,540 C 549,537.5 551.5,535 554,535 C 556.5,535 559,537.5 559,540z"/>
+    <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" d="M 559 540 C 559,542.5 556.5,545 554,545 C 551.5,545 549,542.5 549,540 C 549,537.5 551.5,535 554,535 C 556.5,535 559,537.5 559,540"/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="280" y1="592" x2="280" y2="509.736"/>
+    <polygon style="fill: #000000" points="280,502.236 285,512.236 280,509.736 275,512.236 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="280,502.236 285,512.236 280,509.736 275,512.236 "/>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="40" y="320">
+    <tspan x="40" y="320">SR4 Faraday Cage (VME)</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="40" y="520">
+    <tspan x="40" y="520">Front-End Computer Center</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.8;font-family:sanserif;font-style:normal;font-weight:normal" x="40" y="580">
+    <tspan x="40" y="580">CCC CERN Control Center</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="200" y="160">
+    <tspan x="200" y="160"> ISR Call</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="220" y="460">
+    <tspan x="220" y="460">Save</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="320" y="600">
+    <tspan x="320" y="600"></tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="280" y="560">
+    <tspan x="280" y="560"> human control</tspan>
+  </text>
+</svg>

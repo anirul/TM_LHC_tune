@@ -10,17 +10,44 @@
 
 \section{Implemented System}
 
-\begin{figure}[H]
-\caption{Time flow with different implementations and with 3000 bunches of 
-2048 points each.}
+The implemented system consist of tree pieces of software. The software controlling the acquisition card in the machine. An acquisition software that run on a normal front-end Linux machine that is taking data during the \glspl{MD}. And an analyzing software. The analyzing software is in fact modular and has a version that has to run on a GPU enable machine to use the GPU to compute the \glspl{FFT}.
+
+In the final version the software will be merged in single executable that should run on the \gls{GPU}-enabled machine. This solution has been put into place because the present hardware is still in development and there is no way of acquiring the full 2880 bunches of the machine, the hardware is receiving the acquisition data but the \gls{VME} is not fast enough to transfer it to the \gls{CPU}.
+
+\begin{figure}
+\caption{Implemented acquisition software in the CERN infrastructure}
 \centering
-\includegraphics[scale=0.3]{PC-flow.pdf}
+\includegraphics[scale=0.3]{ImplementedSoftFesa.pdf}
 \end{figure}
 
+	\subsection{ADTDSPU control software}
+
+	The first layer that was needed is a driver that can control the \gls{VME} card and forward the interrupts. This is using standard driver framework from the \gls{CO} group at \gls{CERN}.
+
+	Then the normal \gls{FESA} environment is used to develop a higher level software to control the card. This particular card need real time task to react to interrupt coming from the hardware to inform when new acquisition is ready to be read.
+
+	\subsection{Acquisition software}
+
+	The acquisition software was used to check that the idea of getting the tune out of the DSPU card was doable and being able to log the acquisition to file to be checked and processed separately.
+
+	It uses \gls{CMW}, a library used at \gls{CERN} to communicate between different layers of the accelerators control software, to connect to the the ADTDPSU control software and get the data when they are published (at interrupt time).
+
+	It is then able to compute the acquisition \gls{FFT} using \gls{FFTW} and display it to the operators in the \gls{CCC} where all the eight accelerators of \gls{CERN} are controlled. On the interface you can decide witch type of graph you want to see and also enable saving the data into files to be processed by the data analysis software.
+
+	\subsection{Data analysis software}
+
+
+
+	\begin{figure}[H]
+	\caption{Time flow with different implementations and with 3000 bunches of 
+	2048 points each.}
+	\centering
+	\includegraphics[scale=0.3]{PC-flow.pdf}
+	\end{figure}
 
 \section{Notch filter}
 
-Just used to cut the low frequencies this doesn't change anything on the high frequencies and was just used to allow a better imaging on the spectogram, it won't be used in the final version (quite slow because of sequencial).
+Just used to cut the low frequencies this doesn't change anything on the high frequencies and was just used to allow a better imaging on the spectrogram, it won't be used in the final version (quite slow because of sequential).
 
 \section{FFT}
 
@@ -46,9 +73,9 @@ Amplitude calculation formula, explain the figures tell why it has to be done be
 
 \section{SVD}
 
-Problem is not direclty solvable with the number of bunch observed cite Hofle and Rama need a lot more bunches to make a good smooth\cite{calaga06}. 
+Problem is not directly solvable with the number of bunch observed cite H{\"o}fle and Rama need a lot more bunches to make a good smooth\cite{calaga06}. 
 
-Talk about the performances issues and cite the paper on SVD on GPU as a future implementation (could go to discution?)\cite{Lahabar09}
+Talk about the performances issues and cite the paper on SVD on GPU as a future implementation (could go to discussion?)\cite{Lahabar09}
 
 \section{Performances}
 
