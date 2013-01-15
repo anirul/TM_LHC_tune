@@ -61,12 +61,32 @@ In the final version the software will be merged in single executable that shoul
 \section{Notch filter}
 \label{sec:notch}
 
-Just used to cut the low frequencies this doesn't change anything on the high frequencies and was just used to allow a better imaging on the spectrogram, it won't be used in the final version (quite slow because of sequential).
+A notch filter is used to cut the low frequencies, this doesn't change anything on the high frequencies, it won't be used in the final version. For every sample it takes the present sample and subtract the next element.
+
+$$y_{[n]} = x_{[n]} - x_{[n + 1]}$$
+
+This is a differential filter, as we are only interested into the higher frequency this has no incidence on our results and allow for a better visualization of the spectrograms.
 
 \section{FFT}
 \label{sec:FFT}
 
-Some words about FFTs.
+The Fourier transform is a mathematical operation that moves a function from a temporal domain to a frequency domain. In our case we are talking about \gls{DFT}, and in particular, the \gls{FFT}.
+
+	\subsection{Definition}
+
+	The \gls{DFT} is a discrete transform. It transform a function into another, which is called frequency domain, or simply \gls{DFT}, of the original function.
+
+	$$ x_0,...,x_{N -1} \in \mathbb{C} $$
+
+	$$ X_{k} = \displaystyle\sum\limits_{n = 0}^{N -1} x_{n}e^{-i 2 \pi k \frac{n}{N}} $$
+
+	In order to compute the \gls{DFT} one must compute N number of values N times. The complexity is thus
+
+	$$ \mathcal{O}(N^{2}) $$
+
+	The most commonly used \gls{FFT} algorithms are based on a divide-and-conquer approach similar to the algorithm of Cooley and Turkey\cite{Cooley65}. The computation of a \gls{DFT} of length N is done by splitting the input sequence into a fixed small number of subsequences, compute their \gls{DFT}, and assemble the outputs to build the final sequence. If the split and assembly are linear in time the complexity becomes 
+
+	$$ \mathcal{O}(N \log(N)) $$
 
    \subsection{FFTW}
 

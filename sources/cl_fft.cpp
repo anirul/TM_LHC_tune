@@ -244,7 +244,6 @@ time_duration cl_fft::run_prepare() {
 	return after - before;
 }
 
-// not at all sure about thread safeness here...
 time_duration cl_fft::run_acc(size_t sub_vec)
 {
 	ptime before = microsec_clock::universal_time();
