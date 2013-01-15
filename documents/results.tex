@@ -12,13 +12,13 @@
 
 The implemented system consist of tree pieces of software. The software controlling the acquisition card in the machine. An acquisition software that run on a normal front-end Linux machine that is taking data during the \glspl{MD}. And an analyzing software. The analyzing software is in fact modular and has a version that has to run on a GPU enable machine to use the GPU to compute the \glspl{FFT}.
 
-In the final version the software will be merged in single executable that should run on the \gls{GPU}-enabled machine. This solution has been put into place because the present hardware is still in development and there is no way of acquiring the full 2880 bunches of the machine, the hardware is receiving the acquisition data but the \gls{VME} is not fast enough to transfer it to the \gls{CPU}.
-
-\begin{figure}
+\begin{figure}[H]
 \caption{Implemented acquisition software in the CERN infrastructure}
 \centering
 \includegraphics[scale=0.3]{ImplementedSoftFesa.pdf}
 \end{figure}
+
+In the final version the software will be merged in single executable that should run on the \gls{GPU}-enabled machine. This solution has been put into place because the present hardware is still in development and there is no way of acquiring the full 2880 bunches of the machine, the hardware is receiving the acquisition data but the \gls{VME} is not fast enough to transfer it to the \gls{CPU}.
 
 	\subsection{ADTDSPU control software}
 
