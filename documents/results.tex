@@ -36,20 +36,35 @@ In the final version the software will be merged in single executable that shoul
 
 	\subsection{Data analysis software}
 
+	The data analysis software is a set of modules that can be enabled or bypassed to test the the usefulness of an algorithm. As we have precise time allocated to make the full computation this allow to test the different modules.
 
+	The data is first loaded from the files that were written by the acquisition software. Then it is filtered by a notch filter as described in the notch section~\ref{sec:notch}. And finally to the different algorithms as shown in the figure~\ref{fig:PCFlow}.
 
-	\begin{figure}[H]
+	First optional step is \gls{SVD} this as described in Rama Calaga PHD thesis\cite{calaga06} and Wolfgang H{\"o}fle\cite{HofleChamonix12} should reduce noise in the signal result are seen in section\ref{sec:SVD}.
+
+	Then come the the \gls{FFT} either using the \gls{GPU} or using the \gls{CPU}, actually you could use \gls{OpenCL} on the \gls{CPU} and test the whole \gls{OpenCL} path. The different path are due to memory copying, in the case of computation made on the \gls{GPU} you have to move the memory data from the \gls{CPU} central memory to the \gls{GPU} memory. this will described in section~\ref{sec:FFT}.
+
+	To have a clear image and to combine the real and imaginary part of the \gls{FFT} we use the amplitude. It has been validated in the acquisition software as been the best metric, this could be changed as will in the final version. The amplitude is described in section~\ref{sec:amplitude}.
+
+	As a final value is wanted we do the accumulation of all the bunches, it will give an average spectrum of the whole machine.
+
+	The normalization step is just present for displaying the spectrogram (see section~\ref{sec:spectrogram}) and will not be needed for the final version.
+ 
+	\begin{figure}[h]
 	\caption{Time flow with different implementations and with 3000 bunches of 
 	2048 points each.}
 	\centering
 	\includegraphics[scale=0.3]{PC-flow.pdf}
+	\label{fig:PCFlow}
 	\end{figure}
 
 \section{Notch filter}
+\label{sec:notch}
 
 Just used to cut the low frequencies this doesn't change anything on the high frequencies and was just used to allow a better imaging on the spectrogram, it won't be used in the final version (quite slow because of sequential).
 
 \section{FFT}
+\label{sec:FFT}
 
 Some words about FFTs.
 
@@ -68,10 +83,12 @@ Some words about FFTs.
    Also talk about the fact that there is less noise in the OpenCL CPU version than the OpenCL GPU version.
 
 \section{Amplitude}
+\label{sec:amplitude}
 
 Amplitude calculation formula, explain the figures tell why it has to be done before accumulation and show this is very fast reference to the table of perf.
 
 \section{SVD}
+\label{sec:SVD}
 
 Problem is not directly solvable with the number of bunch observed cite H{\"o}fle and Rama need a lot more bunches to make a good smooth\cite{calaga06}. 
 
@@ -83,7 +100,7 @@ Calculation made by accumulation to simulate the number of bunches that could be
 
    \subsection{Pipelining}
 
-	Pipelining was tested and used in the process and it was possible to win around 15\% in performances around it.
+	Pipelining was tested and used in the process and it was possible to win around 10\% in performances around it.
 
    \subsection{Memory}
 
@@ -119,6 +136,7 @@ Calculation made by accumulation to simulate the number of bunches that could be
 	\end{table}
 
 \section{Spectrogram}
+\label{sec:spectrogram}
 
 Some word definition of Spectrogram. Display some spectrogram.
 
