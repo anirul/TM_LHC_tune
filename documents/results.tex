@@ -30,6 +30,13 @@ In the final version the software will be merged in single executable that shoul
 
 	The acquisition software was used to check that the idea of getting the tune out of the DSPU card was doable and being able to log the acquisition to file to be checked and processed separately.
 
+	\begin{figure}[H]
+	\caption{Tune acquisition software interface}
+	\centering
+	\includegraphics[scale=0.3]{amplitude_log.pdf}
+	\label{fig:tuneacq}
+	\end{figure}
+
 	It uses \gls{CMW}, a library used at \gls{CERN} to communicate between different layers of the accelerators control software, to connect to the the ADTDPSU control software and get the data when they are published (at interrupt time).
 
 	It is then able to compute the acquisition \gls{FFT} using \gls{FFTW} and display it to the operators in the \gls{CCC} where all the eight accelerators of \gls{CERN} are controlled. On the interface you can decide witch type of graph you want to see and also enable saving the data into files to be processed by the data analysis software.
@@ -37,6 +44,14 @@ In the final version the software will be merged in single executable that shoul
 	\subsection{Data analysis software}
 
 	The data analysis software is a set of modules that can be enabled or bypassed to test the the usefulness of an algorithm. As we have precise time allocated to make the full computation this allow to test the different modules.
+
+	\begin{figure}[H]
+	\caption{Time flow with different implementations and with 3000 bunches of 
+	2048 points each.}
+	\centering
+	\includegraphics[scale=0.3]{PC-flow.pdf}
+	\label{fig:PCFlow}
+	\end{figure}
 
 	The data is first loaded from the files that were written by the acquisition software. Then it is filtered by a notch filter as described in the notch section~\ref{sec:notch}. And finally to the different algorithms as shown in the figure~\ref{fig:PCFlow}.
 
@@ -50,14 +65,6 @@ In the final version the software will be merged in single executable that shoul
 
 	The normalization step is just present for displaying the spectrogram (see section~\ref{sec:spectrogram}) and will not be needed for the final version.
  
-	\begin{figure}[h]
-	\caption{Time flow with different implementations and with 3000 bunches of 
-	2048 points each.}
-	\centering
-	\includegraphics[scale=0.3]{PC-flow.pdf}
-	\label{fig:PCFlow}
-	\end{figure}
-
 \section{Notch filter}
 \label{sec:notch}
 
