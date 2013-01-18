@@ -44,7 +44,15 @@ The current \gls{VME} implementation has some serious issues in particular the b
 
 \subsection{FPGA pre-processing on VME board}
 
-Like in the approach using \glspl{DSP} on VME boards, the question of computing power is still unsolved. We already have in house experience and we already have a lot of \gls{FPGA} installed in the \gls{ADT}. But if we want to do it we will have to create a new card able to replace the existing one and to make the computation. This mean create a potential problem in the existing setup. The cost is also to be studied we have to develop a new card, test it and install it in the \gls{LHC}. Also the number of card and FPGA is not well understood, it could be anywhere between 4 and 3000 (FIXME).
+Like in the approach using \glspl{DSP} on VME boards, the question of computing power is still unsolved. We already have in house experience and we already have a lot of \gls{FPGA} installed in the \gls{ADT}. But if we want to do it we will have to create a new card able to replace the existing one and to make the computation. This mean create a potential problem in the existing setup. The cost is also to be studied we have to develop a new card, test it and install it in the \gls{LHC}. Also the number of card and FPGA is not well understood, it could be anywhere between 4 and 3000. 
+
+The biggest issue for FPGA computing been the fact that you need something like ~100M bytes of memory to store the temporary values for computation of only one beam plane.
+
+\begin{quotation}
+96'265'920 Bytes from 2024 points times 2 for complex times 2880 the number of bunches times 4 size of float times 2 because you need to double buffer.
+\end{quotation}
+
+This is far too much memory to be access simultaneously by a single \gls{FPGA}. In case we want to make these computations on \gls{FPGA} it would cost a lot of money in hardware and development.
 
 \subsection{GPU off-board computing}
 
