@@ -42,6 +42,7 @@ In the final version the software will be merged in single executable that shoul
 	It is then able to compute the acquisition \gls{FFT} using \gls{FFTW} and display it to the operators in the \gls{CCC} where all the eight accelerators of \gls{CERN} are controlled. On the interface you can decide witch type of graph you want to see and also enable saving the data into files to be processed by the data analysis software.
 
 	\subsection{Data analysis software}
+	\label{sec:data_analysis_software}
 
 	The data analysis software is a set of modules that can be enabled or bypassed to test the the usefulness of an algorithm. As we have precise time allocated to make the full computation this allow to test the different modules.
 
@@ -265,7 +266,7 @@ But if we have a look on the different card that are available today on the mark
 
 A Spectrogram is a time-varying spectral representation of a signal. the signal is transformed via \gls{FFT} from time domain to spectral domain, each transformation makes a line in this case and is tagged with the time of the acquisition. the amplitude is used to have a single representation of both real and imaginary part of the result.
 
-As we do a normalization by acquisition at the end of the computing we have a representation of the highest value with highest color (white) and if the amplitude is respectively weaker we have a darker representation of the color (black). To have a finer grain in representation intermediate color was chosen in this case blue as you can see in figure \ref{fig:squeeze} \ref{fig:ramp} and \ref{fig:adtoff}.
+As we do a normalization by acquisition at the end of the computing we have a representation of the highest value with highest color (white) and if the amplitude is respectively weaker we have a darker representation of the color (black). To have a finer grain in representation intermediate color was chosen in this case blue as you can see in figure \ref{fig:squeeze} \ref{fig:ramp} and \ref{fig:adt_off}.
 
 \begin{figure}[H]
 	\caption{Spectrogram with ADT off on the 16 October 2012 on vertical beam 1 during squeeze and collision}
