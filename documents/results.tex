@@ -55,7 +55,7 @@ In the final version the software will be merged in single executable that shoul
 
 	The data is first loaded from the files that were written by the acquisition software. Then it is filtered by a notch filter as described in the notch section~\ref{sec:notch}. And finally to the different algorithms as shown in the figure~\ref{fig:PCFlow}.
 
-	First optional step is \gls{SVD} this as described in Rama Calaga PHD thesis\cite{calaga06} and Wolfgang H{\"o}fle\cite{HofleChamonix12} should reduce noise in the signal result are seen in section\ref{sec:SVD}.
+	First optional step is \gls{SVD} this as described in Rama Calaga PHD thesis\cite{calaga06} and Wolfgang H{\"o}fle\cite{HofleChamonix12} should reduce noise in the signal result are seen in section~\ref{sec:SVD}.
 
 	Then come the the \gls{FFT} either using the \gls{GPU} or using the \gls{CPU}, actually you could use \gls{OpenCL} on the \gls{CPU} and test the whole \gls{OpenCL} path. The different path are due to memory copying, in the case of computation made on the \gls{GPU} you have to move the memory data from the \gls{CPU} central memory to the \gls{GPU} memory. this will described in section~\ref{sec:FFT}.
 
@@ -149,16 +149,16 @@ Taking more than one acquisition can at least give some idea on the speed of pro
 	\end{tabular}
 \end{table}
 
-So it is very difficult to estimate the time the computing with the real data would take, but we have to keep in mind that these computation where done using double precision as single would probably be enough, these computation were only done using a single thread (SVD is quite difficult to parallelize) and only done on \gls{CPU}.
+So it is very difficult to estimate the time the computing with the real data would take, and we have to keep in mind that these computation where done using double precision as single would probably be enough, these computation were also done using a single thread (SVD is quite difficult to parallelize) and only done on \gls{CPU}.
 
-There is a way to make these computation on \gls{GPU}\cite{Lahabar09} and the estimation are around 5 times better than on \gls{CPU}. As soon as we have better data set (witch will require hardware upgrade) we can further investigate on this.
+There is a way to make these computation on \gls{GPU}\cite{Lahabar09} and the estimation are around 5 times better than on \gls{CPU}. As soon as we have better data set (witch will require hardware upgrade) we can further investigate.
 
 \section{Performances}
 \label{sec:perf}
 
 Computation were made by accumulation to simulate the number of bunches that could be present in the final version (2880). As 6 bunches were acquired we used 500 successive acquisition to make it close to the 2880 and have a safe margin.
 
-Different strategy were used to try to improve performances as shown in figure\ref{fig:PCFlow}. But also use of pipelining (not used on the figure as it is difficult to estimate time when using pipelining) and test on different hardware.
+Different strategy were used to try to improve performances as shown in figure\ref{fig:PCFlow}. Pipelining was also used (not used on the figure as it is difficult to estimate time when using pipelining) and tested on different hardware.
 
 The hardware used was mainly the Tesla M2090 based on a Fermi chip this chips has more cores than a CPU and we can see an improvement in respect of computing speed as shown on the table \ref{tab:speed}. The table \ref{tab:fermi} show the characteristic of the Tesla Fermi card family.
 
@@ -215,15 +215,17 @@ But if we have a look on the different card that are available today on the mark
 
    Pipelining mean that you won't wait for all the sub-operations to be finished before starting the next one. The first operation is copying the memory from the \gls{CPU} to the \gls{GPU} this takes a certain time but as soon as some of the data is copied the computing could start.
 
-   In \gls{OpenCL} the different commands are queued and this command queue can be flushed. to make the pipelining work the only thing to do is to only flush at the end when all the computing has been queued.
+   In \gls{OpenCL} the different commands are queued and this command queue can be flushed (with the command endQueue). to make the pipelining work the only thing to do is to only flush at the end when all the computing has been queued. Of course some attention should be kept to avoid problems with modules writing or reading data that has not yet been read or written.
 
    In our case this mean that the copying of the data from \gls{CPU} to \gls{GPU} the preparation of the data the \gls{FFT} itself the amplitude computation, the accumulation and getting back the values to the \gls{CPU} is queued together in one go.
 
-   That allow us to have a 10\% improvement on performances, but it is difficult then to estimate the computing time of individual steps so the values shown on figure \ref{fig:PCFlow} are without pipelining.
+   That allow us to have a 3 to 10\% improvement on performances, but it is difficult then to estimate the computing time of individual steps so the values shown on figure \ref{fig:PCFlow} are without pipelining.
 
    \subsection{Memory}
 
-   Copying memory from and to the \gls{GPU} can be expansive time wise, as shown on figure \ref{fig:PCFlow} copying 3000 times 2024 values in short (2 bytes) take around 10 ms. This is the reason why it is important to make the accumulation on the \gls{GPU} because after the \gls{FFT} computation there is 3000 times 2024 complex values in float (8 bytes). It would have cost at least 40 ms to copy these values back to the \gls{CPU}. The 20 ms shown on figure \ref{fig:PCFlow} correspond to half the values because we can cut half of the result as the \gls{FFT} computed it in real only so the result is mirrored.
+   Copying memory from and to the \gls{GPU} can be expansive time wise, as shown on figure \ref{fig:PCFlow} copying 3000 times 2024 values in short (2 bytes) take around 10 ms. This is the reason why it is important to make the accumulation on the \gls{GPU} because after the \gls{FFT} computation there is 3000 times 2024 complex values in float (8 bytes). It would have cost at least 40 ms to copy these values back to the \gls{CPU}. 
+
+   The 20 ms shown on figure \ref{fig:PCFlow} correspond to half the values because we can cut half of the result as the \gls{FFT} computed it in real only so the result is mirrored.
 	
    \subsection{Time}
 
@@ -233,7 +235,7 @@ But if we have a look on the different card that are available today on the mark
 		\label{tab:speed}
 		\begin{tabular}{|l|lrrcr|}
 			\hline
-				Device & Type & Threads & Speed [GHz] & pipeline & Time [ms] \\
+				Device & Type & Threads & Speed [GHz] & Pipeline & Time [ms] \\
 			\hline
 			\hline
 				Xeon X5650 & FFTW & 12 & 2.67 & N/A & 291 \\
