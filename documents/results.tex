@@ -135,7 +135,7 @@ This was first tested on generated data by Wolfgang H{\"o}fle\cite{HofleEvian10}
 Taking more than one acquisition can at least give some idea on the speed of processing. So SVD was implemented using the GNU Scientific Library (only double precision float for SVD). The problem is that correlation between beam of the same acquisition make the process a lot faster than uncorrelated bunches.
 
 \begin{table}[H]
-	\caption{SVD with vary heavily with correlation of bunches}
+	\caption{SVD speed correlation with acquisitions bunches}
 	\label{tab:SVD}
 	\centering
 	\begin{tabular}{|l|l|l|}
@@ -164,7 +164,8 @@ Different strategy were used to try to improve performances as shown in figure\r
 The hardware used was mainly the Tesla M2090 based on a Fermi chip this chips has more cores than a CPU and we can see an improvement in respect of computing speed as shown on the table \ref{tab:speed}. The table \ref{tab:fermi} show the characteristic of the Tesla Fermi card family.
 
 \begin{table}[H]
-	\caption{NVIDIA Fermi hardware available on the market\cite{nvidia}}
+	\caption{NVIDIA Fermi hardware available on the market}
+	\floatfoot{Source : NVIDIA\cite{nvidia}}
 	\label{tab:fermi}
 	\centering
 	\begin{tabular}{|l|l|l|}
@@ -189,7 +190,8 @@ But if we have a look on the different card that are available today on the mark
 
 \begin{table}[H]
 	\centering
-	\caption{NVIDIA Kepler hardware available on the market\cite{nvidia}}
+	\caption{NVIDIA Kepler hardware available on the market}
+	\floatfoot{Source : NVIDIA\cite{nvidia}}
 	\label{tab:kepler}
 	\begin{tabular}{|l|l|l|l|}
 		\hline
@@ -231,7 +233,7 @@ But if we have a look on the different card that are available today on the mark
    \subsection{Time}
 
 	\begin{table}[H]
-		\caption{Speed for 3000 batch of 2048 points}
+		\caption{Speed for 3000 acquistions of 2048 points}
 		\centering
 		\label{tab:speed}
 		\begin{tabular}{|l|lrrcr|}
