@@ -44,23 +44,19 @@ The current \gls{VME} implementation has some serious issues in particular the b
 
 \subsection{FPGA pre-processing on VME board}
 
-Like in the approach using \glspl{DSP} on VME boards, the question of computing power is still unsolved. We already have in house experience and we already have a lot of \gls{FPGA} installed in the \gls{ADT}. But if we want to do it we will have to create a new card able to replace the existing one and to make the computation. This mean create a potential problem in the existing setup. The cost is also to be studied we have to develop a new card, test it and install it in the \gls{LHC}. Also the number of card and FPGA is not well understood, it could be anywhere between 4 and 3000. 
+Like in the approach using \glspl{DSP} on VME boards, the question of computing power is an important one. As the current ADT system only features \glspl{FPGA} on the hardware, complemented by the general purpose \gls{CPU} in the \gls{VME} crate.  
 
-The biggest issue for FPGA computing been the fact that you need something like ~100M bytes of memory to store the temporary values for computation of only one beam plane.
-
-\begin{quotation}
-96'265'920 Bytes from 2024 points times 2 for complex times 2880 the number of bunches times 4 size of float times 2 because you need to double buffer.
-\end{quotation}
-
-This is far too much memory to be access simultaneously by a single \gls{FPGA}. In case we want to make these computations on \gls{FPGA} it would cost a lot of money in hardware and development.
+The biggest issue for FPGA computing been the fact that you need something like ~100M bytes of memory to store the temporary values for computation of only one beam plane. The \glspl{FFT} are difficult to pipeline because you have to iterate the algorithm a certain number of time ($\log_{2} N$ times for a radix 2).
 
 \subsection{GPU off-board computing}
 
-This solution can be integrated easily in the present setup. The present acquisition cards already have a digital output and could be used to transfer the data in another crate that could do the computations. The \glspl{GPU} are cheap (compare to the price of developing a new \gls{VME} card) and easily scalable. The \gls{GPU} should have largely enough computing power to be able to make the \glspl{FFT}. Another interesting aspect of this solution is the ability to test it using \gls{CPU}.
+This solution can be integrated easily with the present setup. The present acquisition cards already have a digital output and could be used to transfer the data to another crate for the computations. The \glspl{GPU} are inexpensive (compared to the price of developing a new \gls{VME} card) and easily scalable. 
+
+The \gls{GPU} should have sufficient computing power to be able to make the \glspl{FFT}. The \gls{FFT} computation are made in floating point. Another interesting aspect of this solution is the ability to test it using \gls{CPU} using the same code.
 
 \section{Problem definition}
 
-Show how to implement a GPU based system that can deliver a tune value for each beam and planes at a frequency that allow the system to be responsive enougth to allow tune correction to be applied automatically. 
+Show how to implement a GPU based system that can deliver a tune value for each beam and plane at a rate that allows the system to be responsive enougth for a tune correction to be applied automatically. 
 
    \subsection{Algorithm}
 
@@ -74,14 +70,14 @@ Show how to implement a GPU based system that can deliver a tune value for each 
 	\includegraphics[scale=0.3]{acquisition.pdf}
 	\end{figure}
 
-   Per bunch position mesearment has to be avalable to the system for each beam and each plane. This should be provided from the ADTDSPU card and has to be transfered through a serial link to the CPU/GPU crate for computation.
+   Per bunch position measurement has to be available to the system for each beam and each plane. This should be provided from the ADTDSPU card and has to be transfered through a serial link to the CPU/GPU crate for computation.
 
-   We need a card in the CPU/GPU crate to unserialize the data and transfer them to the GPU memory. It may be possible to copy from the acquisition card directly to the GPU memory.
+   We need a card in the CPU/GPU crate to de-serialize the data and transfer them to the GPU memory. It may be possible to copy from the acquisition card directly to the GPU memory.
 
-   And finally fast enougth GPU to process the data. The number and the type of card should be looked at. The possibilty for expantion should be kept as the possibility to implement other algorithms.
+   And finally fast enough GPU to process the data. The number and the type of card should be looked at. The possibility for expansion should be kept as the possibility to implement other algorithms.
    
    \subsection{Timing}
 
-   Acording to \gls{BI} we have to provide the tune measurement betweeen 5 Hz and 10 Hz. This mean that the transfer and the computation has to be made in less than 200 ms.
+   According to \gls{BI} we have to provide the tune measurement at a rate of between 5 Hz and 10 Hz delay. This mean that the transfer and the computation has to be made in less than 200 ms.
 
-   At a higher frequency because of the acquisition frequency (11 kHz) the precision may be unsufficient (Nyquist–Shannon sampling theorem).
+   At a higher frequency because of the acquisition frequency (11 kHz) the precision may be insufficient (Nyquist–Shannon sampling theorem).

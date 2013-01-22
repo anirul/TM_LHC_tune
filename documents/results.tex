@@ -56,7 +56,7 @@ In the final version the software will be merged in single executable that shoul
 
 	The data is first loaded from the files that were written by the acquisition software. Then it is filtered by a notch filter as described in the notch section~\ref{sec:notch}. And finally to the different algorithms as shown in the figure~\ref{fig:PCFlow}.
 
-	First optional step is \gls{SVD} this as described in Rama Calaga PHD thesis\cite{calaga06} and Wolfgang H{\"o}fle\cite{HofleChamonix12} should reduce noise in the signal result are seen in section~\ref{sec:SVD}.
+	First optional step is \gls{SVD} this as described in Rama Calaga PHD thesis\cite{calaga06} and Wolfgang H{\"o}f\/le\cite{HofleChamonix12} should reduce noise in the signal result are seen in section~\ref{sec:SVD}.
 
 	Then come the the \gls{FFT} either using the \gls{GPU} or using the \gls{CPU}, actually you could use \gls{OpenCL} on the \gls{CPU} and test the whole \gls{OpenCL} path. The different path are due to memory copying, in the case of computation made on the \gls{GPU} you have to move the memory data from the \gls{CPU} central memory to the \gls{GPU} memory. this will described in section~\ref{sec:FFT}.
 
@@ -130,7 +130,7 @@ It was suggested by Rama Calaga\cite{calaga06} to use \gls{SVD} in order to dimi
 
 $$M = U \Sigma V^{T}$$ 
 
-This was first tested on generated data by Wolfgang H{\"o}fle\cite{HofleEvian10} unfortunately we have only 6 bunches in our dataset per acquisition so it is not possible to make this work with the present set up. The $\Sigma$ matrix is only 6 by 6 values so it is not easy to suppress values in notable fashion.
+This was first tested on generated data by Wolfgang H{\"o}f\/le\cite{HofleEvian10} unfortunately we have only 6 bunches in our dataset per acquisition so it is not possible to make this work with the present set up. The $\Sigma$ matrix is only 6 by 6 values so it is not easy to suppress values in notable fashion.
 
 Taking more than one acquisition can at least give some idea on the speed of processing. So SVD was implemented using the GNU Scientific Library (only double precision float for SVD). The problem is that correlation between beam of the same acquisition make the process a lot faster than uncorrelated bunches.
 
