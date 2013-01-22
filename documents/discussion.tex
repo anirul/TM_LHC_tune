@@ -2,45 +2,61 @@
 
 \chapter{Discussion}
 
-With All these result the tune can be assumed to be visible and it is then possible to assess the feasability of the tune measurement using \gls{GPU}. There is still some question around hardware update but the work left to be done can be fairely well estimated.
+With All these result the tune can be assumed to be visible and it is then possible to assess the feasibility of the tune measurement using \gls{GPU}. There is still some question around hardware update but the work left to be done can be fairly well estimated.
 
 \section{Observation}
 
 During the three \gls{MD} we acquired around TODO with both beam and both planes. This data was acquired in XML files and stored on the \gls{CERN} infrastructure. XML was chosen as it is easily accessible by both custom and commercial data analysis software.
 
-Matlab was used as the first tool to check the data and try different algorithm but in the end the software was ready fast enough and flexible enough. Matlab ended to be only used for check and test puprose and all the analysis and discussion is based on the result obtain with the data analysis software described in section \ref{sec:data_analysis_software}
+Matlab was used as the first tool to check the data and try different algorithm but in the end the software was ready fast enough and flexible enough. Matlab ended to be only used for check and test purpose and all the analysis and discussion is based on the result obtain with the data analysis software described in section \ref{sec:data_analysis_software}
 
 	\subsection{Without damper}
 
-	When the \gls{ADT} is off line there is a clear mark on the tune as shown on figure \ref{fig:adt_off}. There is still discution on is it the tune or just a ripple of the tune but as when the tune is moved the mark is also moving it is safe to assume this is really the tune. Some test could still be made, crosschecking with the \gls{BBQ}, changing the tune and looking in real time.
+	When the \gls{ADT} is off line there is a clear mark on the tune as shown on figure \ref{fig:adt_off}. There is still discussion on is it the tune or just a ripple of the tune but as when the tune is moved the mark is also moving it is safe to assume this is really the tune. Some test could still be made, crosschecking with the \gls{BBQ}, changing the tune and looking in real time.
 
 	\begin{figure}[H]
-	\caption{Spectrogram with ADT off on the 16 October 2012 on vertical beam 1 before the ramp}
+	\caption{Spectrogram with ADT off on the 16 October 2012 on vertical beam 1 before the ramp, 6 bunches 10 accumulations}
 	\label{fig:adt_off}
 	\centering
 	\includegraphics[scale=0.3]{md-121016-vb1-m1-6bunches-10acc-1337-1349-ADT-off.pdf}
 	\end{figure}
 
-	These observations are consistent with the gated-\gls{BBQ} result of 2012 \cite{Valuch12} and show that we can acquire the tune with the \gls{ADT} and get a clear bunch-by-bunch view of the tune even for only one bunch as shown in figure \ref{fig:one_bunch_adt_off}
+	These observations are consistent with the gated-\gls{BBQ} result of 2012 \cite{Valuch12} and show that we can acquire the tune with the \gls{ADT} and get a clear bunch-by-bunch view of the tune even for only one bunch as shown in figure \ref{fig:bunch_0_adt_off}.
+
+	\begin{figure}[H]
+	\caption{Spectrogram with ADT off on the 16 October 2012 on horizontal beam 1 before the ramp, 1 bunch (0) 8 accumulations}
+	\label{fig:bunch_0_adt_off}
+	\centering
+	\includegraphics[scale=0.3]{md-121016-hb1-m1-bunch000001-8acc-1337-1349.pdf}
+	\end{figure}
 
 	\subsection{With damper}
 
+	When the \gls{ADT} is working the oscillations of the beam are damped by it, as a result the tune is less visible. But we should be able to see the effect of the tune on the damper if the damper is well adjusted to the beam. This mean that we should see a clear gap in the frequency around the tune frequency (or at the frequency the damper is less working, frequency that should correspond to the tune).
+
+	This correspond to the spectrogram we see during operation as shown in figure \ref{fig:ramp}. We also see in this figure the ramp that lead to collision, before putting the beam in collision we do a squeeze (operation during witch we compress the beam size in the interaction points, where the experiments are). The squeeze is changing the tune and we can see it on the spectrogram around 14h03 on the figure \ref{fig:ramp}.
+
 	\begin{figure}[H]
-	\caption{Spectrogram with damper working on the 16 Octover 2012 on vertical beam 1 during the ramp}
+	\caption{Spectrogram with damper working on the 16 October 2012 on vertical beam 1 during the ramp, 6 bunches 10 accumulations}
 	\centering
 	\label{fig:ramp}
 	\includegraphics[scale=0.3]{md-121016-vb1-m1-6bunches-10acc-1347-1405-ramp.pdf}
 	\end{figure}
 
-	The tune is inverted speak about cite the hofle paper mathematic morphology more processing needed but should be quite low.
+	This could give us a good acquisition of the tune during operation even when \gls{ADT} is on. This acquisition could be made bunch-by-bunch so we could correct position of bunches that are not well on tune. The question that is still up is how much is it sensible to the way the \gls{ADT} is set up. This has still to be tested in the machine by moving the tune while the \gls{ADT} is in operation and see if the acquisitions follows the tune.
 
 \section{Data flow}
 
+As the hardware is not present yet, the time and bandwidth of the whole system has to be estimated to see if it is doable in the constraint we have and that were exposed in the introduction. Estimation of the bandwidth and data flow is shown on figure \ref{fig:data_flow}.
+
 \begin{figure}[H]
 \caption{Acquisition data flow}
+\label{fig:data_flow}
 \centering
 \includegraphics[scale=0.3]{dataflow.pdf}
 \end{figure}
+
+The data has to move from the acquisition card to the GPU by a series of steps, first from the card to the PCI crate (the one who contain the actual \glspl{GPU}). The problem being that the acquisition card is a \gls{VME} card and the VME bus is too slow to allow the full data to be streamed to the CPU. This will use the Giga-bit serial link already present on the VME card. A receiver card will then receive the data in the PCI crate and send it either directly to the \gls{GPU} memory or to the \gls{CPU} and then to the \gls{GPU} memory. Then the \gls{GPU} will make the computations necessary for the tune measurement and will copy back to the \gls{CPU} that will use the normal Ethernet connection to stream it back to operation.
 
 \section{Hardware}
 

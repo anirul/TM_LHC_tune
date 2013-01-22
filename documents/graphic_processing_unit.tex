@@ -25,7 +25,8 @@ The Khronos Group is a not for profit industry consortium creating open standard
 \gls{OpenCL} is not really a language but an \gls{API} and a kernel language derived from C99 that is compiled for, and executed on the device itself. It defines an abstract hardware architecture onto which the real hardware is mapped. Every piece of hardware (\gls{CPU}, \gls{GPU}, others) is called a device. This device is divided into work groups, each of which is further subdivided into work items.
 
 \begin{figure}[H]
-\caption{OpenCL Device Model\cite{OpenCLInAction}}
+\caption{OpenCL Device Model}
+\floatfoot{Source : OpenCL in Action\cite{OpenCLInAction}}
 \centering
 \includegraphics[scale=0.5]{OpenCL_Device_Model.pdf}
 \end{figure}
@@ -35,14 +36,15 @@ The Khronos Group is a not for profit industry consortium creating open standard
 The \gls{OpenCL} \gls{API} is composed of two parts: The host code that runs on the CPU which runs kernel handling event synchronization and manages the memory buffer, and the device code, which is a kernel language based on the C99 specification.
 
 \begin{figure}[H]
-\caption{Kernel Distribution among OpenCL-compliant devices\cite{OpenCLInAction}}
+\caption{Kernel Distribution among OpenCL-compliant devices}
+\floatfoot{Source : OpenCL in Action\cite{OpenCLInAction}}
 \centering
 \includegraphics[scale=0.5]{OpenCL_Objects.pdf}
 \end{figure}
 
 The host \gls{API} is written in C but there is a C++ interface provided by Khronos, which is the interface used in this work. Several other wrappers for other languages are also available, such as Java, C\#, Python, and even javascript with WebCL (also specified by the Khronos group). 
 
-The device code called \gls{OpenCL} kernel code is based on is C99, adding some extensions like vectorization, image access, and linear algebra functions.
+The device code also called \gls{OpenCL} ``kernel code'' is based on is C99, adding some extensions like vectorization, image access, and linear algebra functions.
 
 The workload is itself specified in terms of context, program and command queues. The context contains the parameters of the current problem and manages the devices available for computation, as well as the programs and the command queues. The program consists of the set of kernels which are constructed from \gls{OpenCL} code. The context is responsible for dispatching these kernels into command queues. Each command queue is a set of commands that can be executed in any order, or simultaneously. A command queue is limited to a single device.\cite{OpenCLInAction,OpenCLProgrammingGuide}
 
@@ -70,14 +72,15 @@ DirectCompute shares a lot of concepts with both \gls{CUDA} and \gls{OpenCL}, an
 
 \subsection{Shader Languages}
 
-Shaders are the steps that the graphic card has to make before rendering to the screen. There is mainly two steps the vertex shader, also called vertex code and the pixel shader, also called fragment code, vertex shader is manipulating the data as point in space, as vector and the pixel shader the final rendering as pixels on screen.
+Shaders are the steps that the graphic card has to make before rendering to the screen. There is mainly two steps the vertex shader, also called vertex code and the pixel shader, also called fragment code, vertex shader is transforming vertex data from 3D space to 2D screen coordinates manipulating the data as points in space, as vector and the pixel shader is doing the final rendering as pixels on the screen calculating the color of a pixel according to light, normal and textures.
 
-There are many different shader languages. The main ones are: Cg, the NVIDIA “neutral” shading language one of the first \gls{GPGPU} language widely used. \Gls{HLSL}, the Microsoft version tightly coupled with DirectX, and therefore easier to use on a Microsoft platform (XNA). \Gls{GLSL}, the \gls{OpenGL} version, that is supported widely but not implemented completely on all platforms.
+There are many different shader languages. The main ones are: Cg, the NVIDIA ``neutral'' shading language, one of the first \gls{GPGPU} language widely used; the \gls{HLSL}, the Microsoft version tightly coupled with DirectX, and therefore easier to use on a Microsoft platform (XNA); the \gls{GLSL}, an \gls{OpenGL} version, that is supported widely but not implemented completely on all platforms.
 
-Before the general purpose graphic processing languages appeared this was the only way to access the power of the graphic card, and this is still much in use today. As it was developed over many years, this is a very stable technology and there are many examples and libraries using theses languages.
+Before the general purpose graphic processing languages appeared shader languages were the only way to access the power of the graphic card, and this is still much in use today. As it was developed over many years, this is a very stable technology and there are many examples and libraries using theses languages.
 
-Shader languages are oriented toward graphics programming and are therefore not well-adapted to some of the algorithms we could want to implement. They are made to handle vectors of four components: position, color, normal. This can be quite inconvenient. This is also their strength as this is what the \gls{GPU} was originally built for. Communication between host and \gls{GPU} tend to be messy at best, especially with non-graphical structures.
+Shader languages are oriented towards graphics programming and are therefore not well-adapted to some of the algorithms we may want to implement. They are made to handle vectors of four components: position, color, normal (the normalized vector perpendicular to the surface). 
 
 \section{Conclusion}
 
-The system is going to run on dedicated \gls{CERN} computers that are under \gls{SLC} so the fact that it has to run under Linux is a must. The ability to be able to test the whole system on CPU and to compare the processing speed is also a key factor. The system should be able to be expanded and not be tight to any hardware provider. \Gls{OpenCL} is then the only \gls{API} that can offer all theses .
+The system is going to run on dedicated \gls{CERN} computers that are under \gls{SLC} so the fact that it has to run under Linux is a must. The ability to test the whole system on a \gls{CPU} and to compare the processing speed is also a key factor. The system should be able to be expanded and not be tied to any hardware provider. \Gls{OpenCL} is then the only choice.
+

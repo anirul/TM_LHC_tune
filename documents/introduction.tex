@@ -8,39 +8,35 @@
 
 \section{State of knowledge}
 
-In a particle accelerator, the charged particles circulate around the ring and oscillate due to the magnets and the accelerating structures. The accelerating structures, in the \gls{LHC} supra-conducting \glspl{cavity} apply a strong electrical field that oscillates at the \gls{rffreq} to particles in order to collect and accelerate particles in \glspl{bunch} inside a frequency \gls{bucket}.
+In a particle accelerator, the charged particles circulate around the ring and oscillate due to the magnets and the accelerating structures. The accelerating structures, in the \gls{LHC} supra-conducting \glspl{cavity} apply a strong electrical field that oscillates at the \gls{rffreq} keeping the particles longitudinal, in the direction of flight focused forming a packet, called a \glspl{bunch}.
 
-The particles inside a bucket are oscillating longitudinally along the ring and transversally in the vertical and horizontal plane. The longitudinal oscillations are damped by the beam control system. But the transversal oscillations must be damped by a separate system~: the \gls{ADT}\cite{Benews11,Zhabitsky:1141925}.
+The particles inside a bunch are oscillating longitudinally within the so called bucket, the area limited by the largest possible closed trajectory in time-energy phase space and transversally in the vertical and horizontal plane. The longitudinal oscillations are damped by the beam control system. Transversal oscillations are damped by a separate system~: the \gls{ADT}\cite{Zhabitsky:1141925,Benews11}.
 
-One of the key parameters of the accelerator is the betatron tune. The betatron tune, $Q$, is the quotient of the betatron oscillation and the particle frequencies.
-
-$$f_\beta = Q * f_0$$
-
-This value allow us to check if the particle beam is stable and don't reach any dangerous instabilities.
+One of the key parameters of the accelerator is the betatron tune defined by the arrangement and strength of defocussing and focusing quadrupoles around the ring. The betatron tune, $Q$, in the horizontal (respectively vertical) plane is defined as the number of oscillations per revolution within the griding magnetic fields around the accelerator.
 
 % Literacy survey
 \section{Tune measurement in the LHC}
 
 In order to measure the betatron tune in an accelerator we use \glspl{BPM}. These monitors are able to measure the position of the beam in the vacuum chamber.
 
-In the present setup \gls{BI} group is using their \gls{BBQ} \cite{Boccardi:1156349} system to acquire the tune over a certain number of machine turn (256 to 128'000). This can work as a passive instrument or as an on demand system by exciting 12 \glspl{bunch} in the beam with the \gls{MKQA}. \Gls{ADT} has also been used for tune measurement excitation\cite{HofleEvian10}. 
+Presently the \gls{BI} group is using a \gls{BBQ} \cite{Boccardi:1156349} system to acquire the tune over a certain number of machine turn (256 to 128'000). This system, can work as a passive instrument, without further excitation of the beam or as an on demand system by exciting a limited number of \glspl{bunch} in the beam with the \gls{MKQA}. \Gls{ADT} has also been used for tune measurement excitation\cite{HofleEvian10}. The \gls{BBQ} system makes an average over a certain number of bunches in the machine and is not able to see individual bunches.
 
-In normal operation, as the \gls{ADT} is active, it is difficult to have a good picture of the excited bunches and make a fine tune measurement~: the oscillations created by the \gls{MKQA} are damped by the \gls{ADT}. There have been studies to disable the \gls{ADT} for a certain number of bunches in order to get a better tune measurement\cite{HofleEvian11}, but this may not be sufficient.
+In normal operation, when the \gls{ADT} is active, it is difficult to have a good picture of the excited bunches and make a precise tune measurement~: the oscillations created by the \gls{MKQA} are rapidly damped by the \gls{ADT}. There have been studies to disable the \gls{ADT} for a certain number of bunches in order to get a better tune measurement\cite{HofleEvian11}, but this may not be sufficient.
 
 % The source of Ideas
 \section{Proposed system}
 
-The \gls{ADT} also have \glspl{BPM} and these can have per bunch measurement\cite{BphMeas07}. This could allow a much precise measurement. But due to the high among of data to be processed (estimated to 640 mega bytes per seconds for each \gls{BPM}) dedicated hardware is needed to compute the correct tune\cite{HofleChamonix12}.
+The \gls{ADT} also has \glspl{BPM} assigned with electronics installed that permit a bunch-by-bunch measurement at the $\mu$m level\cite{BphMeas07}. This could allow a much more precise measurement on single bunches. Due to the high amount of data to be processed (estimated to 640 mega bytes per seconds for each \gls{BPM}) dedicated hardware is needed to compute the correct tune using all information available\cite{HofleChamonix12}.
 
-In order to be able to apply direct correction to beam oscilliation the \gls{tune} has to be measured at a high frequency, this has been estimated by \gls{BI} to be between 5 and 10[Hz], once every 100 to 200[ms].
+As the time measurement is used in the so called ``tune feedback'' to directly feed back to the focusing and defocussing magnets a high rate of measurement is needed with tight constraints on the delay. In order to be able to apply the correction to magnets the \gls{tune} has to be measured at a rate of between 5 and 10 Hz, once every 100 to 200 ms.
 
-During the 2012 normal operation of the \gls{LHC}, data has be acquired using the \gls{ADT} acquisition system and data processing techniques has been tried to asses the modification that will be needed in order to make a reliable \gls{tune} measurement at a reasonable rate\cite{HofleChamonix12}.
+During the 2012 normal operation of the \gls{LHC}, data has be acquired using the \gls{ADT} acquisition system and different data processing techniques have been tested to asses the modification that will be needed in order to make a reliable \gls{tune} measurement at a reasonable rate\cite{HofleChamonix12}.
 
-The current \gls{VME} implementation has some serious issues in particular the bus is quite slow the data rate of the bus is around 40 megabits per seconds. The data need to either be processed on the acquisition board or to be off-loaded to another computer using the serial link available on the board\cite{Baudrenghien:1124094}.
+The current \gls{VME} implementation has some serious issues in particular the bus is quite slow data rate of around 40 megabits per seconds. The data need to either be processed on the acquisition board or to be off-loaded to another computer using the serial link available on the board\cite{Baudrenghien:1124094}.
 
 \subsection{DSP on VME board}
 
-\Glspl{DSP} are able to compute \glspl{FFT} at high rate and these are used already in the machine at different places to make high speed feedback loops. The question is~: is it fast enough to compute all the \glspl{FFT} needed, \glspl{DSP} are two orders of magnitude slower than \glspl{GPU}. We also would have to develop a completely new system in order to be able to use them, in fact we don't have \glspl{DSP} in the present \gls{ADT}. The cost of development and the complexity of the deployment should also be studied.
+\Glspl{DSP} are dedicated microprocessors that can do digital signal processing and are able to compute \glspl{FFT} at high rate. These are used already in the machine at different places to make high speed feedback loops. The question is~: is it fast enough to compute all the \glspl{FFT} needed, \glspl{DSP} are two orders of magnitude slower than \glspl{GPU} when we count floating operation per seconds. We also would have to develop a completely new system in order to be able to use them, in fact we don't have \glspl{DSP} in the present \gls{ADT}. The cost of development and the complexity of the deployment would have to be studied for such a solution.
 
 \subsection{FPGA pre-processing on VME board}
 
