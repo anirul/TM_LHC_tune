@@ -268,16 +268,16 @@ However, if we have a look on the different cards that are available today on th
 
 	Time performances were computed using the timing library from boost \cite{boost} on different hardware, \glspl{GPU} and \glspl{CPU}, with and without pipeline enable as shown on table \ref{tab:speed}.
 
-	The time performances between \gls{FFTW} and \gls{OpenCL} on a \gls{CPU} are very close, hence the radix 2 implementation used must be good and we can hope the performances on \gls{GPU} could then be fairly compared with \gls{FFTW}.
+	The time performances between \gls{FFTW} and \gls{OpenCL} on a \gls{CPU} are very close, hence the radix 2 implementation on \gls{GPU} should be solid.
 
 	On a dedicated \gls{GPU} like the Tesla M2090  the performances are around 10 times better than on a modern \gls{CPU}. This is very encouraging and means that on the latest generation hardware we should be able to achieve even better performances.
 	
 \section{Spectrogram}
 \label{sec:spectrogram}
 
-A Spectrogram is a time-varying spectral representation of a signal. the signal is transformed via \gls{FFT} from time domain to spectral domain, each transformation makes a line in this case and is tagged with the time of the acquisition. the amplitude is used to have a single representation of both real and imaginary part of the result.
+A Spectrogram is a time-varying spectral representation of a signal. The signal is transformed via \gls{FFT} from time domain to spectral domain. Each transformation produces a line in this case and is tagged with the time of the acquisition. the amplitude is used to have a single representation of both real and imaginary part of the result.
 
-As we do a normalization by acquisition at the end of the computing we have a representation of the highest value with highest color (white) and if the amplitude is respectively weaker we have a darker representation of the color (black). To have a finer grain in representation intermediate color was chosen in this case blue as you can see in figure \ref{fig:squeeze} \ref{fig:ramp} and \ref{fig:adt_off}.
+As we do a normalization per acquisition on the spectrum at the end of the computing we have a representation of the highest value with highest color (white). If the amplitude is weaker we have a darker representation of the color (black). To have a finer grain in representation intermediate color was chosen in this case blue as you can see in figure \ref{fig:squeeze} \ref{fig:ramp} and \ref{fig:adt_off}.
 
 \begin{figure}[H]
 	\caption{Spectrogram with ADT off on the 16 October 2012 on vertical beam 1 during squeeze and collision}
