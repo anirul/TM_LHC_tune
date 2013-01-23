@@ -60,18 +60,44 @@ The data has to move from the acquisition card to the GPU by a series of steps, 
 
 \section{Hardware}
 
-	\subsection{ADT Aquisition boards}
+The present hardware is not allowing to acquire all the \glspl{bunch} of the machine and is in fact limited by constraints of the \gls{VME}. We have to upgrade various part of the hardware and to add the new computing device in order to be able to make on-line computation of the tune.
+
+	\subsection{ADT Acquisition boards}
+
+	The ADTDSPU card has to be upgraded?! (TODO check with Daniel)
 
 	\subsection{Serial link interface}
 
+	Serial link receiver has to be chosen and put into place in the new computing device to be able to receive the data and pass them to the \gls{GPU}. (TODO check with Daniel on what spec, what speed...).
+
+	Talk about market survey with Daniel. development of the FPGA firmware, show figure.
+
+	Talk about the in-house solution with the CO card, show figure.
+
 	\subsection{GPUs}
+
+	We need a computing device with at least 2 PCIe slots, one for the serial link receiver and one for the \gls{GPU} card. It should be some standardized crate with a powerful \gls{CPU} and possible expansion. Place has to be checked in SR4 to check if there is enough space for full crate or we have to take lighter crates.
 
 \section{Software}
 
+Some software upgrade and redeployment is still necessary before the operational version is fully commissioned.
+
 	\subsection{Drivers}
+
+	The drivers for the \gls{ADT} acquisition card will need some update, changing the memory map and adjusting the drivers for the control registers. This should be quite straightforward.
+
+	A driver for the Serial link receiver card will be needed, either, if we use one that is made inside \gls{CERN} we can have it made by the control group (CO). Or in case we buy an off the shelf solution we will have to make the driver ourself using the driver framework and the tools we have.
 
 	\subsection{OpenCL}
 
+	The present \gls{OpenCL} code is able to compute the \gls{FFT} but we could try other algorithms in the future including hardware accelerated \gls{SVD}. This would ask some new \gls{OpenCL} development.
+
 	\subsection{Front-end}
 
+	
+
 \section{Estimated Cost}
+
+	\subsection{First prototype}
+
+	\subsection{At LHC restart}
