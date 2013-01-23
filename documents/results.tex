@@ -52,8 +52,7 @@ In the final version the software will be merged in single executable that shoul
 	The data analysis software is a set of modules that can be enabled limit or bypassed to test the usefulness of an algorithm. The modularity of the data analysis software allow us to check the time taken by each part of the algorithm and validate it against the constraints.
 
 	\begin{figure}[H]
-	\caption{Time f\/low with different implementations and with 3000 bunches of 
-	2048 points each.}
+	\caption{Time f\/low with different implementations and with 3000 bunches of 2048 points each.}
 	\centering
 	\includegraphics[scale=0.3]{PC-flow.pdf}
 	\label{fig:PCFlow}
@@ -61,7 +60,7 @@ In the final version the software will be merged in single executable that shoul
 
 	The data is first loaded from the files that were written by the acquisition software. Then it is filtered by a notch filter as described in the notch section~\ref{sec:notch}. And finally to the different algorithms as shown in the figure~\ref{fig:PCFlow}.
 
-	First optional step is \gls{SVD} this as described in Rama Calaga PHD thesis ``Linear Beam Dynamics and Ampere Class Superconducting RF Cavities at RHIC''\cite{calaga06} and Wolfgang H{\"o}f\/le\cite{HofleChamonix12} should reduce noise in the signal, result are shown in section~\ref{sec:SVD}.
+	First optional step is \gls{SVD} this as described as suggested by Rama Calaga~\cite{PhysRevSTAB.7.042801} and Wolfgang H{\"o}f\/le\cite{HofleChamonix12} should reduce noise in the signal, result are shown in section~\ref{sec:SVD}.
 
 	The \gls{FFT} are either using the \gls{GPU} or using the \gls{CPU}, actually you could use \gls{OpenCL} on the \gls{CPU} and test the whole \gls{OpenCL} path. The different path are due to memory copying, in the case of computation made on the \gls{GPU} one has to move the data from the \gls{CPU} central memory to the \gls{GPU} memory. This will described in section~\ref{sec:FFT}.
 
