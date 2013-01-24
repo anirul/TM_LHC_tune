@@ -81,6 +81,36 @@ The present hardware is not allowing to acquire all the \glspl{bunch} of the mac
 
 	\gls{CERN} also propose some card that are done by \gls{CO} and can also make a good match.
 
+	\begin{figure}[H]
+	\caption{CERN Simple FMC carrier (SPEC)}
+	\label{fig:spec}
+	\centering
+	\includegraphics[scale=0.3]{spec_top.pdf}
+	\end{figure}
+
+	Table~\ref{tab:receiver_cards} show the different commercial and CERN solutions.
+
+	\begin{table}[H]
+		\caption{PCIe Giga bit link serial receiver card candidates}
+		\label{tab:receiver_cards}
+		\centering
+		\begin{tabular}{|ll|c|l|c|}
+			\hline
+				Name & Manufacturer & SFP & FPGA & Drivers \\
+			\hline
+			\hline
+				SPEC & CERN & 1 & Spartan-6 & yes \\
+			\hline
+				Virtex-5 LXT ML555 & Xilinx & 2 & Spartan-5 & no \\
+			\hline
+				Xilinx Virtex 6 & Hitech Global & 2 & Spartan-6 & no \\
+			\hline		
+				PCIe-287N & Nallatech & 4 & Kintex-7 * 2 & yes \\		
+				PCIe-180 & Nallatech & 2 & Virtex-5 & yes \\
+			\hline
+		\end{tabular}
+	\end{table}
+
 	\subsection{GPUs}
 
 	We need a computing device with at least 2 PCIe slots, one for the serial link receiver and one for the \gls{GPU} card. It should be some standardized crate with a powerful \gls{CPU} and possible expansion. Place has to be checked in SR4 to check if there is enough space for full crate or we have to take lighter crates.

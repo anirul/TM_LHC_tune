@@ -33,56 +33,70 @@
 
 #include "bunch_buffer.h"
 
-using namespace boost::program_options;
-using namespace boost::posix_time;
-namespace fs = boost::filesystem;
+ using namespace boost::program_options;
+ using namespace boost::posix_time;
+ namespace fs = boost::filesystem;
 
-int main(int ac, char** av) {
-	std::string path = "";
-	try {
+ bool is_file_empty(const std::string& file) {
+ 	bunch_buffer_f bb(file, NULL);
+ 	return bb.empty();
+ }
+
+ void check_directory(const std::string& path) {
+ 	fs::path open_path(path.c_str());
+ 	std::vector<fs::path> list_file;
+ 	try {
+ 		if (fs::exists(open_path) && fs::is_directory(open_path)) {
+ 			std::copy(
+ 				fs::directory_iterator(open_path),
+ 				fs::directory_iterator(),
+ 				std::back_inserter(list_file));
+ 			sort(list_file.begin(), list_file.end());
+ 		} else {
+ 			throw std::runtime_error(path + " is not a directory");
+ 		}
+ 	} catch (std::exception& ex) {
+ 		std::cerr << "exception (std) : " << ex.what() << " (skiped)" << std::endl;
+ 	}
+ 	std::vector<fs::path>::iterator ite;
+ 	for (ite = list_file.begin(); ite != list_file.end(); ++ite) {
+ 		std::string full_path = (*ite).string();
+ 		if (fs::is_directory(*ite))
+ 			check_directory(full_path);
+ 		try {
+ 			if (is_file_empty(full_path)) {
+ 				std::cout << "file empty      : " << full_path << std::endl;
+ 				fs::remove(*ite);
+ 			} else {
+	 			std::cout << "checking file   : " << full_path << std::endl;
+ 			}
+ 		} catch (std::exception& ex) {
+ 			std::cerr << "exception (std) : " << ex.what() << std::endl;
+ 		}
+ 	}
+ }
+
+ int main(int ac, char** av) {
+ 	std::string path = "";
+ 	try {
 		// parse command line
-		options_description desc("Allowed options");
-		desc.add_options()("help,h", "produce help message")("path,p",
-				value<std::string>(), "path to the datas (default : \".\")");
-		variables_map vm;
-		store(command_line_parser(ac, av).options(desc).run(), vm);
-		if (vm.count("help")) {
-			std::cout << desc << std::endl;
-			return 1;
-		}
-		if (vm.count("path")) {
-			path = vm["path"].as<std::string>();
-			std::cout << "path            : " << path << std::endl;
-		}
-		fs::path open_path(path.c_str());
-		std::vector<fs::path> list_file;
-		if (fs::exists(open_path) && fs::is_directory(open_path)) {
-			std::copy(
-				fs::directory_iterator(open_path),
-				fs::directory_iterator(),
-				std::back_inserter(list_file));
-			sort(list_file.begin(), list_file.end());
-		} else {
-			throw std::runtime_error(path + " is not a directory");
-		}
-		std::vector<fs::path>::iterator ite;
-		for (ite = list_file.begin(); ite != list_file.end(); ++ite) {
-			if (fs::is_directory(*ite)) continue;
-			std::string full_path = (*ite).string();
-			try {
-				std::cout << "checking file   : " << full_path << std::endl;
-				bunch_buffer_f bb(full_path, NULL);
-				if (bb.empty()) {
-					std::cout << "file empty      : " << full_path << std::endl;
-					fs::remove(*ite);
-				}
-			} catch (std::exception& ex) {
-				std::cerr << "exception (std) : " << ex.what() << std::endl;
-			}
-		}
-	} catch (std::exception& ex) {
-		std::cerr << "exception (std) : " << ex.what() << std::endl;
-		return -1;
-	}
-	return 0;
-}
+ 		options_description desc("Allowed options");
+ 		desc.add_options()("help,h", "produce help message")("path,p",
+ 			value<std::string>(), "path to the datas (default : \".\")");
+ 		variables_map vm;
+ 		store(command_line_parser(ac, av).options(desc).run(), vm);
+ 		if (vm.count("help")) {
+ 			std::cout << desc << std::endl;
+ 			return 1;
+ 		}
+ 		if (vm.count("path")) {
+ 			path = vm["path"].as<std::string>();
+ 			std::cout << "path            : " << path << std::endl;
+ 		}
+ 		check_directory(path);
+ 	} catch (std::exception& ex) {
+ 		std::cerr << "exception (std) : " << ex.what() << std::endl;
+ 		return -1;
+ 	}
+ 	return 0;
+ }
