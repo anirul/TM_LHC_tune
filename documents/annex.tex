@@ -3,7 +3,7 @@
 %	Experimental Set-up
 %	Model Equations
 
-\chapter{Annex}
+\chapter{Appendix}
 
 \section{Estimation of the amount of data}
 
@@ -29,11 +29,15 @@ A piece of software has been developed that will acquire the bunch by bunch acqu
 
 \section{Experimental Set-up}
 
-   \subsection{Hardware}
+This is a basic description of the setup used during the \gls{MD} of 2012 during witch some data acquisition was made in the \gls{LHC}. The low level analog part of the system is the same than the system that will be used in the future system, but some part described were not present at the moment of the data acquisitions.
 
-	The experimental set up is not presently able to acquire more than a certain number of bunches due to memory limitation 16k and interupt frequency so during the \glspl{MD} only 6 bunches were acquired by bunch by planes.
+\subsection{Hardware}
 
-   \subsection{Software}
+The experimental set up is not presently able to acquire more than a certain number of bunches due to memory limitation 16k and interrupt frequency so during the \glspl{MD} only 6 bunches were acquired by bunch by planes.
+
+\subsection{Software}
+
+The software used during data acquisition was only able to get the data from the card and copy it on a disk that was available on the \gls{CERN} \gls{NFS}. The software was able to compute the \gls{FFT} but only using \gls{FFTW} and no \gls{GPU}.
 
 \section{FFT}
 
@@ -47,15 +51,15 @@ Used the GNU scientific library.
 
 Using the \gls{ADT} \glspl{BPM} we acquired data in the machine during 3 independant \glspl{MD}. Most of the data taking was done in parallel to other normal LHC operation or during \gls{ADT} dedicated \gls{MD} time.
 
-   \subsection{First session}
-   
-   Night session of the 11 october 2012.
+\subsection{First session}
 
-   \subsection{Second session}
-   
-   Parasitic session of the 16 october 2012
+Night session of the 11 october 2012.
 
-   \subsection{Third session}
+\subsection{Second session}
 
-   Ramp acquisition of the 14 november 2012
+Parasitic session of the 16 october 2012
+
+\subsection{Third session}
+
+Ramp acquisition of the 14 november 2012
 
