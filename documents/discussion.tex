@@ -2,11 +2,11 @@
 
 \chapter{Discussion}
 
-With All these result the tune can be assumed to be visible and it is then possible to assess the feasibility of the tune measurement using \gls{GPU}. There is still some question around hardware update but the work left to be done can be fairly well estimated.
+With All these results the \gls{tune} can be assumed to be visible and it is then possible to assess the feasibility of the tune measurement using \gls{GPU}. There is still some question around hardware update but the work left to be done can be fairly well estimated.
 
 \section{Observation}
 
-During the three \gls{MD} we acquired around TODO with both beam and both planes. This data was acquired in XML files and stored on the \gls{CERN} infrastructure. XML was chosen as it is easily accessible by both custom and commercial data analysis software.
+During the three \glspl{MD} we acquired around TODO with both beam and both planes. This data was acquired in XML files and stored on the \gls{CERN} infrastructure. XML was chosen as it is easily accessible by both custom and commercial data analysis software.
 
 Matlab was used as the first tool to check the data and try different algorithm but in the end the software was ready fast enough and flexible enough. Matlab ended to be only used for check and test purpose and all the analysis and discussion is based on the result obtain with the data analysis software described in section~\ref{sec:data_analysis_software}.
 
@@ -133,8 +133,18 @@ The present \gls{OpenCL} code is able to compute the \gls{FFT} but we could try 
 
 Developing new software to control the new hardware are needed, the ADTDSPU board is going to be changed and we are going to build a new computing front-end with a custom serial link receiver and a \gls{GPU}. So new drivers and a software to stream data from the receiver card to the \gls{GPU} will be needed.
 
-\section{Estimated Cost}
+\section{Intermediate and Final setup}
+
+A normal computer with a decent \gls{CPU} can be estimated to cost around 2'000 SFR and a top \gls{GPU} is around a 1'000 SFR. The reciever card should be in the same value band.
+
+In case we have to move to rackable \gls{CPU} the price can go up to around 10'000 SFR per crate this is still much cheaper than a \gls{VME} crate and custom cards.
 
 \subsection{First prototype}
 
-\subsection{At LHC restart}
+First prototype will be a normal computer with the receiver card and a \gls{GPU} card. The idea is to test the hardware, and decide on the final setup.
+
+This test will be made on the \gls{ADT} test setup and will be fed from the new version of the \gls{ADTDSPU} card.
+
+\subsection{Final version}
+
+At \gls{LHC} restart four crates will be deployed in SR4 (the ADT Faraday cage). One for each ring and for each plane, the test crate may be moved as well to be used on the test acquisition crate.

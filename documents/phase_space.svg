@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="27cm" height="21cm" viewBox="92 97 529 404" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="100" y1="300" x2="590.264" y2="300"/>
+    <polygon style="fill: #000000" points="597.764,300 587.764,305 590.264,300 587.764,295 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="597.764,300 587.764,305 590.264,300 587.764,295 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="100" y1="500" x2="100" y2="109.736"/>
+    <polygon style="fill: #000000" points="100,102.236 105,112.236 100,109.736 95,112.236 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="100,102.236 105,112.236 100,109.736 95,112.236 "/>
+  </g>
+  <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 20; stroke: #000000" d="M 100 300 C 200,400 240,440 300,440"/>
+  <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 20; stroke: #000000" d="M 300 440 C 360,440 400,400 500,300"/>
+  <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 20; stroke: #000000" d="M 100 300 C 200,200 240,160 300,160"/>
+  <path style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 20; stroke: #000000" d="M 300 160 C 360,160 400,200 500,300"/>
+  <ellipse style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" cx="300" cy="300" rx="100" ry="80"/>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="160" y1="228.618" x2="160" y2="371.382"/>
+    <polygon style="fill: #000000" points="160,221.118 165,231.118 160,228.618 155,231.118 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" points="160,221.118 165,231.118 160,228.618 155,231.118 "/>
+    <polygon style="fill: #000000" points="160,378.882 155,368.882 160,371.382 165,368.882 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" points="160,378.882 155,368.882 160,371.382 165,368.882 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="208.618" y1="460" x2="391.382" y2="460"/>
+    <polygon style="fill: #000000" points="201.118,460 211.118,455 208.618,460 211.118,465 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" points="201.118,460 211.118,455 208.618,460 211.118,465 "/>
+    <polygon style="fill: #000000" points="398.882,460 388.882,465 391.382,460 388.882,455 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" points="398.882,460 388.882,465 391.382,460 388.882,455 "/>
+  </g>
+  <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke-dasharray: 4; stroke: #000000" x1="200" y1="300" x2="200" y2="480"/>
+  <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke-dasharray: 4; stroke: #000000" x1="400" y1="300" x2="400" y2="480"/>
+  <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke-dasharray: 4; stroke: #000000" x1="140" y1="220" x2="300" y2="220"/>
+  <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke-dasharray: 4; stroke: #000000" x1="140" y1="380" x2="300" y2="380"/>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="440" y1="140" x2="363.682" y2="227.22"/>
+    <polygon style="fill: #000000" points="358.743,232.865 361.566,222.046 363.682,227.22 369.091,228.631 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" points="358.743,232.865 361.566,222.046 363.682,227.22 369.091,228.631 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="500" y1="220" x2="466.094" y2="253.906"/>
+    <polygon style="fill: #000000" points="460.791,259.209 464.326,248.603 466.094,253.906 471.397,255.674 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" points="460.791,259.209 464.326,248.603 466.094,253.906 471.397,255.674 "/>
+  </g>
+  <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="440" y1="140" x2="500" y2="140"/>
+  <line style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" x1="500" y1="220" x2="540" y2="220"/>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="280" y="480">
+    <tspan x="280" y="480"></tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="260" y="480">
+    <tspan x="260" y="480"></tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="500" y="120" width="80" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="500" y="120" width="80" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="540" y="143.9">
+      <tspan x="540" y="143.9">Bunch</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="540" y="200" width="80" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="540" y="200" width="80" height="40"/>
+    <text style="fill: #000000;text-anchor:middle;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="580" y="223.9">
+      <tspan x="580" y="223.9">Bucket</tspan>
+    </text>
+  </g>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="280" y="480">
+    <tspan x="280" y="480">Δt</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="140" y="280">
+    <tspan x="140" y="280">ΔE</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="120" y="120">
+    <tspan x="120" y="120">ΔE</tspan>
+  </text>
+  <text style="fill: #000000;text-anchor:start;font-size:12.7998;font-family:sanserif;font-style:normal;font-weight:normal" x="520" y="320">
+    <tspan x="520" y="320">Δt (or Φ)</tspan>
+  </text>
+</svg>

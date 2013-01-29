@@ -8,6 +8,8 @@
 
 \chapter{Results}
 
+During the \glspl{MD} we were able to acquire some data from the \gls{LHC} \gls{ADT} system. We used off-line analysis on these data to try the different algorithm and assess the feasibility of the project.
+
 \section{Implemented System}
 
 The implemented system consist of three pieces of software~:
@@ -73,44 +75,44 @@ The normalization step is only present for displaying the spectrogram (see secti
 \section{Notch filter}
 \label{sec:notch}
 
-A notch filter is used to cut the low frequencies without changing anything for the high frequencies. It will not be used in the final version for reason of storing untreated data. For every sample it takes the present sample and subtract the next element. 
+A notch filter is used to cut the low frequencies amplifying the frequencies around the tune by a factor around 2 and then diminish the tail like for the low frequencies (the frequency domain being anyway symmetric due to the fact that we are converting real values. It will not be used in the final as we are only interested in the band between 0.25 to 0.35. For every sample the filter takes the present sample and subtract the next element. 
 
 $$y_{[n]} = x_{[n]} - x_{[n + 1]}$$
 
 As visible on formula one value is dropped at the end of the data set but as we are using radix 2 \glspl{FFT} the data is cut to a power of 2.
 
-This is a differential filter and as we are only interested into the higher frequency this has no incidence on our results and allow for a better visualization of the spectrograms.
+This is a differential filter and as we are only interested into the frequencies around the tune this has no incidence on our results and allows for a better visualization of the spectrograms.
 
 \section{FFT}
 \label{sec:FFT}
 
-The Fourier transform is a mathematical operation that moves a function from a temporal domain to a frequency domain using an integral relation. In our case we are treating sampled signals for which the integrals reduce to a summation, and the transform is referred as \gls{DFT}. The specific term ``\gls{FFT}'' refers to a fast algorithm to compute the \gls{DFT} when for example the number of samples equals $N$ a power of 2.
+The Fourier transform is a mathematical operation that moves a function from a temporal domain to a frequency domain using an integral relation. In our case, we are treating sampled signals for which the integrals reduce to a summation, the transform being referred to as the \gls{DFT}. The specific term ``\gls{FFT}'' refers to a fast algorithm to compute the \gls{DFT} when for example the number of samples $N$ equals is power of 2.
 
 \subsection{Definition}
 
-The \gls{DFT} is a discrete transform. It transform a series of complex numbers into another series the \gls{DFT}, of the original series.
+The \gls{DFT} is a discrete transform. It transforms a series of complex numbers into another series, the \gls{DFT} of the original series.
 
 $$ x_0,...,x_{N -1} \in \mathbb{C} $$
 
 $$ X_{k} = \displaystyle\sum\limits_{n = 0}^{N -1} x_{n}e^{-i 2 \pi k \frac{n}{N}} $$
 
-In order to compute the \gls{DFT} one must compute $N$ number of values $N$ times. The complexity is in order of $N$ times $N$ multiplication~:
-
-$$ \mathcal{O}(N^{2}) $$
+In order to compute the \gls{DFT} one must compute $N$ values $N$ times. The complexity is of order $N$ times $N$~: $ \mathcal{O}(N^{2}) $.
 
 The most commonly used \gls{FFT} algorithms are based on a divide-and-conquer approach similar to the algorithm of Cooley and Turkey~\cite{Cooley65}. The computation of a \gls{DFT} of length N is done by splitting the input sequence into a fixed small number of subsequences, compute their \gls{DFT}, and assemble the outputs to build the final sequence. If the split and assembly are linear in time the complexity becomes~:
 
 $$ \mathcal{O}(N \log_{2}(N)) $$
 
-In the present case the parallelization is happening on the first N of the complexity so the complexity is divided by half the number of core the number of core (in radix 2 version). this could be further reduce by the fact that we calculate a number of \glspl{FFT} together equal to the number of bunches.
+In the present case the parallelization is happening on the first N of the complexity so the complexity is divided by the number of core (up to to half of $N$ in radix 2 version). 
+
+This is further reduce (in our case) by the fact that we calculate a number of \glspl{FFT} together equal to the number of bunches.
 
 \subsection{FFTW}
 
-\Gls{FFTW} is an implementation of the \gls{DFT} that adapts the algorithm to the hardware in order to maximize the performance~\cite{fftw05}. It is widely regarded as one of the fastest implementation of an \gls{FFT} on a \gls{CPU}.
+\Gls{FFTW} is an implementation of the \gls{DFT} that adapts the algorithm to the hardware in order to maximize the performances~\cite{fftw05}. It is widely regarded as one of the fastest implementation of an \gls{FFT} on a \gls{CPU}.
 
-It was selected as a reference for our the implementation, as \gls{OpenCL} can be run on directly on a \gls{CPU} is it possible to compare the time performances between the \gls{OpenCL} code running on \gls{CPU} and the \gls{FFTW} version see section~\ref{sec:perf}.
+It was selected as a reference for our implementation. As \gls{OpenCL} can be run directly on a \gls{CPU}, it is possible to compare the time performances between the \gls{OpenCL} code running on \gls{CPU} and the \gls{FFTW} version (see section~\ref{sec:perf}).
 
-It is under GPL license, can be purchased from the \gls{MIT} for commercial purposes and is used in many commercial and scientific package and software. As an example it is used in the MATLAB.
+It is under GPL license and can be purchased from the \gls{MIT} for commercial purposes. It is used in many commercial and scientific package and software. For example, it is used by MATLAB~\cite{matlab_fftw}.
 
 \subsection{FFT with OpenCL on GPU}
 
@@ -127,7 +129,7 @@ As \gls{OpenCL} is also able to run on a \gls{CPU} we used the same code than th
 
 The amplitude is the length of the complex vector composing the \gls{FFT}; it is equal to the euclidean norm. 
 
-$$ \mid x + i y \mid \equiv +\sqrt{x^2 + y^2}$$ 
+$$\mid x + i y \mid \equiv +\sqrt{x^2 + y^2}$$ 
 
 There are different ways to compute the norm of a 2-dimensional vector in \gls{OpenCL} and all of them seem to work equally well in our test.
 
