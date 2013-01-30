@@ -19,7 +19,21 @@ To increase the life time of the beam in the machine and therefor increase the p
 
 \section{Description of the betatron tune}
 
+\begin{figure}[H]
+\centering
+\caption{Bunch and bucket time-energy phase space longitudinal diagram}
+\includegraphics[scale=0.3]{phase_space.jpeg}
+\floatfoot{Source : AXEL - 2012\cite{AXEL2012}}
+\end{figure}
+
 In a particle accelerator, the charged particles circulate around the ring and oscillate due to the magnets and the accelerating structures. The accelerating structures in the \gls{LHC} supra-conducting \glspl{cavity} apply a strong electrical field that oscillates at the \gls{rffreq} keeping the particles longitudinally focused, in the direction of flight forming a packet, called a \gls{bunch}.
+
+\begin{figure}[H]
+\centering
+\caption{The LHC working point ``WP'' and beam-beam tune spread ``footprint'' of the LHC in the tune diagram.}
+\includegraphics[scale=1.25]{lhc_working_point.jpeg}
+\floatfoot{Source : The large hadron collider\cite{the_large_hadron_collider}}
+\end{figure}
 
 The particles inside a bunch oscillate longitudinally within the so called bucket, the area limited by the largest possible closed trajectory in time-energy phase space and transversally in the vertical and horizontal plane. The longitudinal oscillations are damped by the beam control system. Transversal oscillations are damped by a separate system~: the \gls{ADT}\cite{Zhabitsky:1141925,Benews11}.
 
@@ -28,7 +42,7 @@ One of the key parameters of the accelerator is the betatron tune defined by the
 % Literacy survey
 \section{Tune measurement in the LHC}
 
-In order to measure the betatron tune in an accelerator, we use \glspl{BPM}. Which are able to measure the position of the beam in the vacuum chamber. (TODO description of the working)
+In order to measure the betatron tune in an accelerator, we use \glspl{BPM}. Which are able to measure the position of the beam in the vacuum chamber.
 
 Presently the \gls{BI} group is using a \gls{BBQ} \cite{Boccardi:1156349} system to acquire the tune over a certain number of machine turns (256 to 128'000). This system can work as a passive instrument without further excitation of the beam or as an on demand system by exciting (increase oscillation amplitude) a limited number of \glspl{bunch} in the beam with the \gls{MKQA}. The \Gls{ADT} has also been used for tune measurement excitation\cite{HofleEvian10}. The \gls{BBQ} system makes an average over a certain number of bunches in the machine and is not able to see individual bunches.
 
@@ -39,7 +53,7 @@ In normal operation, when the \gls{ADT} is active, it is difficult to have a goo
 
 The \gls{ADT} also has \glspl{BPM} assigned to it with electronics installed that permit a bunch-by-bunch measurement at the $\mu$m level\cite{BphMeas07}. This could allow a much more precise measurement on single bunches. Due to the high amount of data to be processed (estimated to 640 mega-bytes per second for each \gls{BPM}) dedicated hardware is needed to compute the correct tune using all information available\cite{HofleChamonix12}.
 
-As the time measurements are used in the so called ``tune feedback'' to directly feed back to the focusing and defocussing magnets, a high rate of measurements is needed with tight constraints on the delays. In order to be able to apply the correction to magnets, the \gls{tune} has to be measured at a rate between 5 and 10 Hz, once every 100 to 200 ms.
+As the time measurements are used in the so called ``tune feedback'' to directly feed back to the focusing and defocussing magnets, a high rate of measurements is needed with tight constraints on the delays. In order to be able to apply the correction to magnets. The \gls{tune} has to be measured at a rate of about 10 Hz, once every 100 ms.
 
 During the 2012 normal operation of the \gls{LHC}, data has be acquired using the \gls{ADT} acquisition system and different data processing techniques have been tested to asses the modification that will be needed in order to make a reliable \gls{tune} measurement at a reasonable rate\cite{HofleChamonix12}.
 
@@ -65,26 +79,26 @@ The \gls{GPU} should have sufficient computing power to be able to make the \gls
 
 Show how to implement a GPU based system that can deliver a tune value for each beam and plane at a rate that allows the system to be responsive enough for a tune correction to be applied automatically. 
 
-   \subsection{Algorithm}
+\subsection{Algorithm}
 
-   To obtain the tune frequency from the tune position of the \glspl{bunch}, we have to calculate the FFT to move from time to frequency domain. Then we need to identify the tune in the transformation.
+To obtain the tune frequency from the tune position of the \glspl{bunch}, we have to calculate the FFT to move from time to frequency domain. Then we need to identify the tune in the transformation.
 
-   \subsection{Hardware}
+\subsection{Hardware}
 
-   \begin{figure}[H]
-	\caption{ADT acquisition hardware}
-	\centering
-	\includegraphics[scale=0.3]{acquisition.pdf}
-	\end{figure}
+\begin{figure}[H]
+\caption{ADT acquisition hardware}
+\centering
+\includegraphics[scale=0.3]{acquisition.pdf}
+\end{figure}
 
-   Per bunch position measurement has to be available to the system for each beam and each plane. This should be provided by the \gls{ADTDSPU} card and has to be transfered through a serial link to the CPU/GPU crate for computation.
+Per bunch position measurement has to be available to the system for each beam and each plane. This should be provided by the \gls{ADTDSPU} card and has to be transfered through a serial link to the CPU/GPU crate for computation.
 
-   We need a card in the CPU/GPU crate to de-serialize the data and transfer them to the GPU memory. It may be possible to copy from the acquisition card directly to the GPU memory.
+We need a card in the CPU/GPU crate to de-serialize the data and transfer them to the GPU memory. It may be possible to copy from the acquisition card directly to the GPU memory.
 
-   And finally we of course require fast enough GPU to process the data. The number and the type of cards should be carefully looked at. The possibility for expansion should be kept in mind as the possibility to implement other algorithms.
-   
-   \subsection{Timings}
+And finally we of course require fast enough GPU to process the data. The number and the type of cards should be carefully looked at. The possibility for expansion should be kept in mind as the possibility to implement other algorithms.
 
-   According to the \gls{BI} group we have to provide the tune measurement at a rate of between 5 Hz and 10 Hz delay. This mean that the transfer and the computation has to be made in less than 200 ms.
+\subsection{Timings}
 
-   At a higher frequency because of the acquisition frequency (11 kHz) the precision may be insufficient (Nyquist$-$Shannon sampling theorem).
+The \gls{BI} group is providing the tune measurement at a rate of 12Hz. This mean 1024 points with a 14\% overlap. 
+
+At a higher frequency because of the acquisition frequency (11 kHz) the precision may be insufficient (Nyquist$-$Shannon sampling theorem).

@@ -20,7 +20,7 @@
 
 \begin{document}
 
-\maketitle
+\include{title}
 
 \begin{abstract}
 This thesis studies a possible futur implementation of a betatron tune measurement in the \gls{LHC} at the \gls{CERN} using a \gls{GPGPU} to analyse data acquired with the transverse \gls{damper}. It start by describing the present hardware and the future possible implementations using the \gls{ADT} acquisitions and the \gls{GPU} computing. The \gls{ADT} data have to be processed to extract the \gls{tune}. To get the tune, the method used is to transform the signal from the time domain to the frequency domain using \gls{FFT} on \glspl{GPU}. We show that it is possible to achieve one order of magnitude faster \glspl{FFT} on a Fermi generation \gls{GPU} than what can be done using a i7 generation \gls{CPU}. This makes online per \gls{bunch} \gls{FFT} computation and betatron tune measurement possible.  
