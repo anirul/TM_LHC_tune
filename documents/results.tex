@@ -10,68 +10,6 @@
 
 During the \glspl{MD} we were able to acquire some data from the \gls{LHC} \gls{ADT} system. We used off-line analysis on these data to try the different algorithm and assess the feasibility of the project.
 
-\section{Implemented System}
-
-The implemented system consist of three pieces of software~:
-\begin{enumerate}
-\item The software controlling the acquisition card in the machine.
-\item An acquisition software that runs on a standard front-end Linux machine that is taking data during the \glspl{MD}.
-\item And an analyzing software that can compute the \glspl{FFT} on \glspl{GPU}.
-\end{enumerate}
-
-\begin{figure}[H]
-\caption{Implemented acquisition software in the CERN infrastructure}
-\centering
-\includegraphics[scale=0.3]{ImplementedSoftFesa.pdf}
-\end{figure}
-
-In the final version the software will be merged in a single executable that should run on the machine with the \gls{GPU} and the receiver card. The present solution has been put into place because the present hardware is still in development and there is no way of acquiring the maximum of 2880 bunches from the machine. The hardware is receiving the acquisition data but the \gls{VME} is not fast enough to transfer it to the \gls{CPU}.
-
-\subsection{ADTDSPU control software}
-
-The first layer that was needed is a driver that can control the \gls{VME} card and forward the interrupts. This is done using the standard driver framework from the \gls{CO} at \gls{CERN}.
-
-The standard \gls{FESA}, the standard middle-ware framework used at \gls{CERN} to control equipments, was used to develop a higher level software to control the card. This particular card needs a real time task in order to react to an interrupt coming from the hardware and to inform when a new acquisition is ready to be read.
-
-\subsection{Acquisition software}
-
-The acquisition software was used to check that the idea of getting the tune out of the DSPU card data was feasible as well as providing a means to log the acquisition to a file for subsequent checking and processing.
-
-\begin{figure}[H]
-\caption{Tune acquisition software interface in FESA framework}
-\centering
-\includegraphics[scale=0.25]{amplitude_log.pdf}
-\label{fig:tuneacq}
-\end{figure}
-
-The acquisition software uses the \gls{CMW}, a library used at \gls{CERN} to communicate between different layers of the accelerators control software, to connect to the \gls{ADTDSPU} control software and get the data when they are published (at the time of interrupt).
-
-The acquisition software is then able to compute the \gls{FFT} using \gls{FFTW} and display it to the operators in the \gls{CCC} from where all the eight accelerators of \gls{CERN} are controlled. On the interface one can decide which type of graph to display and also enable saving the data files to be processed by the data analysis software.
-
-\subsection{Data analysis software}
-\label{sec:data_analysis_software}
-
-The data analysis software is a set of modules that can be enabled or bypassed to test the usefulness of an algorithm. The modularity of the data analysis software allow us to check the time taken by each part of the algorithm and validate it against the constraints.
-
-\begin{figure}[H]
-\caption{Time f\/low with different implementations and with 3000 bunches of 2048 points each.}
-\centering
-\includegraphics[scale=0.3]{PC-flow.pdf}
-\label{fig:PCFlow}
-\end{figure}
-
-The data is first loaded from the files that were written by the acquisition software. Then it is filtered by a notch filter as described in the notch section~\ref{sec:notch}. And finally to the different algorithms as shown in the figure~\ref{fig:PCFlow}.
-
-The first optional step is to apply a \gls{SVD} as described as suggested by Rama Calaga~\cite{PhysRevSTAB.7.042801} and by Wolfgang H{\"o}f\/le\cite{HofleChamonix12} which should reduce the noise in the signal (results are shown in section~\ref{sec:SVD}).
-
-The \gls{FFT} are either computed on a \gls{GPU} or the \gls{CPU}, One could actually use \gls{OpenCL} on the \gls{CPU} and test the whole \gls{OpenCL} path. The different paths are due to memory copying, in the case of computations on the \gls{GPU}, one has to move the data from the \gls{CPU} central memory to the \gls{GPU} memory. This will be described in section~\ref{sec:FFT}.
-
-To have a clear image and to combine the real and imaginary part of the \gls{FFT} we use the amplitude. It has been validated in the acquisition software as been the best metric, but could be changed at will in the final version. The amplitude is described in section~\ref{sec:amplitude}.
-
-The accumulation over all theses bunches is done, which will give an average spectrum.
-
-The normalization step is only present for displaying the spectrogram (see section~\ref{sec:spectrogram}) and will not be needed for the final version.
-
 \section{Notch filter}
 \label{sec:notch}
 
