@@ -23,19 +23,13 @@ The first layer that was needed is a driver that can control the \gls{VME} card 
 
 The standard \gls{FESA}, the standard middle-ware framework used at \gls{CERN} to control equipments, was used to develop a higher level software to control the card. This particular card needs a real time task in order to react to an interrupt coming from the hardware and to inform when a new acquisition is ready to be read.
 
-\begin{figure}[H]
-\caption{ADTDSPU tune acquisition process description}
-\centering
-\includegraphics[scale=0.3]{adtdspu_acq.pdf}
-\end{figure}
-
 The software was originally written by David Gl{\'e}nat, Andrey Pashnin took it over and wrote the specific part of the ``tune acquisition'' and is now under Fr{\'e}d{\'e}ric Dubouchet responsibility as all \gls{ADT} software.
 
 It is made of tree main part, two of them are interface with the user. The tune measurement control interface is there to set the acquisition parameters. The Tune measurement data is there to receive the data from the card to the user. Finally a real-time task it there to receive the interrupt and notify the user that there is new data available.
 
 The Interfaces are exposed trough the \gls{CERN} middle-ware so it is available from other application as the data acquisition software.
 
-\subsection{Control interface}
+\subsection{Control interfaces}
 
 This interface is basic it allow the user to set the register to enable the acquisition and to set the mask that decide witch bunches in the acquisition have to be recorded in the memory. The mask is described as an array of 3564 short (2-bytes word) that can be either 0 (not selected) or 1 (selected).
 
@@ -45,14 +39,18 @@ Even if the present interface allow us to have the full bunches of the machine s
 
 There is also two other problems that this interface is facing, there is no double buffering so as the CPU is reading the values new incoming values would be lost, also the \gls{VME} is too slow to support the rate at witch data is coming.
 
-\subsection{Data interface}
-
-This is the interface the data acquisition software is using. It allows to get the values back from the memory in the \gls{CPU} as soon as they become available. It uses a system call subscription where the interface notify the client software that new data has become available (more about this in the section~\ref{sec:obs_mem_acq}).
+The data interface is the interface the data acquisition software is using. It allows to get the values back from the memory in the \gls{CPU} as soon as they become available. It uses a system call subscription where the interface notify the client software that new data has become available (more about this in the section~\ref{sec:obs_mem_acq}).
 
 It can also give a read back from the hardware of the various parameters we set from the tune measurement control interface~: the mask and all the controls.
 
 \subsection{Observation memory acquisition}
 \label{sec:obs_mem_acq}
+
+\begin{figure}[H]
+\caption{ADTDSPU tune acquisition process description}
+\centering
+\includegraphics[scale=0.3]{adtdspu_acq.pdf}
+\end{figure}
 
 A ``real-time'' process is waiting for the interrupt to happen, using a select like mechanism. The Linux used at \gls{CERN} on the front-ends is a custom kernel with the real-time patch, this guarantees that the latency between the interrupt and the process being called is not too big (usually under 10 micro-seconds).
 
@@ -65,7 +63,7 @@ Notifying the task actually call it and this task (called server task as this is
 The acquisition software was used to check that the idea of getting the tune out of the DSPU card data was feasible as well as providing a means to log the acquisition to a file for subsequent checking and processing.
 
 \begin{figure}[H]
-\caption{Tune acquisition software interface in FESA framework}
+\caption{ADTDSPU tune acquisition software interface in the FESA framework}
 \centering
 \includegraphics[scale=0.25]{amplitude_log.pdf}
 \label{fig:tuneacq}
@@ -76,8 +74,14 @@ The acquisition software uses the \gls{CMW}, a library used at \gls{CERN} to com
 The acquisition software is then able to compute the \gls{FFT} using \gls{FFTW} and display it to the operators in the \gls{CCC} from where all the eight accelerators of \gls{CERN} are controlled. On the interface one can decide which type of graph to display and also enable saving the data files to be processed by the data analysis software.
 
 \subsection{Control interface}
-\subsection{Data interface}
-\subsection{Result interface}
+
+\subsection{ADTDSPU subscription}
+
+\begin{figure}[H]
+\caption{Tune measurement acquisition software in the FESA framework}
+\centering
+\includegraphics[scale=0.3]{tune_meas.pdf}
+\end{figure}
 
 \section{Data analysis software}
 \label{sec:data_analysis_software}
