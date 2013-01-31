@@ -62,6 +62,12 @@ Notifying the task actually call it and this task (called server task as this is
 
 The acquisition software was used to check that the idea of getting the tune out of the DSPU card data was feasible as well as providing a means to log the acquisition to a file for subsequent checking and processing.
 
+The acquisition software is then able to compute the \gls{FFT} using \gls{FFTW} and display it to the operators in the \gls{CCC} from where all the eight accelerators of \gls{CERN} are controlled. On the interface one can decide which type of graph to display and also enable saving the data files to be processed by the data analysis software.
+
+\subsection{Control interface}
+
+The control interface allow us to decide witch file type to save (if we want to save the data to a file), where to save theses data and which ADTDSPU we are subscribing to.
+
 \begin{figure}[H]
 \caption{ADTDSPU tune acquisition software interface in the FESA framework}
 \centering
@@ -69,11 +75,18 @@ The acquisition software was used to check that the idea of getting the tune out
 \label{fig:tuneacq}
 \end{figure}
 
-The acquisition software uses the \gls{CMW}, a library used at \gls{CERN} to communicate between different layers of the accelerators control software, to connect to the \gls{ADTDSPU} control software and get the data when they are published (at the time of interrupt).
+From the control interface we can also via the data interface get access to the resulting graphs. We can choose which algorithm to use on the display~:
 
-The acquisition software is then able to compute the \gls{FFT} using \gls{FFTW} and display it to the operators in the \gls{CCC} from where all the eight accelerators of \gls{CERN} are controlled. On the interface one can decide which type of graph to display and also enable saving the data files to be processed by the data analysis software.
+\begin{enumerate}
+\item Time domain, that will display the raw signal.
+\item Amplitude linear, that will display the amplitude of the FFT.
+\item Amplitude logarithmic, same but on a log scale.
+\item Average amplitude linear, averaging over all available bunches.
+\item Average amplitude logarithmic, averaging over all available bunches logarithmic scale.
+\item Phase, display the phase of the signal.
+\end{enumerate}
 
-\subsection{Control interface}
+The FFT and the Phase are computed using FFTW at the time of display. In fact this is using the same C++ \emph{bunch\_buffer} class than the one used in the data analysis software 
 
 \subsection{ADTDSPU subscription}
 
@@ -82,6 +95,8 @@ The acquisition software is then able to compute the \gls{FFT} using \gls{FFTW} 
 \centering
 \includegraphics[scale=0.3]{tune_meas.pdf}
 \end{figure}
+
+The acquisition software uses the \gls{CMW}, a library used at \gls{CERN} to communicate between different layers of the accelerators control software, to connect to the \gls{ADTDSPU} control software and get the data when they are published (at the time of interrupt).
 
 \section{Data analysis software}
 \label{sec:data_analysis_software}
@@ -95,14 +110,151 @@ The data analysis software is a set of modules that can be enabled or bypassed t
 \label{fig:PCFlow}
 \end{figure}
 
-The data is first loaded from the files that were written by the acquisition software. Then it is filtered by a notch filter as described in the notch section~\ref{sec:notch}. And finally to the different algorithms as shown in the figure~\ref{fig:PCFlow}.
-
-The first optional step is to apply a \gls{SVD} as described as suggested by Rama Calaga~\cite{PhysRevSTAB.7.042801} and by Wolfgang H{\"o}f\/le\cite{HofleChamonix12} which should reduce the noise in the signal (results are shown in section~\ref{sec:SVD}).
-
 The \gls{FFT} are either computed on a \gls{GPU} or the \gls{CPU}, One could actually use \gls{OpenCL} on the \gls{CPU} and test the whole \gls{OpenCL} path. The different paths are due to memory copying, in the case of computations on the \gls{GPU}, one has to move the data from the \gls{CPU} central memory to the \gls{GPU} memory. This will be described in section~\ref{sec:FFT}.
 
 To have a clear image and to combine the real and imaginary part of the \gls{FFT} we use the amplitude. It has been validated in the acquisition software as been the best metric, but could be changed at will in the final version. The amplitude is described in section~\ref{sec:amplitude}.
 
-The accumulation over all theses bunches is done, which will give an average spectrum.
+The accumulation over all theses bunches is done, which will give an average spectrum. The normalization step is only present for displaying the spectrogram (see section~\ref{sec:spectrogram}) and will not be needed for the final version.
 
-The normalization step is only present for displaying the spectrogram (see section~\ref{sec:spectrogram}) and will not be needed for the final version.
+\subsection{buffer management}
+
+The data is first loaded from the files that were written by the acquisition software. Buffers are loaded into the \emph{acquisition\_buffer} class that are then collected together in the \emph{bunch\_buffer} class. This class will use the interface to \gls{FFT} (namely the abstract class \emph{i\_fft}) to compute the \gls{FFT} using the provided at instantiation.
+
+\begin{figure}[H]
+\centering
+\caption{C++ buffer classes UML diagram}
+\includegraphics[scale=0.3]{buffer_uml.png}
+\end{figure}
+
+These classes are available in both single precision and double precision version, the version of the compiler available was not able to support template correctly. The final version that should run on a newer version of the Linux operating system should be able to handle it and it will make the switch easier and at runtime.
+
+It also contains all the various modules (apart from \gls{FFT}) some of which have their counterpart in \gls{GPU} code. This code is portable and used in both the tune measurement software and the data analysis software.
+
+\subsection{FFT software architecture}
+
+To be able to switch from \gls{FFTW} to the \gls{OpenCL} version of the \gls{FFT} computing, there is an abstract class that represent a \gls{FFT} transformation. This is implemented as both \gls{FFTW} and \gls{OpenCL} version.
+
+\begin{figure}[H]
+\centering
+\caption{C++ FFT classes UML diagram}
+\includegraphics[scale=0.3]{fft_uml.png}
+\end{figure}
+
+The \gls{OpenCL} version is making some steps of the algorithm in the \gls{GPU} itself. To avoid having to transfer to much data from the CPU to the GPU and to have to transform the data from the acquisition board (short 2 bytes integer) to the \gls{GPU} (single or double precision floating points) we do this step on the \gls{GPU} itself in the \emph{kernel\_prepare\_} kernel and then we do the \gls{FFT} computation in the \emph{kernel\_fft\_} kernel, finally we do the accumulation in the \emph{kernel\_acc\_}.
+
+The \gls{OpenCL} \gls{FFT} use the algorithm described here~\cite{Govindaraju07}. The OpenCL Kernel is described here and composed of two part the twiddle and the main radix-2 part.
+
+\begin{figure}[H]
+\centering
+\caption{OpenCL kernel code for the twiddle (used by FFT)}
+\label{fig:twidle_cl}
+\begin{lstlisting}
+float2 twiddle(float2 a, int k, float alpha)
+{
+	float cs,sn;
+	sn = sincos((float)k * alpha, &cs);
+	return mul(a, (float2)(cs, sn));
+}
+\end{lstlisting}
+\end{figure}
+
+There is a difference between the \gls{FFT} described in the algorithm cited above and the one you can see here. Here the operation is parallized to be made on multiples acquisitions at the same time, as in typical operation we have to compute 2880 FFT at the same time. So the thread is multiply by two factor the size of the acquisition and the number of \glspl{FFT} to be made.
+
+\begin{figure}[H]
+\centering
+\caption{OpenCL kernel code for multiple FFTs}
+\label{fig:fft_cl}
+\begin{lstlisting}
+__kernel void fftRadix2Kernel(
+	__global const float2 * x,
+	__global float2 * y,
+	const int p)
+{
+	// thread count
+	int t = get_global_size(0);
+	// thread index
+  	int i = get_global_id(0);
+	// fft index
+  	int z = get_global_id(1);
+  	// index in input sequence, in 0..P-1
+  	int k = i & (p - 1);
+  	// output index
+  	int j = ((i - k) << 1) + k;
+  	float alpha = -3.14159265359f * (float)k / (float)p;
+  	
+	// Read and twiddle input
+	x += z * t * 2;
+	x += i;
+	float2 u0 = x[0];
+	float2 u1 = twiddle(x[t], 1, alpha);
+	
+	// In-place DFT-2
+	float2 tmp = u0 - u1; 
+	u0 += u1; 
+	u1 = tmp;
+	
+	// Write output
+	y += z * t * 2;
+	y += j;
+	y[0] = u0;
+	y[p] = u1;
+}
+\end{lstlisting}
+\end{figure}
+
+It is clear that the parallelization has a maximum equal in our case to half the number of samples $N$ / 2 multiplied by the number of \glspl{FFT}. On our test this mean 1024 * 2880 far more than the number of core we can find on a top level \gls{GPU} as you can see on table~\ref{tab:kepler}.
+
+\subsection{SVD software}
+
+An optional step is to apply a \gls{SVD} as described as suggested by Rama Calaga~\cite{PhysRevSTAB.7.042801} and by Wolfgang H{\"o}f\/le\cite{HofleChamonix12} which should reduce the noise in the signal (results are shown in section~\ref{sec:SVD}). The \gls{SVD} module is not visible here as it is a custom command (see figure~\ref{fig:spectrogram_uml}).
+
+The \gls{GSL} was used to compute SVD from the data. This mean that technically the ``svd'' software should be under \gls{GPL}. A wrapper was also implemented to allow a more C++ expression of the \gls{SVD} and make it more readable.
+
+\begin{figure}[H]
+\centering
+\caption{SVD in the code (using C++ wrapper)}
+\begin{lstlisting}
+// M x N
+gsl::matrix A(buffer_size(), bunch_count());
+[...]
+// N x N
+gsl::matrix X(bunch_count(), bunch_count());
+gsl::vector work(bunch_count());
+gsl::vector S(bunch_count());
+gsl::matrix V(bunch_count(), bunch_count());
+gsl::matrix U = A;
+// compute SVD
+SVD_mod(U, X, V, S, work);
+// S -> s
+gsl::matrix s(bunch_count(), bunch_count());
+for (size_t i = 0; i < bunch_count(); ++i) {
+	if (S[i] < threshold) {
+		s(i, i) = 0.0f;
+	} else {
+		s(i, i) = S[i];
+	}
+}
+// vt = V^T
+gsl::matrix vt = transpose(V);
+// out = U s vt (out ~ A)
+gsl::matrix out = U * s * vt;
+[...]
+\end{lstlisting}
+\end{figure}
+
+\Gls{GSL} offer different method for calculating the \gls{SVD} of matrices, but the computing is only available in double precision float. The different approaches have different result varying with the size and shape of the matrix.
+
+\subsection{Custom command and spectrograms}
+
+On top of all these classes there is a general abstraction layer called \emph{commands} that decide what the software is going to execute on the buffers. Presently the commands are hard coded but we could in the future have a higher level languague decide which operation to do on the data. this could lead to a more flexible software to be used in operation.
+
+\begin{figure}[H]
+\centering
+\label{fig:spectrogram_uml}
+\caption{C++ spectrogram classes UML diagram}
+\includegraphics[scale=0.3]{spectrogram_uml.png}
+\end{figure}
+
+The spectrogram class is the class responsible to make the spectrogram from the buffers and to add timestamps and values, it uses \gls{OpenCV} as an image library. There is also a possibility to display the spectrogram directly using \gls{OpenGL}/GLUT.
+
+

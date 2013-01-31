@@ -4,11 +4,11 @@ UNAME := $(shell uname)
 
 BINARY_DIR := ../binary/
 PICTURES_DIR := ../pictures/
-FLAGS := --start-time 1350394620000000000 --end-time 1350395340000000000
-TIME := -1337-1349
+FLAGS := 
+TIME := 
 
-ACC := 8
-MD_DATE := 121016
+ACC := 16
+MD_DATE := 121011
 
 ifeq ($(MD_DATE), 121011)
 	FLAGS += --pre-notch
