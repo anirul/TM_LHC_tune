@@ -6,9 +6,14 @@
 \glsreset{FFT}
 \glsreset{LHC}
 
-The betatron \gls{tune} is a critical parameter of a collider machine. In the \gls{LHC} the \gls{tune} acquisition is computed by doing \glspl{FFT} on an averaged value over all the bunches. In order to have a decent on-line \gls{FFT} computation of all individual bunches a faster method is needed. 
+The betatron \gls{tune} is a critical parameter of a particle collider machine. In the \gls{LHC} the \gls{tune} acquisition is computed by doing \glspl{FFT} on an averaged value over all the bunches. In order to have a decent on-line \gls{FFT} computation of all individual bunches a faster method is needed. 
 
-\Gls{GPU} used in graphic card are faster than normal \gls{CPU} for parallelized computations. Using \gls{GPU} we can accelerate \gls{FFT} computation by a factor of 10 especially if we have multiples \glspl{FFT} to be computed at the same time. This could, acording to the timing asked by the operation allow for a new on-line acquisition of the \gls{tune}.
+\Gls{GPU} used in graphic card are faster than normal \gls{CPU} for
+parallelized computations. Using a \gls{GPU} we can accelerate
+\gls{FFT} computation by a factor of 10 especially if we have
+multiples \glspl{FFT} to be computed at the same time. This could,
+acording to the timing asked by the operation, allow for a new on-line
+acquisition of the \gls{tune}.
 
 New hardware will have to be deployed in the \gls{ADT} Faraday cage. This will in turn need new software to drive it. But is should be accessible as most of it is already present in the \gls{ADT} setup.
 

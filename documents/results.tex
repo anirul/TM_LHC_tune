@@ -24,7 +24,7 @@ This is a differential filter and as we are only interested into the frequencies
 \section{FFT}
 \label{sec:FFT}
 
-The Fourier transform is a mathematical operation that moves a function from a temporal domain to a frequency domain using an integral relation. In our case, we are treating sampled signals for which the integrals reduce to a summation, the transform being referred to as the \gls{DFT}. The specific term ``\gls{FFT}'' refers to a fast algorithm to compute the \gls{DFT} when for example the number of samples $N$ equals is power of 2.
+The Fourier transform is a mathematical operation that moves a function from a temporal domain to a frequency domain using an integral relation. In our case, we are treating sampled signals for which the integrals reduce to a summation, the transform being referred to as the \gls{DFT}. The specific term ``\gls{FFT}'' refers to a fast algorithm to compute the \gls{DFT} when the number of samples $N$ is a power of 2.
 
 \subsection{Definition}
 
@@ -34,7 +34,7 @@ $$ x_0,...,x_{N -1} \in \mathbb{C} $$
 
 $$ X_{k} = \displaystyle\sum\limits_{n = 0}^{N -1} x_{n}e^{-i 2 \pi k \frac{n}{N}} $$
 
-In order to compute the \gls{DFT} one must compute $N$ values $N$ times. The complexity is of order $N$ times $N$~: $ \mathcal{O}(N^{2}) $.
+In order to compute the \gls{DFT} one must compute $N$ values $N$ times. The complexity is of order $N$ squared: $ \mathcal{O}(N^{2}) $.
 
 The most commonly used \gls{FFT} algorithms are based on a divide-and-conquer approach similar to the algorithm of Cooley and Turkey~\cite{Cooley65}. The computation of a \gls{DFT} of length N is done by splitting the input sequence into a fixed small number of subsequences, compute their \gls{DFT}, and assemble the outputs to build the final sequence. If the split and assembly are linear in time the complexity becomes~:
 
@@ -54,13 +54,13 @@ It is under GPL license and can be purchased from the \gls{MIT} for commercial p
 
 \subsection{FFT with OpenCL on GPU}
 
-The \gls{FFT} version used in the software is derived from Eric Bainville's version. This is the reference implementation of \gls{FFT} on \gls{OpenCL} and is now the version distributed by Apple\cite{bainville11}. For the sake of simplicity restrict ourself to the radix~2 version of the implementation.
+The \gls{FFT} version used in the software is derived from Eric Bainville's version. This is the reference implementation of \gls{FFT} on \gls{OpenCL} and is now the version distributed by Apple\cite{bainville11}. For the sake of simplicity we restrict ourself to the radix~2 version of the implementation.
 
-On \gls{GPU} the \gls{OpenCL} result is the same than the one using \gls{FFTW} with the advantage to be faster on recent \gls{GPU}. The kernel is called a number of times equal to the size of the vector and then 11 times in the case of 2048 points ($\log_{2}{2^{11}} = 11$). A second dimension is used to pass the multiple vector.
+On \glspl{GPU} the \gls{OpenCL} result is the same as the one using \gls{FFTW} with the advantage to be faster on recent \gls{GPU}. The kernel is called a number of times equal to the size of the vector and then 11 times in the case of 2048 points ($\log_{2}{2^{11}} = 11$). A second dimension is used to pass the multiple vector.
 
 \subsection{FFT with OpenCL on a CPU}
 
-As \gls{OpenCL} is also able to run on a \gls{CPU} we used the same code than the one used on a \gls{GPU} on a \gls{CPU} yielding same results. It is interesting to note that the time is very similar to the implementation using \gls{FFTW}.
+As \gls{OpenCL} is also able to run on a \gls{CPU} we used the same code as the one used on a \gls{GPU} on a \gls{CPU} yielding similar results. It is interesting to note that the time is very similar to the implementation using \gls{FFTW}.
 
 \section{Amplitude}
 \label{sec:amplitude}
@@ -98,7 +98,7 @@ Bunches & Acquisitions & Time \\
 \end{tabular}
 \end{table}
 
-So it is very difficult to estimate the time the computation would take with the real data. We have to keep in mind that these computation where done using double precision as single would probably be enough, these computation were also done using a single thread (SVD is quite difficult to parallelize) and only done on \gls{CPU}.
+So it is very difficult to estimate the time the computation would take with the real data. We have to keep in mind that these computations where done using double precision while single would probably be enough. These computations were done using a single thread (SVD is quite difficult to parallelize) and only done on \gls{CPU}.
 
 There is a way to make these computation on \gls{GPU}\cite{Lahabar09} and the estimation is that is would be around 5 times better than on a \gls{CPU}.
 
@@ -164,7 +164,7 @@ CUDA cores & 2688 & 2496 & 3072 \\
 
 To improve the performances one of the options is to remove all waiting time between the different operations on the \gls{GPU}, as shown in Figure~\ref{fig:PCFlow}. The different operations done on the \gls{GPU} that are done sequentially can be pipelined.
 
-Pipelining mean that one will not wait for all the sub-operations to be finished for a certain task on a data set, but will already start treating the next set. The first operation is copying the memory from the \gls{CPU} to the \gls{GPU} which takes a certain time. As soon as some of the data is copied the computing could start.
+Pipelining mean that one will not wait for all the sub-operations to be finished for a certain task on a data set, but will already start treating the next set. The first operation is copying the memory from the \gls{CPU} to the \gls{GPU} which takes a certain time. As soon as some of the data is copied the computing can start.
 
 In \gls{OpenCL} the different commands are queued and this command queue can be flushed (with the command endQueue). To make the pipelining work the only thing to do is to only flush at the end when all the computing has been queued. Of course some attention should be kept to avoid problems with modules writing or reading data that has not yet been read or written.
 
@@ -216,7 +216,12 @@ On a dedicated \gls{GPU} like the Tesla M2090  the performances are around 10 ti
 \section{Spectrogram}
 \label{sec:spectrogram}
 
-A Spectrogram is a time-varying spectral representation of a signal. The signal is transformed via \gls{FFT} from time domain to spectral domain. Each transformation produces a line in this case and is tagged with the time of the acquisition. the amplitude is used to have a single representation of both real and imaginary part of the result.
+A Spectrogram is a time-varying spectral representation of a
+signal. The signal is transformed via \gls{FFT} from time domain to
+spectral domain. Each transformation produces a line in this case and
+is tagged with the time of the acquisition. The amplitude is used in
+order to have a single representation of both real and imaginary part
+of the result.
 
 As we do a normalization per acquisition on the spectrum at the end of the computing we have a representation of the highest value with highest color (white). If the amplitude is weaker we have a darker representation of the color (black). To have a finer grain in representation intermediate color was chosen in this case blue as you can see in figure \ref{fig:squeeze} \ref{fig:ramp} and \ref{fig:adt_off}.
 
