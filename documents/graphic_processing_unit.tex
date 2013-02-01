@@ -4,7 +4,7 @@
 
 \chapter{Graphics Processing Unit}
 
-A \gls{GPU} is the specialized chip for outputting image on a display. They are used in embedded systems, mobile phones, personal computers, workstations, and game consoles. \Glspl{GPU} are presently able to compute 3D images using custom programmable rendering pipeline. This capacity can be diverted to be used in general purpose computing.
+A \gls{GPU} is a specialized chip for outputting an image on a display. They are used in embedded systems, mobile phones, personal computers, workstations, and game consoles. \Glspl{GPU} are presently able to compute 3D images using a custom programmable rendering pipeline. This capacity can be diverted to be used for general purpose computing.
 
 \section{Introduction}
 
@@ -42,17 +42,17 @@ The \gls{OpenCL} \gls{API} is composed of two parts: The host code that runs on 
 \includegraphics[scale=0.5]{OpenCL_Objects.pdf}
 \end{figure}
 
-The host \gls{API} is written in C but there is a C++ interface provided by Khronos, which is the interface used in this work. Several other wrappers for other languages are also available, such as Java, C\#, Python, and even javascript with WebCL (also specified by the Khronos group). 
+The host \gls{API} is written in C but there is a C++ interface provided by Khronos, which is the interface used in this work. Several other wrappers for other languages are available, such as Java, C\#, Python, and even javascript with WebCL (also specified by the Khronos group). 
 
 The device code also called \gls{OpenCL} ``kernel code'' is based on is C99, adding some extensions like vectorization, image access, and linear algebra functions.
 
-The workload is itself specified in terms of context, program and command queues. The context contains the parameters of the current problem and manages the devices available for computation, as well as the programs and the command queues. The program consists of the set of kernels which are constructed from \gls{OpenCL} code. The context is responsible for dispatching these kernels into command queues. Each command queue is a set of commands that can be executed in any order, or simultaneously. A command queue is limited to a single device.\cite{OpenCLInAction,OpenCLProgrammingGuide}
+The workload itself is specified in terms of context, program and command queues. The context contains the parameters of the current problem and manages the devices available for computation, as well as the programs and the command queues. The program consists of the set of kernels which are constructed from \gls{OpenCL} code. The context is responsible for dispatching these kernels into command queues. Each command queue is a set of commands that can be executed in any order, or simultaneously. A command queue is limited to a single device.\cite{OpenCLInAction,OpenCLProgrammingGuide}
 
 Events fired by devices are also available for triggering specific actions in case a finer synchronization mechanism is needed. Once the device has finished, the host receives and processes the output data via the buffer \gls{API}.
 
 \section{Other GPGPU languages}
 
-For the purpose of completeness we present also the other general purpose computing languages used on \glspl{GPU}. Shader languages, the 3D pipeline programming languages used for computer graphic, will also be briefly mentioned they are not a real general purpose computing language but are still used for general purpose computing.
+For the purpose of completeness we present also the other general purpose computing languages used on \glspl{GPU}. Shader languages, the 3D pipeline programming languages used for computer graphic, will also be briefly mentioned. hey are not a real general purpose computing language but are still used for general purpose computing.
 
 \subsection{CUDA}
 
@@ -62,7 +62,7 @@ The abstraction level in \gls{CUDA} is less strong than in \gls{OpenCL}, that is
 
 \Gls{CUDA} has its kernel and \gls{GPU} code directly embedded inside the C/C++ code. In \gls{OpenCL} the code is separated from the C/C++ host code. This can lead to incompatibilities with C++ as valid C++ code will be flagged as invalid by the \gls{CUDA} compiler. This problem does not exist for \gls{OpenCL} as the compiler is a separate entity and the code is fed to it via the \gls{API}. 
 
-\Gls{CUDA} offers a full suite of libraries and tools that are presently not available in \gls{OpenCL}. Among these are performance tuning tools and libraries for matrices and \glspl{FFT}. Recently many implementations of common algorithms have started to appear for \gls{OpenCL}, and unlike with \gls{CUDA} these are directly available to any computing device.
+\Gls{CUDA} offers a full suite of libraries and tools that are presently not available in \gls{OpenCL}. Among these are performance tuning tools and libraries for matrices and \glspl{FFT}. Recently many implementations of common algorithms have started to appear for \gls{OpenCL}, and unlike with \gls{CUDA}, these are directly available to any computing device.
 
 \subsection{DirectCompute}
 
@@ -72,15 +72,39 @@ DirectCompute shares a lot of concepts with both \gls{CUDA} and \gls{OpenCL}, an
 
 \subsection{Shader Languages}
 
-Shaders are the steps that the graphic card has to make before rendering to the screen. There is mainly two steps the vertex shader, also called vertex code and the pixel shader, also called fragment code, vertex shader is transforming vertex data from 3D space to 2D screen coordinates manipulating the data as points in space, as vector and the pixel shader is doing the final rendering as pixels on the screen calculating the color of a pixel according to light, normal and textures.
+Shading are the steps that the graphic card has to take before
+rendering to the screen. There are two steps: the vertex shader, also
+called vertex code; and the pixel shader, also called fragment
+code. The vertex shader is transforms vertex data from 3D space to 2D
+screen coordinates by manipulating the data as points in space
+(vectors). The pixel shader is doing the final rendering of pixels on
+the screen calculating the color of a pixel according to the light,
+the normal and textures.
 
-There are many different shader languages. The main ones are: Cg, the NVIDIA ``neutral'' shading language, one of the first \gls{GPGPU} language widely used; the \gls{HLSL}, the Microsoft version tightly coupled with DirectX, and therefore easier to use on a Microsoft platform (XNA); the \gls{GLSL}, an \gls{OpenGL} version, that is supported widely but not implemented completely on all platforms.
+There are many different shader languages. The main ones are: Cg, the
+NVIDIA ``neutral'' shading language, one of the first languages widely
+used on \glspl{GPGPU}; the \gls{HLSL}, the Microsoft version tightly
+coupled with DirectX, and therefore easier to use on a Microsoft
+platform (XNA); the \gls{GLSL}, an \gls{OpenGL} version, that is
+supported widely but not implemented completely on all platforms.
 
-Before the general purpose graphic processing languages appeared shader languages were the only way to access the power of the graphic card, and this is still much in use today. As it was developed over many years, this is a very stable technology and there are many examples and libraries using theses languages.
+Before the general purpose graphic processing languages appeared
+shader languages were the only way to access the power of the graphic
+card, and they are still much in use today. As it was developed over
+many years, this is a very stable technology and there are many
+examples and libraries using theses languages.
 
-Shader languages are oriented towards graphics programming and are therefore not well-adapted to some of the algorithms we may want to implement. They are made to handle vectors of four components: position, color, normal (the normalized vector perpendicular to the surface). 
+Shader languages are oriented towards graphics programming and are
+therefore not well-adapted to some of the algorithms we may want to
+implement. They are made to handle vectors of four components, such as
+position, color, texture, and normal vectors.
 
 \section{Environment selected}
 
-The system is going to run on dedicated \gls{CERN} computers that operate under \gls{SLC} so it will also to run under Linux is a must. The ability to test the whole system on a \gls{CPU} and to compare the processing speed is also a key factor. The system should be able to be expanded and not be tied to any hardware provider. \Gls{OpenCL} is then the only choice.
+The system is going to run on dedicated \gls{CERN} computers that
+operate under \gls{SLC}. A language running on Linux is thus a
+must. The ability to test the whole system on a \gls{CPU} and to
+compare the processing speed is also a key factor. The system should
+be able to be expanded and not be tied to any hardware
+provider. \Gls{OpenCL} is then the only choice.
 

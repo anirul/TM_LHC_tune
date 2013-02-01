@@ -23,12 +23,32 @@
 \include{title}
 
 \begin{abstract}
-This thesis studies a possible futur implementation of a betatron tune measurement in the \gls{LHC} at the \gls{CERN} using a \gls{GPGPU} to analyse data acquired with the transverse \gls{damper}. It start by describing the present hardware and the future possible implementations using the \gls{ADT} acquisitions and the \gls{GPU} computing. The \gls{ADT} data have to be processed to extract the \gls{tune}. To get the tune, the method used is to transform the signal from the time domain to the frequency domain using \gls{FFT} on \glspl{GPU}. We show that it is possible to achieve one order of magnitude faster \glspl{FFT} on a Fermi generation \gls{GPU} than what can be done using a i7 generation \gls{CPU}. This makes online per \gls{bunch} \gls{FFT} computation and betatron tune measurement possible.  
+  This thesis studies a possible futur implementation of a betatron
+  tune measurement in the \gls{LHC} at \gls{CERN} using a \gls{GPGPU}
+  to analyse data acquired with the \gls{ADT}. The present hardware
+  and future possible implementations using \gls{ADT} acquisitions and
+  \gls{GPU} computing are described. The \gls{ADT} data have to be
+  processed to extract the \gls{tune}. To compute the tune, the signal
+  is transformed from the time domain to the frequency domain using
+  \gls{FFT} on \glspl{GPU}. We show that it is possible to achieve one
+  order of magnitude faster \glspl{FFT} on a Fermi generation
+  \gls{GPU} than what can be done using a i7 generation
+  \gls{CPU}. This makes online per \gls{bunch} \gls{FFT} computation
+  and betatron tune measurement possible.
 \end{abstract}
 
 \chapter*{Acknowledgements}\addcontentsline{toc}{chapter}{Acknowledgements}
 
-I wish to thank \gls{CERN} and the \gls{Hepia} to have made this master thesis possible. I also wish to thank Dr. Andy Butterworth and Dr. Ing. Erk Jensen who supported me on the choice to make this master thesis, Dr. Wolfgang H{\"o}fle for suggesting that I use GPU in this particular field and supervising. Dr. Daniel Valuch for the assistance on the damper and for all the ideas. Dr. Rama Calaga for the help on the mathematics of \gls{SVD} and his many suggestions. Finaly, I wish to thank Prof. Dr. Paul Albuquerque who was my professor and supervisor during the entire thesis as well as his assistant Pierre Kunzli.
+I wish to thank \gls{CERN} and the \gls{Hepia} for making this master
+thesis possible. I also wish to thank: Dr. Andy Butterworth and
+Dr. Ing. Erk Jensen who supported me in my decision to make this
+master thesis; Dr. Wolfgang H{\"o}fle for suggesting that I use GPU in
+this particular field and for his supervision; Dr. Daniel Valuch for
+the assistance on the damper and for all his ideas; Dr. Rama Calaga
+for the help on the mathematics of \gls{SVD} and his many
+suggestions. Finaly, I wish to thank Prof. Dr. Paul Albuquerque who
+was my professor and supervisor during the entire thesis as well as
+his assistant Pierre Kunzli.
 
 \tableofcontents
 \listoffigures

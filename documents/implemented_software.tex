@@ -1,6 +1,6 @@
 \chapter{Implemented software}
 
-In order to test the feasibility and to try the speed of the different algorithms different software pieces were needed.
+In order to test the feasibility and to test the speed of the different algorithms different software pieces were needed.
 
 \begin{figure}[H]
 \caption{Implemented acquisition software in the CERN infrastructure}
@@ -12,7 +12,7 @@ The implemented system consist of three pieces of software~:
 \begin{enumerate}
 \item The software controlling the acquisition card in the machine.
 \item An acquisition software that runs on a standard front-end Linux machine that is taking data during the \glspl{MD}.
-\item And an analyzing software that can compute the \glspl{FFT} on \glspl{GPU}.
+\item An analyzing software that can compute the \glspl{FFT} on \glspl{GPU}.
 \end{enumerate}
 
 In the final version the software will be merged in a single executable that should run on the machine with the \gls{GPU} and the receiver card. The present solution has been put into place because the present hardware is still in development and there is no way of acquiring the maximum of 2880 bunches from the machine. The hardware is receiving the acquisition data but the \gls{VME} is not fast enough to transfer it to the \gls{CPU}.
@@ -23,25 +23,51 @@ The first layer that was needed is a driver that can control the \gls{VME} card 
 
 The standard \gls{FESA}, the standard middle-ware framework used at \gls{CERN} to control equipments, was used to develop a higher level software to control the card. This particular card needs a real time task in order to react to an interrupt coming from the hardware and to inform when a new acquisition is ready to be read.
 
-The software was originally written by David Gl{\'e}nat, Andrey Pashnin took it over and wrote the specific part of the ``tune acquisition'' and is now under Fr{\'e}d{\'e}ric Dubouchet responsibility as all \gls{ADT} software.
+The software was originally written by David Gl{\'e}nat, Andrey
+Pashnin took it over and wrote the specific part of the ``tune
+acquisition'' and is now under Fr{\'e}d{\'e}ric Dubouchet
+responsibility together with all other \gls{ADT} software.
 
-It is made of tree main part, two of them are interface with the user. The tune measurement control interface is there to set the acquisition parameters. The Tune measurement data is there to receive the data from the card to the user. Finally a real-time task it there to receive the interrupt and notify the user that there is new data available.
+It is made of tree main part, two of them user interfaces. The tune
+measurement control interface sets the acquisition parameters. The
+Tune measurement data receives the data from the card and displays it
+to the user. Finally, a real-time task receives the interrupts and
+notifies the user that there is new data available.
 
-The Interfaces are exposed trough the \gls{CERN} middle-ware so it is available from other application as the data acquisition software.
+The Interfaces are exposed trough the \gls{CERN} middle-ware, which
+makes it available to other application, such as the data acquisition
+software.
 
 \subsection{Control interfaces}
 
-This interface is basic it allow the user to set the register to enable the acquisition and to set the mask that decide witch bunches in the acquisition have to be recorded in the memory. The mask is described as an array of 3564 short (2-bytes word) that can be either 0 (not selected) or 1 (selected).
+This interface is basic. It allows the user to set the register to
+enable the acquisition and to set the mask that decide which bunches
+in the acquisition have to be recorded in the memory. The mask is
+described as an array of 3564 short (2-bytes word) that can be either
+0 (not selected) or 1 (selected).
 
-This interface allow us to select witch bunch we want to acquire, of course the machine can never be fully saturated by bunches, because you need an abort-gap in the machine to allow the extraction kicker to extract the beam.
+This interface allow us to select witch bunch we want to acquire. The
+machine can never be fully saturated by bunches. A gap is required in
+the train to accomodate the extraction kicker risetime, and allow for
+the safe dumping of the beam.
 
-Even if the present interface allow us to have the full bunches of the machine selected. It has been very clear that as the memory is limited to 16 kilo-short (32 kilo-bytes) we would have too many interrupts per second for the interface to be usable.
+Even if the present interface allow us to have the full bunches of the
+machine selected, it is clear that as the memory is limited to 16
+kilo-short (32 kilo-bytes), we would generate too many interrupts per
+second for the interface to be usable.
 
-There is also two other problems that this interface is facing, there is no double buffering so as the CPU is reading the values new incoming values would be lost, also the \gls{VME} is too slow to support the rate at witch data is coming.
+This interface has two other problems. No double buffering is
+implemented, so while the \gls{CPU} is reading values new incoming
+values would be lost. Further, the \gls{VME} is to slow to support the
+required datarate.
 
-The data interface is the interface the data acquisition software is using. It allows to get the values back from the memory in the \gls{CPU} as soon as they become available. It uses a system call subscription where the interface notify the client software that new data has become available (more about this in the section~\ref{sec:obs_mem_acq}).
-
-It can also give a read back from the hardware of the various parameters we set from the tune measurement control interface~: the mask and all the controls.
+The data interface is the interface the data acquisition software is
+using. It provides access to the values from the memory in the
+\gls{CPU} as soon as they become available. A system call subscription
+used, such that the interface notifies the client software that new
+data has become available. It also provides a read back from the
+hardware of the various parameters set from the tune measurement
+control interface~: the mask and all the controls.
 
 \subsection{Observation memory acquisition}
 \label{sec:obs_mem_acq}
