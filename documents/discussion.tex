@@ -32,9 +32,15 @@ These observations are consistent with the gated-\gls{BBQ} result of 2012 \cite{
 
 \subsection{With damper}
 
-When the \gls{ADT} is working the oscillations of the beam are damped by it, as a result the tune is less visible. But we should be able to see the effect of the tune on the damper if the damper is well adjusted to the beam. This mean that we should see a clear gap in the frequency around the tune frequency (or at the frequency the damper is less working, frequency that should correspond to the tune).
+When the \gls{ADT} is working the oscillations of the beam are damped by it, as a result the tune is less visible. But we should be able to see the effect of the tune on the damper if the damper is well adjusted to the beam. This mean that we should see a clear gap in the frequency around the tune frequency (or at the frequency the damper is less working, a frequency that should correspond to the tune).
 
-This correspond to the spectrogram we see during operation as shown in Figure~\ref{fig:ramp}. We also see in this figure the ramp that lead to collision, before putting the beam in collision we do a squeeze (operation during witch we compress the beam size in the interaction points, where the experiments are). The squeeze is changing the tune and we can see it on the spectrogram around 14h03 on the figure \ref{fig:ramp}.
+This correspond to the spectrogram we see during operation as shown in
+Figure~\ref{fig:ramp}. We also see in this figure the energy ramp
+before collision. Before putting the beam in collision we do a squeeze
+(operation during which we compress the beam size in the interaction
+points, where the experiments are). The squeeze is changing the tune
+and we can see it on the spectrogram around 14h03 on the figure
+\ref{fig:ramp}.
 
 \begin{figure}[H]
 \caption{Spectrogram with damper working on the 16 October 2012 on vertical beam 1 during the ramp, 6 bunches 10 accumulations}
@@ -58,7 +64,10 @@ As the hardware is not present yet, the time and bandwidth of the whole system h
 
 The data has to move from the acquisition card to the GPU by a series of steps, first from the card to the PCI crate (the one who contain the actual \glspl{GPU}). The problem being that the acquisition card is a \gls{VME} card and the VME bus is too slow to allow the full data to be streamed to the \gls{CPU}. 
 
-This will use the giga-bit serial link already present on the VME card. A receiver card will then receive the data in the PCI crate and send it either directly to the \gls{GPU} memory or to the \gls{CPU} and then to the \gls{GPU} memory. 
+We will use the giga-bit serial link already present on the VME
+card. A receiver card will then receive the data in the PCI crate and
+send it either directly to the \gls{GPU} memory or to the \gls{CPU}
+and then to the \gls{GPU} memory.
 
 The \gls{GPU} will make the computations necessary for the \gls{tune} measurement and will copy the results back to the \gls{CPU}.
 
@@ -66,7 +75,7 @@ As a final step we will use Ethernet to transmit the data back to the operation 
 
 \section{Hardware}
 
-The present hardware is not allowing to acquire all the \glspl{bunch} of the machine and is in fact limited by constraints of the \gls{VME}. We have to upgrade various part of the hardware and to add the new computing device in order to be able to make on-line computation.
+The present hardware does not allow us to acquire all the \glspl{bunch} of the machine and is in fact limited by constraints of the \gls{VME}. We have to upgrade various part of the hardware and to add the new computing device in order to be able to make on-line computation.
 
 \subsection{ADT Acquisition boards}
 
@@ -76,7 +85,7 @@ The \gls{ADTDSPU} card will be redesigned and remade during the long shutdown 1 
 
 Serial link receiver has to be chosen and put into place in the new computing device to be able to receive the data and pass them to the \gls{GPU}. This card has to be fast enough to get the serial data from the serial link that comes from the ADTDSPU, have a PCI-express interface and \gls{SFP} interface on the front panel. 
 
-It should also have a fast FPGA to de-serialize the bunch positions and send them to the PCI-express bus. To be able to communicate with the CPU, Linux drivers (with sources) have also to be present.
+It should also have a fast FPGA to de-serialize the bunch positions and send them to the PCI-express bus. To be able to communicate with the CPU, Linux drivers (with sources) have to be present.
 
 A market survey revealed that commercial cards can fill up our needs.
 
@@ -87,7 +96,7 @@ A market survey revealed that commercial cards can fill up our needs.
 \includegraphics[scale=0.3]{Nallatech_PCIe-180.pdf}
 \end{figure}
 
-\gls{CERN} also propose some card that are done by \gls{CO} and can also make a good match.
+\gls{CERN} proposes a card that is made by \gls{CO} which could make a good match.
 
 \begin{figure}[H]
 \caption{CERN Simple FMC carrier (SPEC)}
@@ -123,7 +132,7 @@ For the moment the ``Nallatech PCIe-180'' seams to be the best match and we will
 
 \subsection{GPUs}
 
-We need a computing device with at least 2 PCIe slots, one for the serial link receiver and one for the \gls{GPU} card. It should be some standardized crate with a powerful \gls{CPU} and possible expansion. Place has to be checked in SR4 to check if there is enough space for full crate or we have to take lighter crates.
+We need a computing device with at least 2 PCIe slots, one for the serial link receiver and one for the \gls{GPU} card. It should be a standardized crate with a powerful \gls{CPU} and possible expansion. Place has to be found in SR4, for either a for full crate or a smaller one.
 
 We will probably start with a standard graphic card and then upgrade to a professional computing \gls{GPU} card (like NVIDIA Tesla series~\cite{nvidia}).
 
@@ -135,7 +144,11 @@ Some software upgrade and redeployment is still necessary before the operational
 
 The drivers for the \gls{ADT} acquisition card will need some update, changing the memory map and adjusting the drivers for the control registers. This should be quite straightforward.
 
-A driver for the Serial link receiver card will be needed. Either, if we use one that is made inside \gls{CERN} we can have it made by the control group (CO), or in case we buy an off the shelf solution we will have to make the driver ourself using the driver framework and the tools we have.
+A driver for the Serial link receiver card will be needed. If we use
+one that is made inside \gls{CERN} we can have it made by the control
+group (CO). In case we buy an off the shelf solution we will have to
+make the driver ourself using the driver framework and the tools we
+have.
 
 \subsection{OpenCL}
 
@@ -143,7 +156,7 @@ The present \gls{OpenCL} code is able to compute the \gls{FFT} but we could try 
 
 \subsection{Front-end}
 
-Developing new software to control the new hardware are needed, the \gls{ADTDSPU} board is going to be changed and we are going to build a new computing front-end with a custom serial link receiver and a \gls{GPU}. So new drivers and a software to stream data from the receiver card to the \gls{GPU} will be needed.
+Developing new software to control the new hardware are needed, the \gls{ADTDSPU} board is going to be changed and we are going to build a new computing front-end with a custom serial link receiver and a \gls{GPU}. New drivers and a software to stream data from the receiver card to the \gls{GPU} will be needed.
 
 \section{Intermediate and Final setup}
 

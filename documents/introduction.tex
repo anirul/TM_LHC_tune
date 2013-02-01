@@ -13,9 +13,16 @@
 
 \chapter{Introduction}
 
-The \gls{LHC} is a particle collider situated between the French and Swiss boarder near Geneva. It accelerate two beams of proton to an energy of 7 Tev per beam and collide them in an interaction point, where experiment are located. The goal of the \gls{LHC} is to access and discover new physic beyond standard model.
+The \gls{LHC} is a particle collider situated between the French and
+Swiss boarder near Geneva. It accelerate two beams of proton to an
+energy of 7 Tev per beam and collide them in four interaction points,
+where experiments are located. The goal of the \gls{LHC} is to access
+and discover new physic beyond standard model.
 
-To increase the life time of the beam in the machine and therefor increase the physic time, better parameter acquisition and correction is needed. One of the key parameter of an accelerator is the \gls{tune}.
+To increase the life time of the beam in the machine and therefor
+increase the physic time, better parameter acquisition and correction
+is needed. One of the key parameters of an accelerator, and the one
+with which this work concerns itself, is the \gls{tune}.
 
 \section{Description of the betatron tune}
 
@@ -26,25 +33,45 @@ To increase the life time of the beam in the machine and therefor increase the p
 \floatfoot{Source : AXEL - 2012\cite{AXEL2012}}
 \end{figure}
 
-In a particle accelerator, the charged particles circulate around the ring and oscillate due to the magnets and the accelerating structures. The accelerating structures in the \gls{LHC} supra-conducting \glspl{cavity} apply a strong electrical field that oscillates at the \gls{rffreq} keeping the particles longitudinally focused, in the direction of flight forming a packet, called a \gls{bunch}.
+In a particle accelerator, the charged particles circulate around the
+ring and oscillate due to the magnets and the accelerating
+structures. The accelerating structures in the \gls{LHC} are
+super-conducting \glspl{cavity} that apply a strong electric field
+that oscillates at the \gls{rffreq}, accelerating the particles and
+keeping them longitudinally focused. The particles thus form descreet
+\glspl{bunch} travelling around the ring.
 
 \begin{figure}[H]
 \centering
-\caption{The LHC working point ``WP'' and beam-beam tune spread ``footprint'' of the LHC in the tune diagram.}
+\caption{The working point ``WP'' and beam-beam tune spread ``footprint'' of the LHC in the tune diagram.}
 \includegraphics[scale=1.25]{lhc_working_point.jpeg}
 \floatfoot{Source : The large hadron collider\cite{the_large_hadron_collider}}
 \end{figure}
 
-The particles inside a bunch oscillate longitudinally within the so called bucket, the area limited by the largest possible closed trajectory in time-energy phase space and transversally in the vertical and horizontal plane. The longitudinal oscillations are damped by the beam control system. Transversal oscillations are damped by a separate system~: the \gls{ADT}\cite{Zhabitsky:1141925,Benews11}.
+The particles inside a bunch oscillate longitudinally within the so
+called bucket, the area limited by the largest possible closed
+trajectory in time-energy phase space and transversally in the
+vertical and horizontal plane. The longitudinal oscillations are
+damped by the beam control system. Transversal oscillations are damped
+by a separate system~: the \gls{ADT}\cite{Zhabitsky:1141925,Benews11}.
 
-One of the key parameters of the accelerator is the betatron tune defined by the arrangement and strength of defocussing and focusing quadrupoles around the ring. The betatron tune, $Q$, in the horizontal (respectively vertical) plane is defined as the number of oscillations per revolution within the griding magnetic fields around the accelerator.
+One of the key parameters of the accelerator is the betatron tune
+defined by the arrangement and strength of defocussing and focusing
+quadrupoles around the ring. The betatron tune, $Q$, in the horizontal
+(respectively vertical) plane is defined as the number of oscillations
+per revolution within the griding magnetic fields around the
+accelerator. The characteristics of the tune repeats at all integer
+values in the real-real plane. Thus only the fractional part of the
+tune is of interest.
 
 % Literacy survey
 \section{Tune measurement in the LHC}
 
-In order to measure the betatron tune in an accelerator, we use \glspl{BPM}. Which are able to measure the position of the beam in the vacuum chamber.
+In order to measure the betatron tune in an accelerator, we use
+\glspl{BPM}, which are able to measure the position of the beam in the
+vacuum chamber.
 
-Presently the \gls{BI} group is using a \gls{BBQ} \cite{Boccardi:1156349} system to acquire the tune over a certain number of machine turns (256 to 128'000). This system can work as a passive instrument without further excitation of the beam or as an on demand system by exciting (increase oscillation amplitude) a limited number of \glspl{bunch} in the beam with the \gls{MKQA}. The \Gls{ADT} has also been used for tune measurement excitation\cite{HofleEvian10}. The \gls{BBQ} system makes an average over a certain number of bunches in the machine and is not able to see individual bunches.
+Presently, the \gls{BI} group is using a \gls{BBQ} \cite{Boccardi:1156349} system to acquire the tune over a certain number of machine turns (256 to 128'000). This system can work as a passive instrument without further excitation of the beam or as an on demand system by exciting (increase oscillation amplitude) a limited number of \glspl{bunch} in the beam with the \gls{MKQA}. The \Gls{ADT} has also been used for tune measurement excitation\cite{HofleEvian10}. The \gls{BBQ} system makes an average over a certain number of bunches in the machine and is not able to see individual bunches.
 
 In normal operation, when the \gls{ADT} is active, it is difficult to have a good picture of the excited bunches and make a precise tune measurement~: the oscillations created by the \gls{MKQA} are rapidly damped by the \gls{ADT}. There have been studies to disable the \gls{ADT} for a certain number of bunches in order to get a better tune measurement\cite{HofleEvian11}, but this may not be sufficient.
 
@@ -53,7 +80,11 @@ In normal operation, when the \gls{ADT} is active, it is difficult to have a goo
 
 The \gls{ADT} also has \glspl{BPM} assigned to it with electronics installed that permit a bunch-by-bunch measurement at the $\mu$m level\cite{BphMeas07}. This could allow a much more precise measurement on single bunches. Due to the high amount of data to be processed (estimated to 640 mega-bytes per second for each \gls{BPM}) dedicated hardware is needed to compute the correct tune using all information available\cite{HofleChamonix12}.
 
-As the time measurements are used in the so called ``tune feedback'' to directly feed back to the focusing and defocussing magnets, a high rate of measurements is needed with tight constraints on the delays. In order to be able to apply the correction to magnets. The \gls{tune} has to be measured at a rate of about 10 Hz, once every 100 ms.
+As the time measurements are used in the so called ``tune feedback''
+to directly feed back to the focusing and defocussing magnets, a high
+rate of measurements is needed with tight constraints on the delays,
+in order to be able to apply the correction to magnets. The \gls{tune}
+has to be measured at a rate of about 10 Hz, once every 100 ms.
 
 During the 2012 normal operation of the \gls{LHC}, data has be acquired using the \gls{ADT} acquisition system and different data processing techniques have been tested to asses the modification that will be needed in order to make a reliable \gls{tune} measurement at a reasonable rate\cite{HofleChamonix12}.
 
@@ -61,13 +92,29 @@ The current \gls{VME} implementation has some serious issues, since the bus has 
 
 \subsection{DSP on VME board}
 
-\Glspl{DSP} are dedicated microprocessors that can perform digital signal processing such as computing \glspl{FFT} at a high rate. These are already used in the machine at different places to provide high speed feedback loops. we may ask the question~: is it fast enough to compute all the \glspl{FFT} needed? \glspl{DSP} are two orders of magnitude slower than \glspl{GPU} for delivering floating-point operation per seconds. We also would have to develop a completely new system in order to be able to use them, since in fact we don't have \glspl{DSP} in the present \gls{ADT}. The cost of development and the complexity of the deployment would have to be studied for such a solution.
+\Glspl{DSP} are dedicated microprocessors that can perform digital
+signal processing such as computing \glspl{FFT} at a high rate. These
+are already used in the machine at different places to provide high
+speed feedback loops. Would these be fast enough to compute all the
+\glspl{FFT} needed? \glspl{DSP} are two orders of magnitude slower
+than \glspl{GPU} for delivering floating-point operation per
+seconds. We also would have to develop a completely new system in
+order to be able to use them, since we do not have \glspl{DSP}
+in the present \gls{ADT}. The cost of development and the complexity
+of the deployment would have to be studied for such a solution.
 
 \subsection{FPGA pre-processing on VME board}
 
-Like in the approach using \gls{DSP} on VME boards, the question of computing power is an important one. The current \gls{ADT} system only features \glspl{FPGA} on the hardware, complemented by the general purpose \gls{CPU} in the \gls{VME} crate.  
+Like in the approach using \gls{DSP} on VME boards, the question of
+computing power is an important one. The current \gls{ADT} system only
+features \glspl{FPGA} on the hardware, complemented by the general
+purpose \gls{CPU} in the \gls{VME} crate.
 
-The biggest issue for \gls{FPGA} computing is the fact that you need something like a \~100 mega-bytes of memory to store the temporary values for computation of only one beam plane. The \glspl{FFT} are difficult to pipeline because you have to iterate the algorithm a certain number of time ($\log_{2} N$ times for a radix 2).
+The biggest issue for \gls{FPGA} computing is that something like 100
+mega-bytes of temporary values need to be stored for computation of
+one beam plane. The \glspl{FFT} are difficult to pipeline because the
+algorithm has to be itererated a certain number of times
+($\mathcal{O}(\log_{2} N)$ times for radix 2).
 
 \subsection{GPU off-board computing}
 
@@ -77,7 +124,10 @@ The \gls{GPU} should have sufficient computing power to be able to make the \gls
 
 \section{GPU Solution constraints}
 
-Show how to implement a GPU based system that can deliver a tune value for each beam and plane at a rate that allows the system to be responsive enough for a tune correction to be applied automatically. 
+It must be shown how to implement a GPU based system that can deliver
+a tune value for each beam and plane at a rate that allows the system
+to be responsive enough for a tune correction to be applied
+automatically.
 
 \subsection{Algorithm}
 
@@ -95,7 +145,10 @@ Per bunch position measurement has to be available to the system for each beam a
 
 We need a card in the CPU/GPU crate to de-serialize the data and transfer them to the GPU memory. It may be possible to copy from the acquisition card directly to the GPU memory.
 
-And finally we of course require fast enough GPU to process the data. The number and the type of cards should be carefully looked at. The possibility for expansion should be kept in mind as the possibility to implement other algorithms.
+And finally we of course require a fast enough GPU to process the
+data. The number and the type of cards should be carefully looked
+at. The possibility for expansion should be kept in mind as well as the
+possibility to implement other algorithms.
 
 \subsection{Timings}
 

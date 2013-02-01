@@ -1,6 +1,6 @@
 \chapter{Implemented software}
 
-In order to test the feasibility and to try the speed of the different algorithms different software pieces were needed.
+In order to test the feasibility and to test the speed of the different algorithms different software pieces were needed.
 
 \begin{figure}[H]
 \caption{Implemented acquisition software in the CERN infrastructure}
@@ -12,7 +12,7 @@ The implemented system consist of three pieces of software~:
 \begin{enumerate}
 \item The software controlling the acquisition card in the machine.
 \item An acquisition software that runs on a standard front-end Linux machine that is taking data during the \glspl{MD}.
-\item And an analyzing software that can compute the \glspl{FFT} on \glspl{GPU}.
+\item An analyzing software that can compute the \glspl{FFT} on \glspl{GPU}.
 \end{enumerate}
 
 In the final version the software will be merged in a single executable that should run on the machine with the \gls{GPU} and the receiver card. The present solution has been put into place because the present hardware is still in development and there is no way of acquiring the maximum of 2880 bunches from the machine. The hardware is receiving the acquisition data but the \gls{VME} is not fast enough to transfer it to the \gls{CPU}.
@@ -23,25 +23,51 @@ The first layer that was needed is a driver that can control the \gls{VME} card 
 
 The standard \gls{FESA}, the standard middle-ware framework used at \gls{CERN} to control equipments, was used to develop a higher level software to control the card. This particular card needs a real time task in order to react to an interrupt coming from the hardware and to inform when a new acquisition is ready to be read.
 
-The software was originally written by David Gl{\'e}nat, Andrey Pashnin took it over and wrote the specific part of the ``tune acquisition'' and is now under Fr{\'e}d{\'e}ric Dubouchet responsibility as all \gls{ADT} software.
+The software was originally written by David Gl{\'e}nat, Andrey
+Pashnin took it over and wrote the specific part of the ``tune
+acquisition'' and is now under Fr{\'e}d{\'e}ric Dubouchet
+responsibility together with all other \gls{ADT} software.
 
-It is made of tree main part, two of them are interface with the user. The tune measurement control interface is there to set the acquisition parameters. The Tune measurement data is there to receive the data from the card to the user. Finally a real-time task it there to receive the interrupt and notify the user that there is new data available.
+It is made of tree main part, two of them user interfaces. The tune
+measurement control interface sets the acquisition parameters. The
+Tune measurement data receives the data from the card and displays it
+to the user. Finally, a real-time task receives the interrupts and
+notifies the user that there is new data available.
 
-The Interfaces are exposed trough the \gls{CERN} middle-ware so it is available from other application as the data acquisition software.
+The Interfaces are exposed trough the \gls{CERN} middle-ware, which
+makes it available to other application, such as the data acquisition
+software.
 
 \subsection{Control interfaces}
 
-This interface is basic it allow the user to set the register to enable the acquisition and to set the mask that decide witch bunches in the acquisition have to be recorded in the memory. The mask is described as an array of 3564 short (2-bytes word) that can be either 0 (not selected) or 1 (selected).
+This interface is basic. It allows the user to set the register to
+enable the acquisition and to set the mask that decide which bunches
+in the acquisition have to be recorded in the memory. The mask is
+described as an array of 3564 short (2-bytes word) that can be either
+0 (not selected) or 1 (selected).
 
-This interface allow us to select witch bunch we want to acquire, of course the machine can never be fully saturated by bunches, because you need an abort-gap in the machine to allow the extraction kicker to extract the beam.
+This interface allow us to select witch bunch we want to acquire. The
+machine can never be fully saturated by bunches. A gap is required in
+the train to accomodate the extraction kicker risetime, and allow for
+the safe dumping of the beam.
 
-Even if the present interface allow us to have the full bunches of the machine selected. It has been very clear that as the memory is limited to 16 kilo-short (32 kilo-bytes) we would have too many interrupts per second for the interface to be usable.
+Even if the present interface allow us to have the full bunches of the
+machine selected, it is clear that as the memory is limited to 16
+kilo-short (32 kilo-bytes), we would generate too many interrupts per
+second for the interface to be usable.
 
-There is also two other problems that this interface is facing, there is no double buffering so as the CPU is reading the values new incoming values would be lost, also the \gls{VME} is too slow to support the rate at witch data is coming.
+This interface has two other problems. No double buffering is
+implemented, so while the \gls{CPU} is reading values new incoming
+values would be lost. Further, the \gls{VME} is too slow to support
+the required datarate.
 
-The data interface is the interface the data acquisition software is using. It allows to get the values back from the memory in the \gls{CPU} as soon as they become available. It uses a system call subscription where the interface notify the client software that new data has become available (more about this in the section~\ref{sec:obs_mem_acq}).
-
-It can also give a read back from the hardware of the various parameters we set from the tune measurement control interface~: the mask and all the controls.
+The data interface is the interface the data acquisition software is
+using. It provides access to the values from the memory in the
+\gls{CPU} as soon as they become available. A system call subscription
+used, such that the interface notifies the client software that new
+data has become available. It also provides a read back from the
+hardware of the various parameters set from the tune measurement
+control interface~: the mask and all the controls.
 
 \subsection{Observation memory acquisition}
 \label{sec:obs_mem_acq}
@@ -62,11 +88,16 @@ Notifying the task actually call it and this task (called server task as this is
 
 The acquisition software was used to check that the idea of getting the tune out of the DSPU card data was feasible as well as providing a means to log the acquisition to a file for subsequent checking and processing.
 
-The acquisition software is then able to compute the \gls{FFT} using \gls{FFTW} and display it to the operators in the \gls{CCC} from where all the eight accelerators of \gls{CERN} are controlled. On the interface one can decide which type of graph to display and also enable saving the data files to be processed by the data analysis software.
+The acquisition software is then able to compute the \gls{FFT} using
+\gls{FFTW} and display it to the operators in the \gls{CCC} from where
+all the eight accelerators of \gls{CERN} are controlled. On the
+interface one can decide which type of graph to display and also
+enable saving of the data files to be processed by the data analysis
+software.
 
 \subsection{Control interface}
 
-The control interface allow us to decide witch file type to save (if we want to save the data to a file), where to save theses data and which ADTDSPU we are subscribing to.
+The control interface allow us to decide which file type to save (if we want to save the data to a file), where to save theses data and which ADTDSPU we are subscribing to.
 
 \begin{figure}[H]
 \caption{ADTDSPU tune acquisition software interface in the FESA framework}
@@ -118,7 +149,12 @@ The accumulation over all theses bunches is done, which will give an average spe
 
 \subsection{buffer management}
 
-The data is first loaded from the files that were written by the acquisition software. Buffers are loaded into the \emph{acquisition\_buffer} class that are then collected together in the \emph{bunch\_buffer} class. This class will use the interface to \gls{FFT} (namely the abstract class \emph{i\_fft}) to compute the \gls{FFT} using the provided at instantiation.
+The data is first loaded from the files that were written by the
+acquisition software. Buffers are loaded into the
+\emph{acquisition\_buffer} class that are then collected together in
+the \emph{bunch\_buffer} class. This class will use the interface to
+\gls{FFT} (namely the abstract class \emph{i\_fft}) to compute the
+\gls{FFT} using the method provided at instantiation.
 
 \begin{figure}[H]
 \centering
@@ -126,13 +162,17 @@ The data is first loaded from the files that were written by the acquisition sof
 \includegraphics[scale=0.3]{buffer_uml.png}
 \end{figure}
 
-These classes are available in both single precision and double precision version, the version of the compiler available was not able to support template correctly. The final version that should run on a newer version of the Linux operating system should be able to handle it and it will make the switch easier and at runtime.
+These classes are available in both single precision and double
+precision versions. The version of the compiler available was not able
+to support template correctly. The final version that will run on a
+newer version of the Linux operating system should be able to handle
+it, which will make the switch easier and at runtime.
 
-It also contains all the various modules (apart from \gls{FFT}) some of which have their counterpart in \gls{GPU} code. This code is portable and used in both the tune measurement software and the data analysis software.
+It also contains all the various modules (apart from \gls{FFT}), some of which have their counterpart in \gls{GPU} code. This code is portable and used in both the tune measurement software and the data analysis software.
 
 \subsection{FFT software architecture}
 
-To be able to switch from \gls{FFTW} to the \gls{OpenCL} version of the \gls{FFT} computing, there is an abstract class that represent a \gls{FFT} transformation. This is implemented as both \gls{FFTW} and \gls{OpenCL} version.
+To be able to switch from \gls{FFTW} to the \gls{OpenCL} version of the \gls{FFT}, there is an abstract class that represents a \gls{FFT} transformation. It implements either \gls{FFTW} or \gls{OpenCL} version, as appropriate.
 
 \begin{figure}[H]
 \centering
@@ -140,7 +180,7 @@ To be able to switch from \gls{FFTW} to the \gls{OpenCL} version of the \gls{FFT
 \includegraphics[scale=0.3]{fft_uml.png}
 \end{figure}
 
-The \gls{OpenCL} version is making some steps of the algorithm in the \gls{GPU} itself. To avoid having to transfer to much data from the CPU to the GPU and to have to transform the data from the acquisition board (short 2 bytes integer) to the \gls{GPU} (single or double precision floating points) we do this step on the \gls{GPU} itself in the \emph{kernel\_prepare\_} kernel and then we do the \gls{FFT} computation in the \emph{kernel\_fft\_} kernel, finally we do the accumulation in the \emph{kernel\_acc\_}.
+The \gls{OpenCL} version is doing some steps of the algorithm in the \gls{GPU} itself. To avoid having to transfer to much data from the CPU to the GPU and to have to transform the data from the acquisition board (short 2 bytes integer) to the \gls{GPU} (single or double precision floating points) we do this step on the \gls{GPU} itself in the \emph{kernel\_prepare\_} kernel and then we do the \gls{FFT} computation in the \emph{kernel\_fft\_} kernel, finally we do the accumulation in the \emph{kernel\_acc\_}.
 
 The \gls{OpenCL} \gls{FFT} use the algorithm described here~\cite{Govindaraju07}. The OpenCL Kernel is described here and composed of two part the twiddle and the main radix-2 part.
 
@@ -158,7 +198,12 @@ float2 twiddle(float2 a, int k, float alpha)
 \end{lstlisting}
 \end{figure}
 
-There is a difference between the \gls{FFT} described in the algorithm cited above and the one you can see here. Here the operation is parallized to be made on multiples acquisitions at the same time, as in typical operation we have to compute 2880 FFT at the same time. So the thread is multiply by two factor the size of the acquisition and the number of \glspl{FFT} to be made.
+There is a difference between the \gls{FFT} described in the algorithm
+cited above and the one seen here. Here the operation is parallized to
+be made on multiples acquisitions at the same time, as in typical
+operation we have to compute 2880 FFT at the same time. The thread is
+multiplied by half the size of the acquisition and the number of
+\glspl{FFT} to be made.
 
 \begin{figure}[H]
 \centering
@@ -202,13 +247,13 @@ __kernel void fftRadix2Kernel(
 \end{lstlisting}
 \end{figure}
 
-It is clear that the parallelization has a maximum equal in our case to half the number of samples $N$ / 2 multiplied by the number of \glspl{FFT}. On our test this mean 1024 * 2880 far more than the number of core we can find on a top level \gls{GPU} as you can see on table~\ref{tab:kepler}.
+It is clear that the parallelization has a maximum equal in our case to half the number of samples $N$ / 2 multiplied by the number of \glspl{FFT}. On our test this mean 1024 * 2880, which is far more than the number of cores we can find on a top level \gls{GPU}, as is clear from table~\ref{tab:kepler}.
 
 \subsection{SVD software}
 
 An optional step is to apply a \gls{SVD} as described as suggested by Rama Calaga~\cite{PhysRevSTAB.7.042801} and by Wolfgang H{\"o}f\/le\cite{HofleChamonix12} which should reduce the noise in the signal (results are shown in section~\ref{sec:SVD}). The \gls{SVD} module is not visible here as it is a custom command (see figure~\ref{fig:spectrogram_uml}).
 
-The \gls{GSL} was used to compute SVD from the data. This mean that technically the ``svd'' software should be under \gls{GPL}. A wrapper was also implemented to allow a more C++ expression of the \gls{SVD} and make it more readable.
+The \gls{GSL} was used to compute SVD from the available data. This means that technically the ``svd'' software should be under \gls{GPL}. A wrapper was also implemented to allow a more C++ style expression of the \gls{SVD} and make it more readable.
 
 \begin{figure}[H]
 \centering
@@ -242,11 +287,11 @@ gsl::matrix out = U * s * vt;
 \end{lstlisting}
 \end{figure}
 
-\Gls{GSL} offer different method for calculating the \gls{SVD} of matrices, but the computing is only available in double precision float. The different approaches have different result varying with the size and shape of the matrix.
+\Gls{GSL} offer different methods for calculating the \gls{SVD} of matrices, but the computing is only available in double precision float. The different approaches have different result varying with the size and shape of the matrix.
 
 \subsection{Custom command and spectrograms}
 
-On top of all these classes there is a general abstraction layer called \emph{commands} that decide what the software is going to execute on the buffers. Presently the commands are hard coded but we could in the future have a higher level languague decide which operation to do on the data. this could lead to a more flexible software to be used in operation.
+On top of all these classes there is a general abstraction layer called \emph{commands} that decide what the software is going to execute on the buffers. Presently the commands are hard coded but we could in the future have a higher level languague decide which operation to do on the data. This could lead to a more flexible software to be used in operation.
 
 \begin{figure}[H]
 \centering
@@ -255,6 +300,6 @@ On top of all these classes there is a general abstraction layer called \emph{co
 \includegraphics[scale=0.3]{spectrogram_uml.png}
 \end{figure}
 
-The spectrogram class is the class responsible to make the spectrogram from the buffers and to add timestamps and values, it uses \gls{OpenCV} as an image library. There is also a possibility to display the spectrogram directly using \gls{OpenGL}/GLUT.
+The spectrogram class is the class responsible for making the spectrogram from the buffers and to add timestamps and values. It uses \gls{OpenCV} as an image library. There is also a possibility to display the spectrogram directly using \gls{OpenGL}/GLUT.
 
 
