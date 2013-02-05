@@ -32,14 +32,31 @@ The particles inside a bunch oscillate longitudinally within the so called bucke
 
 One of the key parameters of the accelerator is the betatron tune defined by the arrangement and strength of defocussing and focusing quadrupoles around the ring. The betatron tune, $Q$, in the horizontal (respectively vertical) plane is defined as the number of oscillations per revolution within the griding magnetic fields around the accelerator. The characteristics of the tune repeats at all integer values in the real-real plane. Thus only the fractional part of the tune is of interest.
 
+$$ f_{\beta} = (n * f_{0}) \pm Q * f_{0} $$
+
+The number of oscillations per turn has to be chosen to avoid resonances. Every harmonic of the tune can amplify dipoles or quadrupoles errors and lead to particules leaving the ring. The tune has to be modified using dipoles and quadrupoles that are placed around the machine to be at a working point.
+
 \begin{figure}[H]
 \centering
-\caption{The working point ``WP'' and beam-beam tune spread ``footprint'' of the LHC in the tune diagram. Including resonances up to the 12^{th} harmonic}
+\caption{The working point ``WP'' and beam-beam tune spread ``footprint'' of the LHC in the tune diagram. Including resonances up to the $12^{\rm {th}}$ harmonic.}
 \includegraphics[scale=1.25]{lhc_working_point.jpeg}
 \floatfoot{Source : The large hadron collider\cite{the_large_hadron_collider}}
 \end{figure}
 
-The number of oscillations per turn has to be chosen to avoid resonances. Every harmonic of the tune can amplify oscillation and lead to particules leaving the ring. The tune can be modified using quadrupoles that are placed around the machine, between dipoles.
+The particules in the machine have a certain spread so the tune working point is a small area.
+
+\section{Tune measurement and relation to FFT}
+
+As the bunch-by-bunch acquisition is done in one point in the machine the sampling frequency is equal to the revolution frequency. Moving to the frequency domain by using \gls{FFT} will normalize the acquisition.
+
+The tune should then be visible as a pick in frequency at the betatron tune value (as we can see on figure~\ref{fig:tune_single}).
+
+\begin{figure}[H]
+\centering
+\label{fig:tune_single}
+\caption{View of the FFT of one acquistion with the ``betatron tune visible'' the 16 of October 2012 at 13:45 from vertical beam 1}
+\includegraphics[scale=0.5]{fft_single.pdf}
+\end{figure}
 
 % Literacy survey
 \section{Tune measurement in the LHC}
