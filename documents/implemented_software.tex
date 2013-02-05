@@ -159,7 +159,7 @@ the \emph{bunch\_buffer} class. This class will use the interface to
 \begin{figure}[H]
 \centering
 \caption{C++ buffer classes UML diagram}
-\includegraphics[scale=0.3]{buffer_uml.png}
+\includegraphics[scale=0.5]{buffer_uml.png}
 \end{figure}
 
 These classes are available in both single precision and double
@@ -177,7 +177,7 @@ To be able to switch from \gls{FFTW} to the \gls{OpenCL} version of the \gls{FFT
 \begin{figure}[H]
 \centering
 \caption{C++ FFT classes UML diagram}
-\includegraphics[scale=0.3]{fft_uml.png}
+\includegraphics[scale=0.5]{fft_uml.png}
 \end{figure}
 
 The \gls{OpenCL} version is doing some steps of the algorithm in the \gls{GPU} itself. To avoid having to transfer to much data from the CPU to the GPU and to have to transform the data from the acquisition board (short 2 bytes integer) to the \gls{GPU} (single or double precision floating points) we do this step on the \gls{GPU} itself in the \emph{kernel\_prepare\_} kernel and then we do the \gls{FFT} computation in the \emph{kernel\_fft\_} kernel, finally we do the accumulation in the \emph{kernel\_acc\_}.
@@ -297,7 +297,7 @@ On top of all these classes there is a general abstraction layer called \emph{co
 \centering
 \label{fig:spectrogram_uml}
 \caption{C++ spectrogram classes UML diagram}
-\includegraphics[scale=0.3]{spectrogram_uml.png}
+\includegraphics[scale=0.5]{spectrogram_uml.png}
 \end{figure}
 
 The spectrogram class is the class responsible for making the spectrogram from the buffers and to add timestamps and values. It uses \gls{OpenCV} as an image library. There is also a possibility to display the spectrogram directly using \gls{OpenGL}/GLUT.
