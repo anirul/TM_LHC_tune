@@ -3,11 +3,9 @@
 %	Experimental Set-up
 %	Model Equations
 
-\chapter{Appendix}
+\appendix
 
-More in depth view of the software and data acquisition.
-
-\section{Estimation of the amount of data}
+\chapter{Estimation of the amount of data}
 
 Presently the \gls{LHC} is working with an interval of 50~ns between \glspl{bunch}. This correspond to a bunch every 20 \glspl{bucket}. But the \gls{OP} is planning to move to 25ns \glspl{bunch} spacing. This would mean 5 \glspl{bucket} between \glspl{bunch}. With the \gls{rffreq} we can compute the number of acquisitions per seconds.
 
@@ -23,7 +21,7 @@ $${\rm for~}25{\rm ~ns}~: 2^{26} * 8 = 2^{29}$$
 
 As \glspl{FFT} on \glspl{GPU} start to be be faster than \glspl{CPU} around $2^{15}$ acquisitions it seems interesting to study this kind of system to compute the \gls{tune}.
 
-\section{Measurement with the ADT}
+\chapter{Measurement with the ADT}
 
 In order to check the feasibility of the system and to have a good prototype the first test will be to excite some of the \glspl{bunch} and acquire the \gls{tune} using the \gls{ADT} during the end of 2012 run\cite{Valuch12}.
 
@@ -41,11 +39,11 @@ The experimental set up is not presently able to acquire more than a certain num
 
 The software used during data acquisition was only able to get the data from the card and copy it on a disk that was available on the \gls{CERN} \gls{NFS}. The software was able to compute the \gls{FFT} but only using \gls{FFTW} and no \gls{GPU}.
 
-\section{Machine development sessions}
+\chapter{Machine development sessions}
 
 Using the \gls{ADT} \glspl{BPM} we acquired data in the machine during 3 independent \glspl{MD}. Most of the data was taken in parallel during normal LHC operation or during \gls{ADT} dedicated \gls{MD} time.
 
-\subsection{First session}
+\section{First session}
 
 Night session of the 11 October 2012.
 
@@ -68,7 +66,7 @@ Overall we got some nice result and that was very encouraging for further test.
 \caption{Spectrograms of the full 11 of October 2012 session on Beam 2}
 \end{figure}
 
-\subsection{Second session}
+\section{Second session}
 
 Parasitic session of the 16 October 2012. 
 
@@ -91,7 +89,7 @@ This session allowed us to validate the acquisition software in normal operation
 \caption{Spectrograms of the full 16 of October 2012 session on Beam 1}
 \end{figure}
 
-\subsection{Third session}
+\section{Third session}
 
 Ramp acquisition of the 14 November 2012. 
 
@@ -105,18 +103,18 @@ The software worked well but the noise at the end of the ramp was too big and th
 \includegraphics[scale=0.3]{md-121114-hb1-bunches111111-16.png}
 \end{figure}
 
-\section{Source code}
+\chapter{Source code}
 
 The source code is available online for the data analysis software under GIT and inside the \gls{CERN} infrastructure for the \gls{FESA} classes under CVS. Code published by \gls{CERN} is by default under \gls{GPL} v3.
 
-\subsection{FESA ADTDSPU}
+\section{FESA ADTDSPU}
 
 The source files for the \gls{ADTDSPU} \gls{FESA} class is available on \gls{CERN} central \gls{CVS} servers at~: \url{http://isscvs.cern.ch/cgi-bin/viewcvs-all.cgi/ALLADTDSPU/v210/?root=FESA-equipment}.
 
-\subsection{FESA Tune Acquisition}
+\section{FESA Tune Acquisition}
 
 The source files for the tune acquisition software is also available on \gls{CERN} central \gls{CVS} servers at~: \url{http://isscvs.cern.ch/cgi-bin/viewcvs-all.cgi/ALLADTTuneMeas/v0/?root=FESA-equipment}.
 
-\subsection{Data analysis}
+\section{Data analysis}
 
-The source files for the data analysis software are available on GitHub at~: \url{https://github.com/anirul/TM_LHC_tune} and is under BSD type license.
+The source files for the data analysis software are available on GitHub at~: \url{https://github.com/anirul/TM\_LHC\_tune} and is under BSD type license.

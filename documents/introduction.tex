@@ -13,9 +13,9 @@
 
 \chapter{Introduction}
 
-The \gls{LHC} is a particle collider situated between the French and Swiss boarder near Geneva at \gls{CERN}. It accelerate two beams of proton to an energy of 7 Tev per beam and collide them in four interaction points, where experiments are located. The goal of the \gls{LHC} is to access and discover new physic beyond standard model.
+The \gls{LHC} is a particle collider situated between the French and Swiss boarder near Geneva at \gls{CERN}. It accelerates two beams of protons to an energy of 7 Tev per beam and collides them in four interaction points, where the experiments are located. The goal of the \gls{LHC} is to access and discover new physics beyond standard model.
 
-To increase the life time of the beam in the machine and therefor increase the physic time, better parameter acquisition and correction is needed. One of the key parameters of an accelerator, and the one with which this work concerns itself, is the \gls{tune}.
+To increase the lifetime of the beam in the machine and therefore increase the physics time, better parameter acquisition and correction is needed. One of the key parameters of an accelerator, and the one with which this work concerns itself, is the \gls{tune}.
 
 \section{Description of the betatron tune}
 
@@ -28,7 +28,7 @@ In a particle accelerator, the charged particles circulate around the ring and o
 \floatfoot{Source : AXEL - 2012\cite{AXEL2012}}
 \end{figure}
 
-The particles inside a bunch oscillate longitudinally within the so called bucket, the area limited by the largest possible closed trajectory in time-energy phase space and transversally in the vertical and horizontal plane. The longitudinal oscillations are damped by the beam control system acting on the 400MHz RF signal sent to the cavities. Transverse oscillations are damped by a separate system~: the \gls{ADT}\cite{Zhabitsky:1141925,Benews11}.
+The particles inside a bunch oscillate longitudinally within the so called bucket, the area limited by the largest possible closed trajectory in time-energy phase space and transversely in the vertical and horizontal planes. The longitudinal oscillations are damped by the beam control system. Transverse oscillations are damped by a separate system~: the \gls{ADT}\cite{Zhabitsky:1141925,Benews11}.
 
 One of the key parameters of the accelerator is the betatron tune defined by the arrangement and strength of defocussing and focusing quadrupoles around the ring. The betatron tune, $Q$, in the horizontal (respectively vertical) plane is defined as the number of oscillations per revolution within the griding magnetic fields around the accelerator. Due to the sampling frequency of the oscillation at a fixed point in the accelerator the amplitude spectrum of the oscillation and hence of the tune repeats at all integer values. Thus only the fractional part of the tune is of interest.
 
@@ -43,7 +43,7 @@ The number of oscillations per turn has to be chosen to avoid resonances. Every 
 \floatfoot{Source : The large hadron collider\cite{the_large_hadron_collider}}
 \end{figure}
 
-The particules in the machine have a certain spread so the tune working point is a small area.
+The number of oscillations per turn has to be chosen to avoid resonances. Every harmonic of the tune can amplify oscillations and lead to particles leaving the ring. The tune can be modified using quadrupoles that are placed around the machine, between the dipoles. The particules in the machine have a certain spread so the tune working point is a small area.
 
 \section{Tune measurement and relation to FFT}
 
@@ -55,6 +55,7 @@ The tune should then be visible as a pick in frequency at the betatron tune valu
 \centering
 \label{fig:tune_single}
 \caption{View of the FFT of one acquistion with the ``betatron tune visible'' the 16 of October 2012 at 13:45 from vertical beam 1}
+\floatfoot{x : tune $Q$ \\ y : amplitude}
 \includegraphics[scale=0.5]{fft_single.pdf}
 \end{figure}
 
@@ -67,7 +68,7 @@ In order to measure the betatron tune in an accelerator, we use
 \glspl{BPM}, which are able to measure the position of the beam in the
 vacuum chamber.
 
-Presently, the \gls{BI} group is using a \gls{BBQ} \cite{Boccardi:1156349} system to acquire the tune over a certain number of machine turns (256 to 128'000). This system can work as a passive instrument without further excitation of the beam or as an on demand system by exciting (increase oscillation amplitude) a limited number of \glspl{bunch} in the beam with the \gls{MKQA}. The \Gls{ADT} has also been used for tune measurement excitation\cite{HofleEvian10}. The \gls{BBQ} system makes an average over a certain number of bunches in the machine and is not able to see individual bunches.
+Presently, the \gls{BI} group is using a \gls{BBQ} \cite{Boccardi:1156349} system to acquire the tune over a certain number of machine turns (256 to 128'000). This system can work as a passive instrument without further excitation of the beam or as an on demand system by exciting (increase oscillation amplitude of) a limited number of \glspl{bunch} in the beam with the \gls{MKQA}. The \Gls{ADT} has also been used for tune measurement excitation\cite{HofleEvian10}. The \gls{BBQ} system makes an average over a certain number of bunches in the machine and is not able to see individual bunches.
 
 In normal operation, when the \gls{ADT} is active, it is difficult to have a good picture of the excited bunches and make a precise tune measurement~: the oscillations created by the \gls{MKQA} are rapidly damped by the \gls{ADT}. There have been studies to disable the \gls{ADT} for a certain number of bunches in order to get a better tune measurement\cite{HofleEvian11}, but this may not be sufficient.
 
@@ -76,29 +77,29 @@ In normal operation, when the \gls{ADT} is active, it is difficult to have a goo
 
 The \gls{ADT} also has \glspl{BPM} assigned to it with electronics installed that permit a bunch-by-bunch measurement at the $\mu$m level\cite{BphMeas07}. This could allow a much more precise measurement on single bunches. Due to the high amount of data to be processed (estimated to 640 mega-bytes per second for each \gls{BPM}) dedicated hardware is needed to compute the correct tune using all information available\cite{HofleChamonix12}.
 
-As the time measurements are used in the so called ``tune feedback'' to directly feed back to the focusing and defocussing magnets, a high rate of measurements is needed with tight constraints on the delays, in order to be able to apply the correction to magnets. The \gls{tune} has to be measured at a rate of about 10 Hz, once every 100 ms.
+As the tune measurements are used in the so called ``tune feedback'' to directly feed back to the focusing and defocussing magnets, a high rate of measurements is needed with tight constraints on the delays, in order to be able to apply the correction to the magnets. The \gls{tune} has to be measured at a rate of about 10 Hz, i.e. once every 100 ms.
 
-During the 2012 normal operation of the \gls{LHC}, data has be acquired using the \gls{ADT} acquisition system and different data processing techniques have been tested to asses the modification that will be needed in order to make a reliable \gls{tune} measurement at a reasonable rate\cite{HofleChamonix12}.
+During the 2012 normal operation of the \gls{LHC}, data has been acquired using the \gls{ADT} acquisition system and different data processing techniques have been tested to asses the modification that will be needed in order to make a reliable \gls{tune} measurement at a reasonable rate\cite{HofleChamonix12}.
 
-The current \gls{VME} implementation has some serious issues, since the bus has a quite low data rate of around 40 megabits per seconds. The data need to either be processed on the acquisition board or to be off-loaded to another computer using the serial link available on the board\cite{Baudrenghien:1124094}.
+The current \gls{VME} implementation has some serious issues, since the bus has a quite low data rate of around 40 megabits per second. The data need to either be processed on the acquisition board or to be off-loaded to another computer using the serial link available on the board\cite{Baudrenghien:1124094}.
 
 \subsection{DSP on VME board}
 
-\Glspl{DSP} are dedicated microprocessors that can perform digital signal processing such as computing \glspl{FFT} at a high rate. These are already used in the machine at different places to provide high speed feedback loops. Would these be fast enough to compute all the \glspl{FFT} needed? \glspl{DSP} are two orders of magnitude slower than \glspl{GPU} for delivering floating-point operation per seconds. We also would have to develop a completely new system in order to be able to use them, since we do not have \glspl{DSP} in the present \gls{ADT}. The cost of development and the complexity of the deployment would have to be studied for such a solution.
+\Glspl{DSP} are dedicated microprocessors that can perform digital signal processing such as computing \glspl{FFT} at a high rate. These are already used in the machine at different places to provide high speed feedback loops. Would these be fast enough to compute all the \glspl{FFT} needed? \glspl{DSP} are two orders of magnitude slower than \glspl{GPU} for delivering floating-point operations per second. We also would have to develop a completely new system in order to be able to use them, since we do not have \glspl{DSP} in the present \gls{ADT}. The cost of development and the complexity of the deployment would have to be studied for such a solution.
 
 \subsection{FPGA pre-processing on VME board}
 
-Like in the approach using \gls{DSP} on VME boards, the question of computing power is an important one. The current \gls{ADT} system only features \glspl{FPGA} on the hardware, complemented by the general purpose \gls{CPU} in the \gls{VME} crate.
+As in the approach using \gls{DSP} on VME boards, the question of computing power is an important one. The current \gls{ADT} system only features \glspl{FPGA} on the hardware, complemented by the general purpose \gls{CPU} in the \gls{VME} crate.
 
-The biggest issue for \gls{FPGA} computing is that something like 100 mega-bytes of temporary values need to be stored for computation of one beam plane. The \glspl{FFT} are difficult to pipeline because the algorithm has to be itererated a certain number of times ($\mathcal{O}(\log_{2} N)$ times for radix 2).
+The biggest issue for \gls{FPGA} computing is that something like 100 mega-bytes of temporary values need to be stored for computation of one beam plane. The \glspl{FFT} are difficult to pipeline because the algorithm has to be iterated a certain number of times ($\mathcal{O}(\log_{2} N)$ times for radix 2).
 
 \subsection{GPU off-board computing}
 
-This solution can be integrated easily within the present setup. The present acquisition cards already have a digital output and could be used to transfer the data to another crate for the computations. The \glspl{GPU} are inexpensive (compared to the price of developing a new \gls{VME} card) and easily scalable. 
+This solution can be integrated easily within the present setup. The present acquisition cards already have a digital output which could be used to transfer the data to another crate for the computations. The \glspl{GPU} are inexpensive (compared to the price of developing a new \gls{VME} card) and easily scalable. 
 
-The \gls{GPU} should have sufficient computing power to be able to make the \glspl{FFT}. The \gls{FFT} computation are made in floating point. Another interesting aspect of this solution is the ability to test it with a \gls{CPU} using the same code.
+The \gls{GPU} should have sufficient computing power to be able to make the \glspl{FFT}. The \gls{FFT} computations are made in floating point. Another interesting aspect of this solution is the ability to test it with a \gls{CPU} using the same code.
 
-\section{GPU Solution constraints}
+\section{GPU solution constraints}
 
 It must be shown how to implement a GPU based system that can deliver a tune value for each beam and plane at a rate that allows the system to be responsive enough for a tune correction to be applied automatically.
 
@@ -122,6 +123,6 @@ And finally we of course require a fast enough GPU to process the data. The numb
 
 \subsection{Timings}
 
-The \gls{BI} group is providing the tune measurement at a rate of 12Hz. This mean 1024 points with a 14\% overlap. 
+The \gls{BI} group is providing the tune measurement at a rate of 12Hz. This means 1024 points with a 14\% overlap. 
 
 At a higher update rate, because of the acquisition frequency (11 kHz), the precision may be insufficient due to the reduce number of samples.

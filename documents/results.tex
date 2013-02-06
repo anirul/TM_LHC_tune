@@ -10,16 +10,16 @@
 
 During the \glspl{MD} we were able to acquire some data from the \gls{LHC} \gls{ADT} system. We used off-line analysis on these data to try the different algorithm and assess the feasibility of the project.
 
-\section{Notch filter}
+\section{Differentiating filter}
 \label{sec:notch}
 
-A notch filter is used to cut the low frequencies amplifying the frequencies around the tune by a factor around 2 and then diminish the tail like for the low frequencies (the frequency domain being anyway symmetric due to the fact that we are converting real values). It will not be used in the final as we are only interested in the band between 0.25 to 0.35. For every sample the filter takes the present sample and subtract the next element. 
+A differentiating filter is used to cut the low frequencies, amplifying the frequencies around the tune by a factor around 2. It will not be used in the final version as we are only interested in the band in which the betatron tune seats, between 0.25 to 0.35 in normalized frequency. For every sample the filter takes the present sample and subtracts the next one. 
 
 $$y_{[n]} = x_{[n]} - x_{[n + 1]}$$
 
-As visible on formula one value is dropped at the end of the data set but as we are using radix 2 \glspl{FFT} the data is cut to a power of 2.
+As visible in the formula one value is dropped at the end of the data set but as we are using radix 2 \glspl{FFT} the data is anyway cut to a power of 2.
 
-This is a differential filter and as we are only interested into the frequencies around the tune this has no incidence on our results and allows for a better visualization of the spectrograms.
+This filter has no incidence on our results but allows for a better visualization of the spectrograms.
 
 \section{FFT}
 \label{sec:FFT}
@@ -40,27 +40,27 @@ The most commonly used \gls{FFT} algorithms are based on a divide-and-conquer ap
 
 $$ \mathcal{O}(N \log_{2}(N)) $$
 
-In the present case the parallelization is happening on the first N of the complexity so the complexity is divided by the number of core (up to to half of $N$ in radix 2 version). 
+In the present case the parallelization is happening on the first N of the complexity so the complexity is divided by the number of cores (up to to half of $N$ in the radix 2 version). 
 
 This is further reduced (in our case) by the fact that we calculate a number of \glspl{FFT} together equal to the number of bunches.
 
 \subsection{FFTW}
 
-\Gls{FFTW} is an implementation of the \gls{DFT} that adapts the algorithm to the hardware in order to maximize the performances~\cite{fftw05}. It is widely regarded as one of the fastest implementation of an \gls{FFT} on a \gls{CPU}.
+\Gls{FFTW} is an implementation of the \gls{DFT} that adapts the algorithm to the hardware in order to maximize the performance~\cite{fftw05}. It is widely regarded as one of the fastest implementations of an \gls{FFT} on a \gls{CPU}.
 
-It was selected as a reference for our implementation. As \gls{OpenCL} can be run directly on a \gls{CPU}, it is possible to compare the time performances between the \gls{OpenCL} code running on \gls{CPU} and the \gls{FFTW} version (see section~\ref{sec:perf}).
+It was selected as a reference for our implementation. As \gls{OpenCL} can be run directly on a \gls{CPU}, it is possible to compare the time performance between the \gls{OpenCL} code running on a \gls{CPU} and the \gls{FFTW} version (see section~\ref{sec:perf}).
 
-It is under GPL license and can be purchased from the \gls{MIT} for commercial purposes. It is used in many commercial and scientific package and software. For example, it is used by MATLAB~\cite{matlab_fftw}.
+It is under GPL license and can be purchased from the \gls{MIT} for commercial purposes. It is used in many commercial and scientific software packages. For example, it is used by MATLAB~\cite{matlab_fftw}.
 
 \subsection{FFT with OpenCL on GPU}
 
-The \gls{FFT} version used in the software is derived from Eric Bainville's version. This is the reference implementation of \gls{FFT} on \gls{OpenCL} and is now the version distributed by Apple\cite{bainville11}. For the sake of simplicity we restrict ourself to the radix~2 version of the implementation.
+The \gls{FFT} version used in the software is derived from Eric Bainville's version. This is the reference implementation of \gls{FFT} on \gls{OpenCL} and is now the version distributed by Apple\cite{bainville11}. For the sake of simplicity we restrict ourselves to the radix~2 version of the implementation.
 
-On \glspl{GPU} the \gls{OpenCL} result is the same as the one using \gls{FFTW} with the advantage to be faster on recent \gls{GPU}. The kernel is called a number of times equal to the size of the vector and then 11 times in the case of 2048 points ($\log_{2}{2^{11}} = 11$). A second dimension is used to pass the multiple vector.
+On \glspl{GPU} the \gls{OpenCL} result is the same as the one using \gls{FFTW} with the advantage of being faster on a recent \gls{GPU}. The kernel is called a number of times equal to the size of the vector and then 11 times in the case of 2048 points ($\log_{2}{2^{11}} = 11$). A second dimension is used to pass the multiple vector.
 
 \subsection{FFT with OpenCL on a CPU}
 
-As \gls{OpenCL} is also able to run on a \gls{CPU} we used the same code as the one used on a \gls{GPU} on a \gls{CPU} yielding similar results. It is interesting to note that the time is very similar to the implementation using \gls{FFTW}.
+As \gls{OpenCL} is also able to run on a \gls{CPU} we used the same code as the one used on a \gls{GPU} on a \gls{CPU} yielding similar results. It is interesting to note that the time needed is very similar to the implementation using \gls{FFTW}.
 
 \section{Amplitude}
 \label{sec:amplitude}
@@ -74,13 +74,13 @@ There are different ways to compute the norm of a 2-dimensional vector in \gls{O
 \section{SVD}
 \label{sec:SVD}
 
-It was suggested by Rama Calaga to use \gls{SVD} in order to diminish the noise and improve the visibility of the tune in the frequency domain. The idea is to take the raw data and use the multiple bunches as a second dimension of the matrix $M$ using SVD, $M$ containing turn by turn data. One can suppress the values in the singular value matrix ($\Sigma$) that are off a certain scale, recompose the $M'$ matrix with less noise.
+It was suggested by Rama Calaga to use \gls{SVD} in order to diminish the noise and improve the visibility of the tune in the frequency domain. The idea is to take the raw data and use the multiple bunches as a second dimension of the matrix $M$ using SVD, $M$ containing turn by turn data. One can suppress the values in the singular value matrix ($\Sigma$) that are off a certain scale, and recompose the $M'$ matrix with less noise.
 
 $$M = U \Sigma V^{T}$$ 
 
 This was first tested in the framework of this work on generated data by Wolfgang H{\"o}f\/le~\cite{HofleEvian10}. Unfortunately we have only 6 bunches in our dataset per acquisition so it is not possible to make this work with the present set up. The $\Sigma$ matrix will only be 6 by 6 and it is not easy to suppress values with a noticeable impact on the signal to noise ratio.
 
-Taking more than one acquisition can at least give some idea on the speed of processing and feasibility. The SVD was implemented using the GNU Scientific Library (with double precision float for the SVD). Speed efficiency is difficult to estimate as we can see on table~\ref{tab:SVD} for the same number of sample, 100 in this table, we have a big variation of speed if we try to use different acquisitions.
+Taking more than one acquisition can at least give some idea of the speed of processing and feasibility. The SVD was implemented using the GNU Scientific Library (with double precision float for the SVD). Speed efficiency is difficult to estimate as we can see in table~\ref{tab:SVD} that for the same number of samples, 100 in this table, we have a big variation of speed if we try to use different acquisitions.
 
 \begin{table}[H]
 \caption{SVD speed correlation with acquisitions bunches for a 100 by 2048 $M$ matrix}
@@ -98,18 +98,18 @@ Bunches & Acquisitions & Time \\
 \end{tabular}
 \end{table}
 
-So it is very difficult to estimate the time the computation would take with the real data. We have to keep in mind that these computations where done using double precision while single would probably be enough. These computations were done using a single thread (SVD is quite difficult to parallelize) and only done on \gls{CPU}.
+So it is very difficult to estimate the time the computation would take with the real data. We have to keep in mind that these computations were done using double precision while single would probably be enough. These computations were done using a single thread (SVD is quite difficult to parallelize) and only done on a \gls{CPU}.
 
 There is a way to make these computation on \gls{GPU}\cite{Lahabar09} and the estimation is that is would be around 5 times better than on a \gls{CPU}.
 
-\section{Performances}
+\section{Performance}
 \label{sec:perf}
 
-Computations were made with an accumulation to simulate the number of bunches that could be present in the final version (2880). As 6 bunches were acquired we used 500 successive acquisitions to make, close to the maximum of 2880.
+Computations were made with an accumulation to simulate the number of bunches that could be present in the final version (2880). As 6 bunches were acquired we used 500 successive acquisitions to make close to the maximum of 2880.
 
-Different strategies were used to try to improve the performance as shown in Figure~\ref{fig:PCFlow}. Pipelining was also used (not used on the Figure as it is difficult to estimate time when using pipelining) and tested on different type of hardware.
+Different strategies were used to try to improve the performance as shown in Figure~\ref{fig:PCFlow}. Pipelining was also used (not used on the Figure as it is difficult to estimate time when using pipelining) and tested on different types of hardware.
 
-The hardware used was mainly the Tesla M2090 based on a Fermi chip. This chips has more cores than a CPU and we can see an improvement with respect to computing speed as shown in Table~\ref{tab:speed}. Table~\ref{tab:fermi} shows the characteristics of the Tesla Fermi card family.
+The hardware used was mainly the Tesla M2090 based on a Fermi chip. This chip has more cores than a CPU and we can see an improvement with respect to computing speed as shown in Table~\ref{tab:speed}. Table~\ref{tab:fermi} shows the characteristics of the Tesla Fermi card family.
 
 \begin{table}[H]
 \caption{NVIDIA Fermi hardware available on the market}
@@ -134,7 +134,7 @@ CUDA cores & 512 & 448 \\
 \end{tabular}
 \end{table}
 
-However, if we have a look on the different cards that are available today on the market we see that the new generation should provide even better result and are available today. These cards show around 5 times the number of \gls{CUDA} core and around 10 times the number of \gls{flops} as shown in Table~\ref{tab:kepler}.
+However, if we have a look at the different cards that are available on the market we see that the new generation should provide even better results and are available today. These cards show around 5 times the number of \gls{CUDA} cores and around 10 times the number of \gls{flops} as shown in Table~\ref{tab:kepler}.
 
 \begin{table}[H]
 \centering
@@ -162,21 +162,21 @@ CUDA cores & 2688 & 2496 & 3072 \\
 
 \subsection{Pipelining}
 
-To improve the performances one of the options is to remove all waiting time between the different operations on the \gls{GPU}, as shown in Figure~\ref{fig:PCFlow}. The different operations done on the \gls{GPU} that are done sequentially can be pipelined.
+To improve the performance one of the options is to remove all waiting time between the different operations on the \gls{GPU}, as shown in Figure~\ref{fig:PCFlow}. The different operations on the \gls{GPU} that are done sequentially can be pipelined.
 
-Pipelining mean that one will not wait for all the sub-operations to be finished for a certain task on a data set, but will already start treating the next set. The first operation is copying the memory from the \gls{CPU} to the \gls{GPU} which takes a certain time. As soon as some of the data is copied the computing can start.
+Pipelining means that one will not wait for all the sub-operations to be finished for a certain task on a data set, but will already start treating the next set. The first operation is copying the memory from the \gls{CPU} to the \gls{GPU} which takes a certain time. As soon as some of the data is copied the computing can start.
 
-In \gls{OpenCL} the different commands are queued and this command queue can be flushed (with the command endQueue). To make the pipelining work the only thing to do is to only flush at the end when all the computing has been queued. Of course some attention should be kept to avoid problems with modules writing or reading data that has not yet been read or written.
+In \gls{OpenCL} the different commands are queued and this command queue can be flushed (with the command endQueue). To make the pipelining work the thing to do is to flush only at the end when all the computing has been queued. Of course some attention should be kept to avoid problems with modules writing or reading data that has not yet been read or written.
 
-In our case this means that the copying of the data from the \gls{CPU} to the \gls{GPU} the preparation of the data, the \gls{FFT} itself, and the amplitude computation, the accumulation and getting back the values to the \gls{CPU} are queued together in one go.
+In our case this means that the copying of the data from the \gls{CPU} to the \gls{GPU}, the preparation of the data, the \gls{FFT} itself, the amplitude computation, the accumulation and getting back the values to the \gls{CPU} are queued together in one go.
 
-That allows us to have a 3 to 10\% improvement on the performances, but it is difficult then to estimate the computing time of individual steps consequently the values shown in Figure~\ref{fig:PCFlow} are without pipelining.
+This allows us to have a 3 to 10\% improvement on the performances, but it is difficult then to estimate the computing time of individual steps, and consequently the values shown in Figure~\ref{fig:PCFlow} are without pipelining.
 
 \subsection{Memory}
 
 Copying memory from and to the \gls{GPU} can be expensive time wise, as shown in Figure~\ref{fig:PCFlow}. Copying 3000 times 2048 values in short (2 bytes) takes around 10 ms. This is the reason why it is important to make the accumulation on the \gls{GPU} and avoid the \gls{FFT} computation of 3000 times 2048 complex values in float (8 bytes). It would have cost at least 40 ms to copy these values back to the \gls{CPU}. 
 
-The 20 ms shown in Figure~\ref{fig:PCFlow} correspond to half the values because we can cut half of the result as the \gls{FFT} computed it in real only so the result is mirrored.
+The 20 ms shown in Figure~\ref{fig:PCFlow} corresponds to half the values because we can cut half of the result as the \gls{FFT} is computed in real only so the result is mirrored.
 
 \subsection{Time}
 
@@ -207,11 +207,11 @@ GeForce 650M & OpenCL & 384 & 0.9 & disable & 365 \\
 \end{tabular}
 \end{table}
 
-Time performances were computed using the timing library from boost \cite{boost} on different hardware, \glspl{GPU} and \glspl{CPU}, with and without pipeline enable as shown on table \ref{tab:speed}.
+Time performance was computed using the timing library from boost \cite{boost} on different hardware, \glspl{GPU} and \glspl{CPU}, with and without pipeline enabled as shown in table \ref{tab:speed}.
 
 The time performances between \gls{FFTW} and \gls{OpenCL} on a \gls{CPU} are very close, hence the radix 2 implementation on \gls{GPU} should be solid.
 
-On a dedicated \gls{GPU} like the Tesla M2090  the performances are around 10 times better than on a modern \gls{CPU}. This is very encouraging and means that on the latest generation hardware we should be able to achieve even better performances.
+On a dedicated \gls{GPU} like the Tesla M2090  the performance is around 10 times better than on a modern \gls{CPU}. This is very encouraging and means that on the latest generation of hardware we should be able to achieve even better performance.
 
 \section{Spectrogram}
 \label{sec:spectrogram}
@@ -220,10 +220,10 @@ A Spectrogram is a time-varying spectral representation of a
 signal. The signal is transformed via \gls{FFT} from time domain to
 spectral domain. Each transformation produces a line in this case and
 is tagged with the time of the acquisition. The amplitude is used in
-order to have a single representation of both real and imaginary part
+order to have a single representation of both real and imaginary parts
 of the result.
 
-As we do a normalization per acquisition on the spectrum at the end of the computing we have a representation of the highest value with highest color (white). If the amplitude is weaker we have a darker representation of the color (black). To have a finer grain in representation intermediate color was chosen in this case blue as you can see in figure \ref{fig:squeeze} \ref{fig:ramp} and \ref{fig:adt_off}.
+As we do a normalization per acquisition on the spectrum at the end of the computing we have a representation of the highest value with the lightest color (white). If the amplitude is weaker we have a darker representation of the color (black). To have a finer grain in representation an intermediate color was chosen, in this case blue, as can be seen in figure \ref{fig:squeeze} \ref{fig:ramp} and \ref{fig:adt_off}.
 
 \begin{figure}[H]
 \caption{Spectrogram with ADT off on the 16 October 2012 on vertical beam 1 during squeeze and collision}
@@ -232,4 +232,4 @@ As we do a normalization per acquisition on the spectrum at the end of the compu
 \includegraphics[scale=0.3]{md-121016-vb1-m1-6bunches-10acc-1359-1425-collision.pdf}
 \end{figure}
 
-The Spectrogram allow us to clearly see a mark in the signal that correspond to a region where the tune is suppose to be.
+The Spectrogram allow us to clearly see a mark in the signal that correspond to a region where the tune is supposed to be.
