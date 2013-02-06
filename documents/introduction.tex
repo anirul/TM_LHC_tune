@@ -28,13 +28,13 @@ In a particle accelerator, the charged particles circulate around the ring and o
 \floatfoot{Source : AXEL - 2012\cite{AXEL2012}}
 \end{figure}
 
-The particles inside a bunch oscillate longitudinally within the so called bucket, the area limited by the largest possible closed trajectory in time-energy phase space and transversally in the vertical and horizontal plane. The longitudinal oscillations are damped by the beam control system. Transversal oscillations are damped by a separate system~: the \gls{ADT}\cite{Zhabitsky:1141925,Benews11}.
+The particles inside a bunch oscillate longitudinally within the so called bucket, the area limited by the largest possible closed trajectory in time-energy phase space and transversally in the vertical and horizontal plane. The longitudinal oscillations are damped by the beam control system acting on the 400MHz RF signal sent to the cavities. Transverse oscillations are damped by a separate system~: the \gls{ADT}\cite{Zhabitsky:1141925,Benews11}.
 
-One of the key parameters of the accelerator is the betatron tune defined by the arrangement and strength of defocussing and focusing quadrupoles around the ring. The betatron tune, $Q$, in the horizontal (respectively vertical) plane is defined as the number of oscillations per revolution within the griding magnetic fields around the accelerator. The characteristics of the tune repeats at all integer values in the real-real plane. Thus only the fractional part of the tune is of interest.
+One of the key parameters of the accelerator is the betatron tune defined by the arrangement and strength of defocussing and focusing quadrupoles around the ring. The betatron tune, $Q$, in the horizontal (respectively vertical) plane is defined as the number of oscillations per revolution within the griding magnetic fields around the accelerator. Due to the sampling frequency of the oscillation at a fixed point in the accelerator the amplitude spectrum of the oscillation and hence of the tune repeats at all integer values. Thus only the fractional part of the tune is of interest.
 
 $$ f_{\beta} = (n * f_{0}) \pm Q * f_{0} $$
 
-The number of oscillations per turn has to be chosen to avoid resonances. Every harmonic of the tune can amplify dipoles or quadrupoles errors and lead to particules leaving the ring. The tune has to be modified using dipoles and quadrupoles that are placed around the machine to be at a working point.
+The number of oscillations per turn has to be chosen to avoid resonances. Every harmonic of the tune can amplify dipoles or quadrupoles errors and lead to particles leaving the ring. The tune has to be modified using dipoles and quadrupoles that are placed around the machine to be at a working point.
 
 \begin{figure}[H]
 \centering
@@ -57,6 +57,8 @@ The tune should then be visible as a pick in frequency at the betatron tune valu
 \caption{View of the FFT of one acquistion with the ``betatron tune visible'' the 16 of October 2012 at 13:45 from vertical beam 1}
 \includegraphics[scale=0.5]{fft_single.pdf}
 \end{figure}
+
+Spectrogram can be use to see the evolution of this peak during time (as will be visible on figure~\ref{fig:adt_off} and~\ref{fig:bunch_0_adt_off}).
 
 % Literacy survey
 \section{Tune measurement in the LHC}
