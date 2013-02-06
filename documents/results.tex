@@ -13,7 +13,7 @@ During the \glspl{MD} we were able to acquire some data from the \gls{LHC} \gls{
 \section{Notch filter}
 \label{sec:notch}
 
-A notch filter is used to cut the low frequencies amplifying the frequencies around the tune by a factor around 2 and then diminish the tail like for the low frequencies (the frequency domain being anyway symmetric due to the fact that we are converting real values. It will not be used in the final as we are only interested in the band between 0.25 to 0.35. For every sample the filter takes the present sample and subtract the next element. 
+A notch filter is used to cut the low frequencies amplifying the frequencies around the tune by a factor around 2 and then diminish the tail like for the low frequencies (the frequency domain being anyway symmetric due to the fact that we are converting real values). It will not be used in the final as we are only interested in the band between 0.25 to 0.35. For every sample the filter takes the present sample and subtract the next element. 
 
 $$y_{[n]} = x_{[n]} - x_{[n + 1]}$$
 
