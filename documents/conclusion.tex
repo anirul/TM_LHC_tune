@@ -1,18 +1,11 @@
 % conclusion
 
+\glsresetall
 \chapter{Conclusion}
-
-\glsreset{GPU}
-\glsreset{FFT}
-\glsreset{LHC}
 
 The \gls{tune} is a critical parameter of a particle collider machine. In the \gls{LHC} the \gls{tune} acquisition is currently computed by doing \glspl{FFT} on an averaged value over all the bunches. In order to have a useful on-line \gls{FFT} computation of all individual bunches a faster method is needed. 
 
-\Glspl{GPU} used in graphics cards are faster than normal \glspl{CPU} for
-parallelized computations. Using a \gls{GPU} we can accelerate
-\gls{FFT} computation by a factor of 10 especially if we have
-multiple \glspl{FFT} to be computed at the same time. This could allow for a new on-line
-bunch-by-bunch acquisition of the \gls{tune} with an update rate sufficient for the LHC operation requirements.
+\Glspl{GPU} used in graphics cards are faster than normal \glspl{CPU} for parallelized computations. Using a \gls{GPU} we can accelerate \gls{FFT} computation by a factor of 10 especially if we have multiple \glspl{FFT} to be computed at the same time. This could allow for a new on-line bunch-by-bunch acquisition of the \gls{tune} with an update rate sufficient for the LHC operation requirements.
 
 New hardware will have to be deployed in the \gls{ADT} signal processing electronics, which will in turn need new software to drive it. But this should be achievable as most of it is already present in the \gls{ADT} setup.
 

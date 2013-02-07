@@ -3,8 +3,8 @@
 %	Experimental Set-up
 %	Model Equations
 
-\appendix
-
+\appendix\addtocontents{toc}{\protect\newpage}
+\glsresetall
 \chapter{Estimation of the amount of data}
 
 Presently the \gls{LHC} is working with an interval of 50~ns between \glspl{bunch}. This correspond to a bunch every 20 \glspl{bucket}. But the \gls{OP} is planning to move to 25ns \glspl{bunch} spacing. This would mean 5 \glspl{bucket} between \glspl{bunch}. With the \gls{rffreq} we can compute the number of acquisitions per seconds.
@@ -109,11 +109,11 @@ The source code is available online for the data analysis software under GIT and
 
 \section{FESA ADTDSPU}
 
-The source files for the \gls{ADTDSPU} \gls{FESA} class is available on \gls{CERN} central \gls{CVS} servers at~: \url{http://isscvs.cern.ch/cgi-bin/viewcvs-all.cgi/ALLADTDSPU/v210/?root=FESA-equipment}.
+The source files for the \gls{ADTDSPU} \gls{FESA} class is available on \gls{CERN} central \gls{CVS} servers (only from inside CERN network) at~: \url{http://isscvs.cern.ch/cgi-bin/viewcvs-all.cgi/ALLADTDSPU/v210/?root=FESA-equipment}.
 
 \section{FESA Tune Acquisition}
 
-The source files for the tune acquisition software is also available on \gls{CERN} central \gls{CVS} servers at~: \url{http://isscvs.cern.ch/cgi-bin/viewcvs-all.cgi/ALLADTTuneMeas/v0/?root=FESA-equipment}.
+The source files for the tune acquisition software is also available on \gls{CERN} central \gls{CVS} servers (only from inside CERN network) at~: \url{http://isscvs.cern.ch/cgi-bin/viewcvs-all.cgi/ALLADTTuneMeas/v0/?root=FESA-equipment}.
 
 \section{Data analysis}
 

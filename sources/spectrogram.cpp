@@ -217,6 +217,10 @@ void spectrogram::save_dump(const std::string& file) const {
 	fclose(fp);
 }
 
+void spectrogram::save_csv(const std::string& file) const {
+
+}
+
 void spectrogram::load_dump(const std::string& file) {
 	FILE* fp = NULL;
 	fp = fopen(file.c_str(), "rb");

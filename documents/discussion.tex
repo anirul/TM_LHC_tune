@@ -1,5 +1,6 @@
 % Discussion
 
+\glsresetall
 \chapter{Discussion}
 
 Analysis of the spectrograms show a mark that can be high in energy or be a trench in the signal. It is too early to assume this is the \gls{tune} but it is still very encouraging. It is possible to assess the feasibility of the tune measurement using \gls{GPU}.
@@ -21,7 +22,7 @@ When the \gls{ADT} is off line there is a clear mark on the tune as shown in Fig
 \includegraphics[scale=0.3]{md-121016-vb1-m1-6bunches-10acc-1337-1349-ADT-off.pdf}
 \end{figure}
 
-These observations are consistent with the gated-\gls{BBQ} result of 2012 \cite{Valuch12} and show that we can acquire the tune with the \gls{ADT} and get a clear bunch-by-bunch view of the tune even for only one bunch as shown in Figure~\ref{fig:bunch_0_adt_off}.
+These observations are consistent with the gated-\gls{BBQ} result of 2012~\cite{Valuch12} and show that we can acquire the tune with the \gls{ADT} and get a clear bunch-by-bunch view of the tune even for only one bunch as shown in Figure~\ref{fig:bunch_0_adt_off}.
 
 \begin{figure}[H]
 \caption{Spectrogram with ADT off on the 16 October 2012 on horizontal beam 1 before the ramp, 1 bunch (0) 8 accumulations}
@@ -34,13 +35,7 @@ These observations are consistent with the gated-\gls{BBQ} result of 2012 \cite{
 
 When the \gls{ADT} is working the oscillations of the beam are damped by it, as a result the tune is less visible. But we should be able to see the effect of the tune on the damper if the damper is well adjusted to the beam. This mean that we should see a clear gap in the frequency around the tune frequency (or at the frequency at which the damper is operating, a frequency that should be close to the tune but not necessary be the tune itself).
 
-This corresponds to the spectrogram we see during operation as shown in
-Figure~\ref{fig:ramp}. We also see in this figure the energy ramp
-before collision. Before putting the beam in collision we do a squeeze
-(operation during which we compress the beam size in the interaction
-points, where the experiments are). The squeeze is changing the tune
-and we can see it on the spectrogram around 14h03 on the figure
-\ref{fig:ramp}.
+This corresponds to the spectrogram we see during operation as shown in Figure~\ref{fig:ramp}. We also see in this figure the energy ramp before collision. Before putting the beam in collision we do a squeeze (operation during which we compress the beam size in the interaction points, where the experiments are). The squeeze is changing the tune and we can see it on the spectrogram around 14h03 on the figure~\ref{fig:ramp}.
 
 \begin{figure}[H]
 \caption{Spectrogram with damper working on the 16 October 2012 on vertical beam 1 during the ramp, 6 bunches 10 accumulations}
@@ -144,11 +139,7 @@ Some software upgrade and redeployment is still necessary before the operational
 
 The drivers for the \gls{ADT} acquisition card will need some updating, changing the memory map and adjusting the drivers for the control registers. This should be quite straightforward.
 
-A driver for the Serial link receiver card will be needed. If we use
-one that is made inside \gls{CERN} we can have it made by the controls
-group (CO). In case we buy an off the shelf solution we will have to
-make the driver in-house using the driver framework and the tools we
-have.
+A driver for the Serial link receiver card will be needed. If we use one that is made inside \gls{CERN} we can have it made by the controls group (CO). In case we buy an off the shelf solution we will have to make the driver in-house using the driver framework and the tools we have.
 
 \subsection{OpenCL}
 

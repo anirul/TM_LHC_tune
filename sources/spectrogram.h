@@ -87,6 +87,7 @@ public :
 			int64_t end_time = std::numeric_limits<int64_t>::max());
 	void save_dump(const std::string& file) const;
 	void load_dump(const std::string& file);
+	void save_csv(const std::string& file) const;
 	uint32_t pitch() const;
 	uint32_t line_count() const;
 	const std::vector<float>& data() const;

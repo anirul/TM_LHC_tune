@@ -6,6 +6,7 @@
 %	order of presentation
 % 	cross references
 
+\glsresetall
 \chapter{Results}
 
 During the \glspl{MD} we were able to acquire some data from the \gls{LHC} \gls{ADT} system. We used off-line analysis on these data to try the different algorithm and assess the feasibility of the project.
@@ -54,7 +55,7 @@ It is under GPL license and can be purchased from the \gls{MIT} for commercial p
 
 \subsection{FFT with OpenCL on GPU}
 
-The \gls{FFT} version used in the software is derived from Eric Bainville's version. This is the reference implementation of \gls{FFT} on \gls{OpenCL} and is now the version distributed by Apple\cite{bainville11}. For the sake of simplicity we restrict ourselves to the radix~2 version of the implementation.
+The \gls{FFT} version used in the software is derived from Eric Bainville's version. This is the reference implementation of \gls{FFT} on \gls{OpenCL} and is now the version distributed by Apple~\cite{bainville11}. For the sake of simplicity we restrict ourselves to the radix~2 version of the implementation.
 
 On \glspl{GPU} the \gls{OpenCL} result is the same as the one using \gls{FFTW} with the advantage of being faster on a recent \gls{GPU}. The kernel is called a number of times equal to the size of the vector and then 11 times in the case of 2048 points ($\log_{2}{2^{11}} = 11$). A second dimension is used to pass the multiple vector.
 
@@ -100,7 +101,7 @@ Bunches & Acquisitions & Time \\
 
 So it is very difficult to estimate the time the computation would take with the real data. We have to keep in mind that these computations were done using double precision while single would probably be enough. These computations were done using a single thread (SVD is quite difficult to parallelize) and only done on a \gls{CPU}.
 
-There is a way to make these computation on \gls{GPU}\cite{Lahabar09} and the estimation is that is would be around 5 times better than on a \gls{CPU}.
+There is a way to make these computation on \gls{GPU}~\cite{Lahabar09} and the estimation is that is would be around 5 times better than on a \gls{CPU}.
 
 \section{Performance}
 \label{sec:perf}
@@ -113,7 +114,7 @@ The hardware used was mainly the Tesla M2090 based on a Fermi chip. This chip ha
 
 \begin{table}[H]
 \caption{NVIDIA Fermi hardware available on the market}
-\floatfoot{Source : NVIDIA\cite{nvidia}}
+\floatfoot{Source : NVIDIA~\cite{nvidia}}
 \label{tab:fermi}
 \centering
 \begin{tabular}{|l|l|l|}
@@ -139,7 +140,7 @@ However, if we have a look at the different cards that are available on the mark
 \begin{table}[H]
 \centering
 \caption{NVIDIA Kepler hardware available on the market}
-\floatfoot{Source : NVIDIA\cite{nvidia}}
+\floatfoot{Source : NVIDIA~\cite{nvidia}}
 \label{tab:kepler}
 \begin{tabular}{|l|l|l|l|}
 \hline
@@ -207,7 +208,7 @@ GeForce 650M & OpenCL & 384 & 0.9 & disable & 365 \\
 \end{tabular}
 \end{table}
 
-Time performance was computed using the timing library from boost \cite{boost} on different hardware, \glspl{GPU} and \glspl{CPU}, with and without pipeline enabled as shown in table \ref{tab:speed}.
+Time performance was computed using the timing library from boost~\cite{boost} on different hardware, \glspl{GPU} and \glspl{CPU}, with and without pipeline enabled as shown in table \ref{tab:speed}.
 
 The time performances between \gls{FFTW} and \gls{OpenCL} on a \gls{CPU} are very close, hence the radix 2 implementation on \gls{GPU} should be solid.
 

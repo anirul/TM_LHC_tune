@@ -24,32 +24,14 @@
 \include{title}
 
 \begin{abstract}
-  This thesis studies a possible futur implementation of a betatron
-  tune measurement in the \gls{LHC} at \gls{CERN} using a \gls{GPGPU}
-  to analyse data acquired with the \gls{ADT}. The present hardware
-  and future possible implementations using \gls{ADT} acquisitions and
-  \gls{GPU} computing are described. The \gls{ADT} data have to be
-  processed to extract the \gls{tune}. To compute the tune, the signal
-  is transformed from the time domain to the frequency domain using
-  \gls{FFT} on \glspl{GPU}. We show that it is possible to achieve one
-  order of magnitude faster \glspl{FFT} on a Fermi generation
-  \gls{GPU} than what can be done using a i7 generation
-  \gls{CPU}. This makes online per \gls{bunch} \gls{FFT} computation
-  and betatron tune measurement possible.
+  This thesis studies a possible futur implementation of a betatron tune measurement in the \gls{LHC} at \gls{CERN} using a \gls{GPGPU} to analyse data acquired with the \gls{ADT}. The present hardware and future possible implementations using \gls{ADT} acquisitions and \gls{GPU} computing are described. The \gls{ADT} data have to be processed to extract the \gls{tune}. To compute the tune, the signal is transformed from the time domain to the frequency domain using \gls{FFT} on \glspl{GPU}. We show that it is possible to achieve one order of magnitude faster \glspl{FFT} on a Fermi generation \gls{GPU} than what can be done using a i7 generation \gls{CPU}. This makes online per \gls{bunch} \gls{FFT} computation and betatron tune measurement possible.\\[2cm]
+
+  Ce travail de th{\`e}se {\'e}tudie la mise en {\oe}uvre d'une nouvelle mesure des oscillations betatronique dans le Grand collisionneur de hadrons (LHC) de l'organisation europ{\'e}enne pour la recherche nucléaire (CERN) {\`a} l'aide d'unit{\'e}s de traitement graphique utilis{\'e}e pour du calcul (GPGPU) en utilisant les donn{\'e}es acquises avec le ``damper'' transverse (ADT). Les impl{\'e}mentations actuelles et les impl{\'e}mentations futures possibles en utilisant les acquisitions de l'ADT avec des unité de traitement graphique (GPU) sont d{\'e}crites. Les données de l'ADT doivent {\^e}tre trait{\'e}es pour en extraire les oscilliations betatronniques. Pour calculer la fr{\'e}quence d'oscilliation betatronique ``tune'', le signal est transform{\'e} du domaine temporel au domaine fr{\'e}quentiel en utilisant les transformées de Fourier rapide (FFT) sur les GPUs. Nous montrons qu'il est possible d'atteindre des vitesses de transformation un ordre de grandeur plus rapide sur une génération Fermi de GPU que ce qui peut être fait en utilisant une unit{\'e} centrale (CPU) de g{\'e}n{\'e}ration i7. Ce qui rend le calcul de la fr{\'e}quence d'oscilliation betatronique pour tout les paquets de particules en temps r{\'e}el possible.
 \end{abstract}
 
 \chapter*{Acknowledgements}\addcontentsline{toc}{chapter}{Acknowledgements}
 
-I wish to thank \gls{CERN} and the \gls{Hepia} for making this master
-thesis possible. I also wish to thank: Dr. Andy Butterworth and
-Dr. Ing. Erk Jensen who supported me in my decision to make this
-master thesis; Dr. Wolfgang H{\"o}fle for suggesting that I use GPU in
-this particular field and for his supervision; Dr. Daniel Valuch for
-the assistance on the damper and for all his ideas; Dr. Rama Calaga
-for the help on the mathematics of \gls{SVD} and his many
-suggestions. Finaly, I wish to thank Prof. Dr. Paul Albuquerque who
-was my professor and supervisor during the entire thesis as well as
-his assistant Pierre Kunzli.
+I wish to thank \gls{CERN} and the \gls{Hepia} for making this master thesis possible. I also wish to thank: Dr. Andy Butterworth and Dr. Ing. Erk Jensen who supported me in my decision to make this master thesis; Dr. Wolfgang H{\"o}fle for suggesting that I use GPU in this particular field and for his supervision; Dr. Daniel Valuch for the assistance on the damper and for all his ideas; Dr. Rama Calaga for the help with the mathematics of the \gls{SVD} and his many suggestions. Finally, I wish to thank Prof. Dr. Paul Albuquerque who was my professor and supervisor during the entire thesis as well as his assistant Pierre Kunzli.
 
 \tableofcontents
 \listoffigures
