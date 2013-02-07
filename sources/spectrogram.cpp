@@ -217,8 +217,26 @@ void spectrogram::save_dump(const std::string& file) const {
 	fclose(fp);
 }
 
-void spectrogram::save_csv(const std::string& file) const {
-
+void spectrogram::save_csv(const std::string& file, bool simple) const {
+	std::ofstream ofs(file.c_str());
+	if (!ofs.is_open())
+		throw std::runtime_error("could not open file : " + file);
+	if (!simple) {
+		ofs << "time, ";
+		for (int i = 0; i < pitch_; ++i)
+			ofs << ((float)i / (float)(pitch_ * 2)) << ", ";
+	}
+	for (int i = 0; i < data_.size(); ++i) {
+		if ((i % pitch_) == 0) {
+			ofs << std::endl;
+			if (!simple)
+				ofs << boost::posix_time::from_time_t(
+					time(i / pitch_) / 1000000000) << ", ";
+		}
+		ofs << data_[i] << ", ";
+	}
+	ofs << std::endl;
+	ofs.close();
 }
 
 void spectrogram::load_dump(const std::string& file) {

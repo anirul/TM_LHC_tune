@@ -16,25 +16,25 @@ The implemented system consists of three pieces of software~:
 \item An analysis software that can compute the \glspl{FFT} on \glspl{GPU}.
 \end{enumerate}
 
-In the final version the software will be merged in a single executable that should run on the machine with the \gls{GPU} and the receiver card. The present solution has been put into place because the present hardware is still in development and there is no way of acquiring the maximum 2880 bunches from the machine. The hardware is receiving the acquisition data but the \gls{VME} is not fast enough to transfer it to the \gls{CPU}.
+In the final version the software will be merged in a single executable that should run on the machine with the \gls{GPU} and the receiver card. The present solution has been put into place because the new hardware is in development for the rapid data transfer and there is no way of acquiring the maximum 2880 bunches from the machine with the present hardware framework. The hardware is receiving the acquisition data but the \gls{VME} is not fast enough to transfer it to the \gls{CPU}.
 
 \section{ADTDSPU control software}
 
 The first layer that was needed is a driver that can control the \gls{VME} card and forward the interrupts. This is done using the standard driver framework from the \gls{CO} at \gls{CERN}.
 
-The \gls{FESA}, the standard middle-ware framework used at \gls{CERN} to control equipments, was used to develop a higher level software to control the card. This particular card needs a real time task in order to react to an interrupt coming from the hardware and to inform when a new acquisition is ready to be read.
+The \gls{FESA}, the standard middle-ware framework used at \gls{CERN} to control equipments, was used to develop a higher level software to control the card. This particular card needs a real time task in order to react to an interrupt coming from the hardware and to signal when a new acquisition is ready to be read.
 
-The software was originally written by David Gl{\'e}nat, Andrey Pashnin took it over and wrote the specific part of the ``tune acquisition'' and is now under Fr{\'e}d{\'e}ric Dubouchet's responsibility together with all other \gls{ADT} software.
+The software was originally written by David Gl{\'e}nat, Andrey Pashnin wrote the specific part of the ``tune acquisition'', it is now under the responsibility of Fr{\'e}d{\'e}ric Dubouchet's together with all other \gls{ADT} software.
 
-It is made of three main parts, two of them user interfaces. The tune measurement control interface sets the acquisition parameters. The Tune measurement data interface receives the data from the card and displays it to the user. Finally, a real-time task receives the interrupts and notifies the user that there is new data available.
+The software is made of three main parts, two of them user interfaces. The tune measurement control interface sets the acquisition parameters. The Tune measurement data interface receives the data from the card and displays it to the user. Finally, a real-time task receives the interrupts and notifies the user that there is new data available.
 
-The Interfaces are exposed trough the \gls{CERN} middle-ware, which makes it available to other applications, such as the data acquisition software.
+The Interfaces are exposed through the \gls{CERN} middle-ware, which makes it available to other applications, such as the data acquisition software.
 
 \subsection{Control interfaces}
 
-The control interface is basic. It allows the user to set the register to enable the acquisition and to set the mask that decide which bunches in the acquisition have to be recorded in the memory. The mask is described as an array of 3564 short (2-bytes word) that can be either 0 (not selected) or 1 (selected).
+The control interface is basic. It allows the user to set the register to enable the acquisition and to set the mask that decide which bunches in the acquisition have to be recorded in the memory. The mask is described as an array of 3564 short (2bytes words) that can be either 0 (not selected) or 1 (selected).
 
-This interface allow us to select which bunches we want to acquire. The machine can never be fully saturated with bunches. A gap is required in the train to accomodate the extraction kicker risetime, and allow for the safe dumping of the beam.
+This interface allows us to select which bunches we want to acquire. The machine can never be fully saturated with bunches. A gap is required in the train to accomodate the extraction kicker risetime, and allow for the safe dumping of the beam.
 
 Even if the present interface allowed us to have all bunches in the machine selected, it is clear that as the memory is limited to 16 kilo-short (32 kilo-bytes), we would generate too many interrupts per second for the interface to be usable.
 
@@ -48,20 +48,20 @@ The data interface is the interface which the data acquisition software is using
 \begin{figure}[H]
 \caption{ADTDSPU tune acquisition process description}
 \centering
-\includegraphics[scale=0.3]{adtdspu_acq.pdf}
+\includegraphics[scale=0.5]{adtdspu_acq.pdf}
 \end{figure}
 
-A ``real-time'' process is waiting for the interrupt to happen, using a select like mechanism. The Linux used at \gls{CERN} on the front-ends is a custom kernel with the real-time patch, this guarantees that the latency between the interrupt and the process being called is not too big (usually under 10 micro-seconds).
+A ``real-time'' process is waiting for the interrupt to happen, using a select like mechanism. The Linux used at \gls{CERN} on the front-ends is a custom kernel with the real-time patch, that guarantees that the latency between the interrupt and the process being called is not too big (usually under 10 micro-seconds).
 
-This process create a custom event source which triggers the copying of the hardware buffer into the \gls{CPU} buffer and notifies the tune measurement data task that the buffers are ready to be read.
+This process creates a custom event source which triggers the copying of the hardware buffer into the \gls{CPU} buffer and notifies the tune measurement data task that the buffers are ready to be read.
 
-Notifying the task actually calls it and this task (called server task as this is an interface task) is then telling its clients to come and get the acquisition data. 
+Notifying the task actually calls it and this task (called server task as this is an interface task) is then telling its clients to come and fetch the acquisition data. 
 
 \section{Acquisition software}
 
-The acquisition software was used to verify that the idea of getting the tune out of the DSPU card data was feasible as well as providing a means to log the acquisition to a file for subsequent checking and processing.
+The acquisition software was used to verify that the idea of extracting the tune out of the DSPU card data was feasible as well as providing a means to log the data to a file for subsequent checking and processing.
 
-The acquisition software is then able to compute the \gls{FFT} using \gls{FFTW} and display it to the operators in the \gls{CCC} from where all the eight accelerators of \gls{CERN} are controlled. On the interface one can decide which type of graph to display and also enable saving of the data files to be processed by the data analysis software.
+Morover, the acquisition software is able to compute \glspl{FFT} using \gls{FFTW} and display them to the operators in the \gls{CCC} from where all the eight accelerators of \gls{CERN} are controlled. On the interface one can decide which type of graph to display and also enable saving of the data files that are to be processed by the data analysis software.
 
 \subsection{Control interface}
 
@@ -77,15 +77,15 @@ The control interface allows us to decide which file type to save (if we want to
 From the control interface we can also via the data interface get access to the resulting graphs. We can choose which algorithm to use on the display~:
 
 \begin{enumerate}
-\item Time domain, which will display the raw signal.
-\item Amplitude linear, which will display the amplitude of the FFT.
-\item Amplitude logarithmic, same but on a log scale.
-\item Average amplitude linear, averaging over all available bunches.
-\item Average amplitude logarithmic, averaging over all available bunches logarithmic scale.
-\item Phase, display the phase of the signal.
+\item ``Time domain'', which will display the raw signal.
+\item ``Amplitude linear'', which will display the amplitude of the FFT.
+\item ``Amplitude logarithmic'', ditto but on a log scale.
+\item ``Average amplitude linear'', averaging over all available bunches.
+\item ``Average amplitude logarithmic'', ditto in logarithmic scale.
+\item ``Phase'', display the phase of the signal.
 \end{enumerate}
 
-The FFT and the Phase are computed using FFTW at the time of display. In fact this is using the same C++ \emph{bunch\_buffer} class as the one used in the data analysis software 
+The FFT and the Phase are computed using FFTW this is processed when displayed. The same C++ \emph{bunch\_buffer} as in the data analysis software is used
 
 \subsection{ADTDSPU subscription}
 
