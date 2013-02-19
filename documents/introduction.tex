@@ -20,7 +20,7 @@ In a particle accelerator, the charged particles circulate around the ring and o
 \begin{figure}[H]
 \centering
 \caption{Bunch and bucket time-energy phase space longitudinal diagram}
-\includegraphics[scale=0.3]{phase_space.jpeg}
+%\includegraphics[scale=0.3]{phase_space.jpeg}
 \floatfoot{Source : AXEL - 2012~\cite{AXEL2012}}
 \end{figure}
 
@@ -31,45 +31,41 @@ One of the key parameters of the accelerator is the betatron tune defined by the
 %(n * f_{0}) \pm 
 $$ f_{\beta} = Q * f_{0} $$
 
-The number of oscillations per turn has to be chosen to avoid resonances. Every harmonic of the tune can amplify dipoles or quadrupoles errors and lead to particles leaving the ring. The tune has to be modified using dipoles and quadrupoles that are placed around the machine to be at a working point.
+The number of oscillations per turn has to be chosen to avoid resonances. Every harmonic of the tune can amplify oscillations and lead to particles leaving the ring. The tune can be modified using quadrupoles that are placed around the machine, between the dipoles. The particules in the machine have a certain spread so the tune working point is a small area.
 
 \begin{figure}[H]
 \centering
 \caption{The working point ``WP'' and beam-beam tune spread ``footprint'' of the LHC in the tune diagram. Including resonances up to the $12^{\rm {th}}$ harmonic.}
-\includegraphics[scale=1.25]{lhc_working_point.jpeg}
+%\includegraphics[scale=1.25]{lhc_working_point.jpeg}
 \floatfoot{Source : The large hadron collider~\cite{the_large_hadron_collider}}
 \end{figure}
-
-The number of oscillations per turn has to be chosen to avoid resonances. Every harmonic of the tune can amplify oscillations and lead to particles leaving the ring. The tune can be modified using quadrupoles that are placed around the machine, between the dipoles. The particules in the machine have a certain spread so the tune working point is a small area.
 
 \section{Tune measurement and relation to FFT}
 
 As the bunch-by-bunch acquisition is done in one point in the machine the sampling frequency is equal to the revolution frequency. Moving to the frequency domain by using \gls{FFT} will normalize the acquisition.
 
-The tune should then be visible as a pick in frequency at the betatron tune value (as we can see on figure~\ref{fig:tune_single}).
+The tune should then be visible as a peak in frequency at the betatron tune value (as we can see on figure~\ref{fig:tune_single}).
 
 \begin{figure}[H]
 \centering
-\caption{Plot of the tune Q versus amplitude of one acquistion with the ``betatron tune visible'' the 16 of October 2012 at 13:45 from vertical beam 1}
+\caption{Plot of the tune Q versus amplitude of one acquistion with the betatron tune visible, taken the 16 of October 2012 at 13:45 on vertical beam 1}
 \label{fig:tune_single}
-\includegraphics[scale=0.5]{fft_single.pdf}
+%\includegraphics[scale=0.5]{fft_single.pdf}
 \end{figure}
 
-Spectrogram can be use to see the evolution of this peak during time (as will be visible on figure~\ref{fig:adt_off} and~\ref{fig:bunch_0_adt_off}).
+A spectrogram can be use to see the evolution of this peak during time (as is visible on figure~\ref{fig:adt_off} and~\ref{fig:bunch_0_adt_off}).
 
 \begin{figure}[H]
 \centering
-\caption{Plot of the FFT samples versus amplitude versus time with the ``betatron tune visible'' the 16 of October 2012 from 13:41 to 13:43 on vertical beam 1}
+\caption{Plot of the tune Q versus amplitude and time with the betatron tune visible, taken the 16 of October 2012 from 13:41 to 13:42 on vertical beam 1}
 \label{fig:moutain_range}
-\includegraphics[scale=0.5]{mountain_range.pdf}
+%\includegraphics[scale=0.4]{mountain_range.png}
 \end{figure}
 
 % Literacy survey
 \section{Tune measurement in the LHC}
 
-In order to measure the betatron tune in an accelerator, we use
-\glspl{BPM}, which are able to measure the position of the beam in the
-vacuum chamber.
+In order to measure the betatron tune in an accelerator, we use \glspl{BPM}, which are able to measure the position of the beam in the vacuum chamber.
 
 Presently, the \gls{BI} group is using a \gls{BBQ}~\cite{Boccardi:1156349} system to acquire the tune over a certain number of machine turns (256 to 128'000). This system can be used to observe residual beam oscillations without further excitation of the beam or in combination with an excitation (increase oscillation amplitude) of a limited number of \glspl{bunch} in the beam with the \gls{MKQA}. The \Gls{ADT} has also been used for tune measurement of the beam, for example by~\cite{HofleEvian10}. The \gls{BBQ} system makes an average over a certain number of bunches in the machine and is not able to see individual bunches.
 
@@ -124,7 +120,7 @@ To obtain the tune frequency from the position of the \glspl{bunch}, we have to 
 \begin{figure}[H]
 \caption{ADT acquisition hardware with proposal of transmitting data to a GPU using a fast serial link}
 \centering
-\includegraphics[scale=0.3]{acquisition.pdf}
+%\includegraphics[scale=0.3]{acquisition.pdf}
 \end{figure}
 
 The per bunch position measurement has to be available to the system for each beam and each plane. It is provided by the \gls{ADTDSPU} and has to be transfered through a serial link to the CPU/GPU crate for computation.

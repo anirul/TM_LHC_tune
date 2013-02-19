@@ -19,7 +19,7 @@ When the \gls{ADT} is off line there is a clear mark on the tune as shown in Fig
 \caption{Spectrogram with ADT off on the 16 October 2012 on vertical beam 1 before the ramp, 6 bunches 10 accumulations}
 \label{fig:adt_off}
 \centering
-\includegraphics[scale=0.3]{md-121016-vb1-m1-6bunches-10acc-1337-1349-ADT-off.pdf}
+%\includegraphics[scale=0.3]{md-121016-vb1-m1-6bunches-10acc-1337-1349-ADT-off.pdf}
 \end{figure}
 
 These observations are consistent with the gated-\gls{BBQ} result of 2012~\cite{Valuch12} and show that we can acquire the tune with the \gls{ADT} and get a clear bunch-by-bunch view of the tune even for only one bunch as shown in Figure~\ref{fig:bunch_0_adt_off}.
@@ -28,7 +28,7 @@ These observations are consistent with the gated-\gls{BBQ} result of 2012~\cite{
 \caption{Spectrogram with ADT off on the 16 October 2012 on horizontal beam 1 before the ramp, 1 bunch (0) 8 accumulations}
 \label{fig:bunch_0_adt_off}
 \centering
-\includegraphics[scale=0.3]{md-121016-hb1-m1-bunch000001-8acc-1337-1349.pdf}
+%\includegraphics[scale=0.3]{md-121016-hb1-m1-bunch000001-8acc-1337-1349.pdf}
 \end{figure}
 
 \subsection{With damper}
@@ -41,7 +41,7 @@ This corresponds to the spectrogram we see during operation as shown in Figure~\
 \caption{Spectrogram with damper, on the 16 October 2012 on vertical beam 1 during the ramp, 6 bunches 10 accumulations}
 \centering
 \label{fig:ramp}
-\includegraphics[scale=0.3]{md-121016-vb1-m1-6bunches-10acc-1347-1405-ramp.pdf}
+%\includegraphics[scale=0.3]{md-121016-vb1-m1-6bunches-10acc-1347-1405-ramp.pdf}
 \end{figure}
 
 This could give us a good acquisition of the \gls{tune} during operation even when \gls{ADT} is on. This acquisition is made bunch-by-bunch. A question that is still open is how much is it sensitive to the way the \gls{ADT} is set up. This has still to be tested in the machine by moving the tune while the \gls{ADT} is in operation and see if the signal follows the tune.
@@ -54,7 +54,7 @@ As the hardware is not present yet, the time and bandwidth of the whole system h
 \caption{Acquisition data flow}
 \label{fig:data_flow}
 \centering
-\includegraphics[scale=0.3]{dataflow.pdf}
+%\includegraphics[scale=0.3]{dataflow.pdf}
 \end{figure}
 
 The data has to move from the acquisition card to the GPU by a series of steps, first from the card to the PCI crate (which contains the actual \glspl{GPU}). The problem being that the acquisition card is a \gls{VME} card and the VME bus is too slow to allow the full data to be streamed to the \gls{CPU}. 
@@ -88,7 +88,7 @@ A market survey revealed that commercial cards can fulfill our needs.
 \caption{Nallatech PCIe-180}
 \label{fig:nallatech}
 \centering
-\includegraphics[scale=0.3]{Nallatech_PCIe-180.pdf}
+%\includegraphics[scale=0.3]{Nallatech_PCIe-180.pdf}
 \end{figure}
 
 \gls{CERN} proposes a card that is made by \gls{CO} which could make a good match.
@@ -97,7 +97,7 @@ A market survey revealed that commercial cards can fulfill our needs.
 \caption{CERN Simple FMC carrier (SPEC)}
 \label{fig:spec}
 \centering
-\includegraphics[scale=0.3]{spec_top.pdf}
+%\includegraphics[scale=0.3]{spec_top.pdf}
 \end{figure}
 
 Table~\ref{tab:receiver_cards} show the different commercial and CERN solutions.
