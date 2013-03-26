@@ -79,7 +79,7 @@ int main(int ac, char** av) {
 		("nb-acc,n", value<unsigned int>(),	"averaging in turn (default : 10)")
 		("output-file,o", value<std::string>(), "output file (dump the values)")
 		("bunch-mask,m", value<std::string>(), "bunch mask (default : 111111)")
-		("no-pipeline", "disable pipeline OpenCL (default : on")
+		("no-pipeline", "disable pipeline OpenCL (default : on)")
 		("cl-cpu", "enable OpenCL on CPU (default : off)")
 		("start-time", value<std::string>(), "start time in ns from epoch")
 		("end-time", value<std::string>(), "end time in ns from epoch");
