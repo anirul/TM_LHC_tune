@@ -32,6 +32,8 @@ void save_to_file(
 	const spectrogram& spect,
 	const std::string& file_name,
 	bool with_scale = true,
-	bool black_white = false);
+	bool black_white = false,
+   float min_tune = 0.0f,
+   float max_tune = 0.5f);
 
 #endif // cv_image_HEADER_DEFINED

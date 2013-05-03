@@ -56,12 +56,17 @@ void save_to_file(
 	const spectrogram& spect,
 	const std::string& file_name,
 	bool with_scale,
-	bool black_white) 
+	bool black_white,
+   float min_tune,
+   float max_tune) 
 {
 	std::pair<uint32_t, uint32_t> size(spect.pitch(), spect.line_count());
-	cv::Mat img(size.second, size.first, CV_8UC(3));
+   std::pair<uint32_t, uint32_t> scale(
+         (uint32_t)((min_tune * 2.0f) * (float)size.first),
+         (uint32_t)((max_tune * 2.0f) * (float)size.first));
+	cv::Mat img(size.second, scale.second - scale.first, CV_8UC(3));
 	for (uint32_t y = 0; y < size.second; ++y) {
-		for (uint32_t x = 0; x < size.first; ++x) {
+		for (uint32_t x = scale.first; x < scale.second; ++x) {
 			if (!black_white) { // color
 				uint8_t red = 0x0;
 				uint8_t green = 0x0;
@@ -83,19 +88,19 @@ void save_to_file(
 					red = (uint8_t)(255.0f * val);
 				}
 				cv::Vec3b pixel(blue, green, red);
-				img.at<cv::Vec3b>(y, x) = pixel;
+				img.at<cv::Vec3b>(y, x - scale.first) = pixel;
 			} else { // black & white
 				float val = spect.data()[(y * size.first) + x];
 				cv::Vec3b pixel(
 					(uint8_t)(val * 255.0f),
 					(uint8_t)(val * 255.0f),
 					(uint8_t)(val * 255.0f));
-				img.at<cv::Vec3b>(y, x) = pixel;
+				img.at<cv::Vec3b>(y, x - scale.first) = pixel;
 			}
 		}
 	}
 	if (with_scale) {
-		{ // bunch pattern
+/*		{ // bunch pattern
 			std::stringstream ss("");
 			if (spect.bunch_mask().count() > 1)
 				ss << "bunches : ";
@@ -110,9 +115,9 @@ void save_to_file(
 				img,
 				ss.str(),
 				cv::Point(30, 50),
-				cv::FONT_HERSHEY_COMPLEX_SMALL, 1.25,
+				cv::FONT_HERSHEY_COMPLEX_SMALL, 0.9,
 				cv::Scalar(255, 255, 255));
-		}
+		}*/
 		for (int y = 0; y < (size.second - 20); y += 100) {
 			std::string time_string = "";
 			long long time_stamp = spect.time(y);
@@ -135,24 +140,29 @@ void save_to_file(
 				img, 
 				time_string, 
 				cv::Point(5, y + ((y) ? 5 : 15)), 
-				cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, 
+				cv::FONT_HERSHEY_COMPLEX_SMALL, 
+            0.7, 
 				cv::Scalar(255, 255, 255));
 		}
-		uint32_t count = 2;
-		for (int i = 2 * (size.first / 5); i < size.first; i+= size.first / 5) {
+      float tune = min_tune - 0.1;
+		for (int i = (size.first / 5); i < size.first; i+= size.first / 5) {
+         tune += 0.1f;
+         int pos = i - scale.first;
+         if (pos < 100) continue;
+         if (pos + 30 > scale.second) continue;
 			cv::line(
 				img,
-				cv::Point(i, 0),
-				cv::Point(i, 4),
+				cv::Point(pos, 0),
+				cv::Point(pos, 4),
 				cv::Scalar(255, 255, 255));
 			std::stringstream ss("");
-			ss << "0." << count++;
+			ss << tune;
 			cv::putText(
 				img, 
 				ss.str(),
-				cv::Point(i - 15, 20),
+				cv::Point(pos - 15, 20),
 				cv::FONT_HERSHEY_COMPLEX_SMALL,
-				1.0,
+				0.7,
 				cv::Scalar(255, 255, 255));
 		}
 	}

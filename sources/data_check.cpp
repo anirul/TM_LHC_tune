@@ -73,10 +73,13 @@ int main(int ac, char** av) {
 	bool enable_fullscreen;
 	bool no_label = false;
 	bool black_white = false;
+   float min_tune = 0.0f;
+   float max_tune = 0.5f;
 	std::string path = "";
 	std::string output_file = "";
 	std::string input_file = "";
 	std::string output_image = "";
+   std::string output_matlab = "";
 	std::bitset<16> bunch_mask(std::string("111111"));
 	try {
 		// parse command line
@@ -89,19 +92,31 @@ int main(int ac, char** av) {
 		("fullscreen,f", "fullscreen")
 		("output-file,o", value<std::string>(), "output file (dump the values)")
 		("output-image,b", value<std::string>(), "output an image")
+      ("output-matlab", value<std::string>(), "output a matlab file")
 		("no-label", "disable label in images")
 		("input-file,i", value<std::string>(), "input file (read from dump)")
 		("bunch-mask,m", value<std::string>(), "bunch mask (default : 111111)")
 		("pre-notch", "in case data was already notched")
 		("black-white", "output picture in monochrome")
 		("start-time", value<std::string>(), "start time in ns from epoch")
-		("end-time", value<std::string>(), "end time in ns from epoch");
+		("end-time", value<std::string>(), "end time in ns from epoch")
+      ("min-tune", value<float>(), "minimum tune picture (default : 0.0)")
+      ("max-tune", value<float>(), "maximum tune picture (default : 0.5)")
+      ;
 		variables_map vm;
 		store(command_line_parser(ac, av).options(desc).run(), vm);
 		if (vm.count("help")) {
 			std::cout << desc << std::endl;
 			return 1;
 		}
+      if (vm.count("min-tune")) {
+         min_tune = vm["min-tune"].as<float>();
+         std::cout << "min-tune        : " << min_tune << std::endl;
+      }
+      if (vm.count("max-tune")) {
+         max_tune = vm["max-tune"].as<float>();
+         std::cout << "max-tune        : " << max_tune << std::endl;
+      }
 		if (vm.count("path")) {
 			path = vm["path"].as<std::string>();
 			std::cout << "path            : " << path << std::endl;
@@ -127,6 +142,10 @@ int main(int ac, char** av) {
 			output_image = vm["output-image"].as<std::string>();
 			std::cout << "output image    : " << output_image << std::endl;
 		}
+      if (vm.count("output-matlab")) {
+         output_matlab = vm["output-matlab"].as<std::string>();
+         std::cout << "output matlab   : " << output_matlab << std::endl;
+      }
 		if (vm.count("no-label")) {
 			no_label = true;
 			std::cout << "no label        : true" << std::endl;
@@ -185,9 +204,19 @@ int main(int ac, char** av) {
 				return 0;
 			}
 			if (output_image.size()) {
-				save_to_file(spect, output_image, !no_label, black_white);
+				save_to_file(
+                  spect, 
+                  output_image, 
+                  !no_label, 
+                  black_white, 
+                  min_tune, 
+                  max_tune);
 				return 0;
 			}
+         if (output_matlab.size()) {
+            spect.save_matlab(output_matlab);
+            return 0;
+         }
 			win_data_check wdc(std::make_pair(dx, dy), spect);
 			glut_win* pwin = glut_win::instance(std::string("data check"),
 					std::make_pair<unsigned int, unsigned int>(dx, dy), &wdc,

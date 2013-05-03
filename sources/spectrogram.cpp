@@ -188,6 +188,30 @@ void spectrogram::load_files(
 	}
 }
 
+void spectrogram::save_matlab(const std::string& file) const {
+   std::ofstream ofs(file.c_str());
+   if (ofs.is_open()) { 
+      { // save data
+         std::vector<float>::const_iterator cite;
+         int i = 0;
+         for (cite = data_.begin(); cite != data_.end(); ++cite) {
+            if (cite != data_.begin()){
+               if (!(i % pitch_))
+                  ofs << ";" << std::endl;
+               else
+                  ofs << ", ";
+            }
+            ++i;
+            ofs << (*cite);
+         }
+         ofs << ";" << std::endl;
+      }
+      ofs.close();
+   } else {
+      throw std::runtime_error("could not write file " + file);
+   }
+}
+
 void spectrogram::save_dump(const std::string& file) const {
 	FILE* fp = NULL;
 	fp = fopen(file.c_str(), "wb");
